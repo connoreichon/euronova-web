@@ -1,0 +1,79 @@
+---
+import { site, coloresTinto } from '../data/site';
+
+const wa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(
+  'Hola, Pinturas Euronova. Quería pedir un color a medida.'
+)}`;
+---
+
+<section id="color" class="bg-tinta py-16 text-papel md:py-24">
+  <div class="container-x grid items-center gap-10 md:grid-cols-2">
+    <div class="reveal">
+      <p class="kicker text-albero">Tintometría en tienda</p>
+      <h2 class="display mt-2 text-3xl text-white md:text-5xl">
+        Cualquier color.<br />Mezclado en minutos.
+      </h2>
+      <p class="mt-4 max-w-md text-[15px] leading-relaxed text-papel/75">
+        Trae una muestra, una foto de tu pared o solo una idea. Con la máquina
+        tintométrica y las bases de nuestras marcas sacamos el tono exacto,
+        también en cantidades grandes para obra.
+      </p>
+      <a
+        href={wa}
+        target="_blank"
+        rel="noopener"
+        class="mt-7 inline-flex items-center gap-2 rounded-full bg-wasap px-6 py-3.5 text-[14px] font-bold text-white transition-transform hover:scale-[1.04]"
+      >
+        Pide tu color por WhatsApp
+      </a>
+    </div>
+
+    <!-- Panel interactivo: toca un chip y la "pared" cambia de color -->
+    <div class="reveal">
+      <div
+        id="pared-demo"
+        class="flex min-h-56 flex-col justify-end rounded-3xl p-6 transition-colors duration-500 md:min-h-72"
+        style="background-color:#d2262b;"
+      >
+        <span
+          id="pared-nombre"
+          class="w-fit rounded-full bg-black/25 px-3.5 py-1.5 text-[12px] font-semibold text-white backdrop-blur-sm"
+        >
+          Rojo Euronova
+        </span>
+      </div>
+      <div class="mt-4 flex flex-wrap gap-2.5" role="group" aria-label="Prueba colores de muestra">
+        {
+          coloresTinto.map((c, i) => (
+            <button
+              type="button"
+              class="color-chip h-9 w-9 cursor-pointer rounded-full border-2 border-white/25 transition-transform hover:scale-115 focus-visible:outline-2 focus-visible:outline-albero"
+              style={`background-color:${c.hex};`}
+              data-hex={c.hex}
+              data-nombre={c.nombre}
+              aria-label={`Ver pared en ${c.nombre}`}
+              aria-pressed={i === 0 ? 'true' : 'false'}
+            />
+          ))
+        }
+      </div>
+      <p class="mt-3 text-[12px] text-papel/50">
+        Ocho de muestra. En tienda, miles: cartas RAL, NCS y las de cada fabricante.
+      </p>
+    </div>
+  </div>
+</section>
+
+<script>
+  const pared = document.getElementById('pared-demo');
+  const nombre = document.getElementById('pared-nombre');
+  const chips = document.querySelectorAll<HTMLButtonElement>('.color-chip');
+  chips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      if (!pared || !nombre) return;
+      pared.style.backgroundColor = chip.dataset.hex ?? '#d2262b';
+      nombre.textContent = chip.dataset.nombre ?? '';
+      chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+    });
+  });
+</script>

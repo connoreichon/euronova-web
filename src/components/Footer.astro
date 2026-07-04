@@ -1,0 +1,18 @@
+---
+import { site } from '../data/site';
+---
+
+<footer class="bg-rojo-900 py-9 text-white/75">
+  <div class="container-x flex flex-col items-start justify-between gap-4 text-[13px] sm:flex-row sm:items-center">
+    <p>
+      <span class="font-display font-bold text-white">{site.nombre}</span>
+      · {site.ciudad}
+    </p>
+    <div class="flex items-center gap-5">
+      <a href={site.redes.instagram} target="_blank" rel="noopener" class="hover:text-white">Instagram</a>
+      <a href={site.redes.facebook} target="_blank" rel="noopener" class="hover:text-white">Facebook</a>
+      <a href={`tel:${site.telefonoLink}`} class="hover:text-white">{site.telefono}</a>
+    </div>
+    <p class="text-white/45">© {site.anioActual} {site.razonSocial}</p>
+  </div>
+</footer>

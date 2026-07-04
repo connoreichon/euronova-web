@@ -1,0 +1,273 @@
+@import 'tailwindcss';
+
+/* ===========================================================================
+   Pinturas Euronova — dirección "Rojo de marca × escaparate elegante".
+   Reskin rápido: cambia estos tokens y la web entera se adapta.
+   =========================================================================== */
+@theme {
+  /* Rojo de marca (sacado del rótulo/toldo de la tienda) */
+  --color-rojo: #d2262b;
+  --color-rojo-600: #b81e23;
+  --color-rojo-700: #a81b1f;
+  --color-rojo-900: #6d1013;
+
+  /* Neutros cálidos */
+  --color-papel: #faf7f2;
+  --color-papel-200: #f1ece3;
+  --color-tinta: #201717;
+  --color-tinta-600: #4a3c3c;
+
+  /* Acentos */
+  --color-azul: #2a5cad; /* la "pintada azul" del rótulo */
+  --color-wasap: #25d366; /* verde oficial WhatsApp */
+  --color-albero: #d9a441;
+
+  --font-display: 'Archivo', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-papel);
+  color: var(--color-tinta);
+  overflow-x: hidden;
+}
+
+:where(section[id]) {
+  scroll-margin-top: 5.5rem;
+}
+
+.container-x {
+  width: 100%;
+  max-width: 74rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+@media (min-width: 768px) {
+  .container-x {
+    padding-inline: 2.5rem;
+  }
+}
+
+/* Etiqueta pequeña en versales espaciadas */
+.kicker {
+  text-transform: uppercase;
+  letter-spacing: 0.26em;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+/* Titulares display */
+.display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+}
+
+/* --- Aparición al hacer scroll -------------------------------------------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ===========================================================================
+   TEXTURAS DE MATERIAL (categorías de producto)
+   Cada tarjeta lleva el "material" de fondo: hechas con CSS/SVG, sin fotos
+   con derechos. Sustituibles por fotos reales del cliente más adelante.
+   =========================================================================== */
+
+/* Pintura interior: pared mate recién pasada con rodillo (vetas verticales suaves) */
+.tex-interior {
+  background-color: #efe9dd;
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      rgba(190, 178, 158, 0.28) 0px,
+      rgba(190, 178, 158, 0) 3px,
+      rgba(255, 255, 255, 0.35) 6px,
+      rgba(190, 178, 158, 0) 9px,
+      rgba(190, 178, 158, 0.22) 12px
+    ),
+    linear-gradient(180deg, #f4efe4 0%, #e9e2d2 100%);
+}
+
+/* Fachadas: revestimiento rugoso tipo árido/gotelé (grano de ruido) */
+.tex-fachada {
+  background-color: #e3dac9;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)' opacity='0.4'/%3E%3C/svg%3E"),
+    linear-gradient(180deg, #e8e0d0 0%, #d9cfba 100%);
+}
+
+/* Esmaltes: superficie lacada brillante con reflejo diagonal */
+.tex-esmalte {
+  background-color: #8e1418;
+  background-image:
+    linear-gradient(
+      118deg,
+      rgba(255, 255, 255, 0) 34%,
+      rgba(255, 255, 255, 0.38) 45%,
+      rgba(255, 255, 255, 0.1) 52%,
+      rgba(255, 255, 255, 0) 60%
+    ),
+    linear-gradient(160deg, #b81e23 0%, #8e1418 55%, #6d1013 100%);
+}
+
+/* Madera y barnices: veta de madera barnizada */
+.tex-madera {
+  background-color: #9a6a3e;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='120'%3E%3Cg fill='none' stroke='%236f4726' stroke-opacity='0.5'%3E%3Cpath d='M0 14 Q 70 8 130 15 T 260 12' stroke-width='2'/%3E%3Cpath d='M0 34 Q 60 40 120 33 T 260 36' stroke-width='1.4'/%3E%3Cpath d='M0 55 Q 80 48 150 56 T 260 52' stroke-width='2.4'/%3E%3Cpath d='M0 76 Q 55 82 125 75 T 260 78' stroke-width='1.2'/%3E%3Cpath d='M0 97 Q 75 91 140 98 T 260 94' stroke-width='2'/%3E%3Cellipse cx='185' cy='55' rx='16' ry='7' stroke-width='1.6'/%3E%3Cellipse cx='185' cy='55' rx='8' ry='3.5' stroke-width='1.2'/%3E%3C/g%3E%3C/svg%3E"),
+    linear-gradient(
+      118deg,
+      rgba(255, 244, 220, 0) 40%,
+      rgba(255, 244, 220, 0.22) 48%,
+      rgba(255, 244, 220, 0) 56%
+    ),
+    linear-gradient(180deg, #a97845 0%, #8a5c33 100%);
+}
+
+/* Suelos: hormigón pulido gris con motas */
+.tex-suelo {
+  background-color: #b5b2ab;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23s)' opacity='0.28'/%3E%3C/svg%3E"),
+    linear-gradient(165deg, #c2bfb8 0%, #a5a29a 100%);
+}
+
+/* Impermeabilización: membrana de caucho roja con nervios diagonales */
+.tex-imper {
+  background-color: #99342a;
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      rgba(0, 0, 0, 0.14) 0px,
+      rgba(0, 0, 0, 0.14) 3px,
+      rgba(255, 255, 255, 0.06) 3px,
+      rgba(255, 255, 255, 0.06) 6px,
+      rgba(0, 0, 0, 0) 6px,
+      rgba(0, 0, 0, 0) 14px
+    ),
+    linear-gradient(180deg, #a63d2f 0%, #7e281f 100%);
+}
+
+/* Tarjeta de categoría sobre textura */
+.cat-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.25rem;
+  min-height: 13rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s ease;
+}
+.cat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px -18px rgba(32, 23, 23, 0.45);
+}
+/* Velo inferior para que el texto respire sobre la textura */
+.cat-card--oscuro::after,
+.cat-card--claro::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.cat-card--oscuro::after {
+  background: linear-gradient(180deg, rgba(250, 247, 242, 0) 30%, rgba(250, 247, 242, 0.88) 78%);
+}
+.cat-card--claro::after {
+  background: linear-gradient(180deg, rgba(24, 12, 12, 0) 30%, rgba(24, 12, 12, 0.62) 82%);
+}
+.cat-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ===========================================================================
+   SPLASH DE PINTURA (efecto al clicar / tocar)
+   Discreto: mancha que aparece y se desvanece bajo el cursor. Sin trail.
+   Se desactiva con prefers-reduced-motion.
+   =========================================================================== */
+.splash {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 96px;
+  height: 96px;
+  margin: -48px 0 0 -48px;
+  pointer-events: none;
+  z-index: 55; /* bajo el botón de WhatsApp (z-70) */
+  animation: splash-pop 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes splash-pop {
+  0% {
+    transform: scale(0.25) rotate(var(--rot, 0deg));
+    opacity: 0.85;
+  }
+  60% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1.05) rotate(var(--rot, 0deg));
+    opacity: 0;
+  }
+}
+
+/* Goteo del borde inferior del hero (rojo sobre la sección siguiente) */
+.drip-divider {
+  display: block;
+  width: 100%;
+  height: 34px;
+  margin-top: -1px;
+}
+
+/* Botón flotante de WhatsApp */
+.wa-float {
+  position: fixed;
+  right: 1.1rem;
+  bottom: 1.1rem;
+  z-index: 70;
+  display: grid;
+  place-items: center;
+  width: 3.6rem;
+  height: 3.6rem;
+  border-radius: 9999px;
+  background: var(--color-wasap);
+  color: #fff;
+  box-shadow: 0 12px 30px -10px rgba(18, 140, 70, 0.65);
+  transition: transform 0.25s ease;
+}
+.wa-float:hover {
+  transform: scale(1.07);
+}
+@media (min-width: 768px) {
+  .wa-float {
+    right: 1.6rem;
+    bottom: 1.6rem;
+  }
+}

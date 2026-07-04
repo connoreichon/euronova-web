@@ -1,0 +1,49 @@
+---
+import { site } from '../data/site';
+
+const anios = site.anioActual - site.fundadoEn;
+---
+
+<section id="nosotros" class="py-16 md:py-24">
+  <div class="container-x grid items-center gap-10 md:grid-cols-[1fr_1.15fr]">
+    <!-- Hueco para foto real de la tienda (ver ASSETS_NEEDED.md) -->
+    <div class="reveal">
+      <div
+        class="tex-fachada flex aspect-4/3 items-end overflow-hidden rounded-3xl p-5"
+        role="img"
+        aria-label="Hueco reservado para una foto real de la tienda"
+      >
+        <span class="rounded-full bg-tinta/70 px-3.5 py-1.5 text-[12px] font-medium text-white">
+          Aquí va una foto real de la tienda · pendiente del cliente
+        </span>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <p class="kicker text-rojo">La tienda</p>
+      <h2 class="display mt-2 text-3xl text-tinta md:text-5xl">
+        Más de {anios} años<br />vendiendo pintura aquí.
+      </h2>
+      <p class="mt-4 max-w-lg text-[15px] leading-relaxed text-tinta-600">
+        Somos la tienda de pinturas de Las Lagunas. Por el mostrador pasan cada
+        mañana pintores de toda la Costa del Sol y vecinos que vienen con la
+        foto de un salón a medio decidir. A todos les damos lo mismo: producto
+        que funciona, el color exacto y consejo honesto.
+      </p>
+      <ul class="mt-6 space-y-2.5 text-[14px] font-medium text-tinta">
+        <li class="flex items-center gap-2.5">
+          <span class="h-2 w-2 rounded-full bg-rojo"></span>
+          Trato directo, de tienda de toda la vida
+        </li>
+        <li class="flex items-center gap-2.5">
+          <span class="h-2 w-2 rounded-full bg-rojo"></span>
+          Para particulares y pintores profesionales
+        </li>
+        <li class="flex items-center gap-2.5">
+          <span class="h-2 w-2 rounded-full bg-rojo"></span>
+          {site.zona}
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
