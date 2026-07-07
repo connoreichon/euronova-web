@@ -18,12 +18,9 @@ export const site = {
   // --- Contacto -------------------------------------------------------------
   telefono: '951 23 64 18',
   telefonoLink: '+34951236418',
-  // PLACEHOLDER: sustituir por el WhatsApp real del cliente (solo dígitos con
-  // prefijo de país, sin "+"). Este número es FICTICIO a propósito.
-  whatsapp: '34600000000',
-  // PLACEHOLDER: mensaje prerelleno — ajustar cuando el cliente confirme tono.
-  whatsappMensaje:
-    'Hola, Pinturas Euronova. Quería preguntar por un color / precio / stock.',
+  // WhatsApp real de la tienda (solo dígitos con prefijo de país, sin "+").
+  whatsapp: '34686057191',
+  whatsappMensaje: 'Hola, me gustaría hacer una consulta.',
   // PENDIENTE: el dominio euronova.es está caído — confirmar si este email sigue activo.
   email: 'info@euronova.es',
 
@@ -90,14 +87,15 @@ export const categorias = [
     acabado: 'Mate y satinado',
     desc: 'Plásticas mate y satinadas, antimanchas y antihumedad para paredes y techos.',
     img: '/assets/img/categorias/interior.jpg',
-    alt: 'Pintor aplicando pintura gris con rodillo en una pared interior'
+    alt: 'Brocha entrando en un bote de pintura roja',
+    pos: '50% 14%'
   },
   {
     nombre: 'Fachadas y exterior',
     acabado: 'Liso y rugoso',
     desc: 'Revestimientos que aguantan el sol y el salitre de la costa.',
     img: '/assets/img/categorias/fachadas.jpg',
-    alt: 'Textura de revestimiento de fachada en tono cálido'
+    alt: 'Fachadas blancas de un pueblo andaluz al sol'
   },
   {
     nombre: 'Esmaltes',
@@ -125,7 +123,7 @@ export const categorias = [
     acabado: 'Caucho elástico',
     desc: 'Caucho y membranas para terrazas y cubiertas. Adiós goteras.',
     img: '/assets/img/categorias/imper.jpg',
-    alt: 'Operarios impermeabilizando una cubierta plana'
+    alt: 'Operario aplicando recubrimiento impermeabilizante en una cubierta'
   }
 ];
 // Complementos (sin protagonismo, por decisión de negocio: el foco es la pintura)

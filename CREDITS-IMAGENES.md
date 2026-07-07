@@ -7,12 +7,12 @@ obligatoria). Descargadas 2026-07-07.
 
 | Archivo | Pixabay ID | Contenido |
 | --- | --- | --- |
-| `interior.jpg` | painter-2247395 | Pintor con rodillo en pared gris |
-| `fachadas.jpg` | texture-2408546 | Estuco/revestimiento cálido |
+| `interior.jpg` | brush-7170365 | Brocha entrando en bote de pintura roja (encuadre alto para no mostrar la marca del bote) |
+| `fachadas.jpg` | andalusia-61116 | Fachadas blancas de pueblo andaluz |
 | `esmaltes.jpg` | red-652716 | Brochazos de esmalte rojo brillante |
 | `madera.jpg` | wood-1853403 | Tablas de madera con veta |
 | `suelos.jpg` | concrete-169641 | Hormigón alisado |
-| `imper.jpg` | waterproofing-7508362 | Operarios impermeabilizando cubierta |
+| `imper.jpg` | roof-coating-2846324 | Operario aplicando impermeabilizante en cubierta |
 
 Recomendación: sustituirlas poco a poco por fotos reales de la tienda y de
 trabajos de clientes (ver `ASSETS_NEEDED.md`).

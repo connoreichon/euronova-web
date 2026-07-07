@@ -7,8 +7,8 @@ web entera se actualiza. No hace falta tocar componentes.
 
 | Dato | Dónde | Estado |
 | --- | --- | --- |
-| **WhatsApp** | `site.whatsapp` | 🔴 **PLACEHOLDER FICTICIO** `34600000000` — sustituir por el real (solo dígitos, con 34 delante, sin `+`). El botón funciona técnicamente pero escribe a un número de mentira. |
-| Mensaje prerelleno | `site.whatsappMensaje` | 🔴 Placeholder — ajustar al tono del cliente. |
+| **WhatsApp** | `site.whatsapp` | 🟢 Real: `34686057191` (confirmado 2026-07-07). |
+| Mensaje prerelleno | `site.whatsappMensaje` | 🟢 "Hola, me gustaría hacer una consulta." |
 | **Dirección del local** | `site.direccion` | 🟡 Street View apunta a **Camino de Coín esquina C/ Yedra**; el registro dice C/ Río Corbones 8 (parece solo administrativa). Confirmar antes de fijar el mapa. |
 | Mapa embebido | `site.mapsEmbed` | 🟡 Vacío a propósito. Cuando se confirme la dirección: Google Maps → Compartir → Insertar mapa → copiar la URL del `src` del iframe. |
 | Sábados | `site.horario` | 🟡 "Consultar por teléfono" hasta que el cliente confirme. |

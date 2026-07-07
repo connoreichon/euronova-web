@@ -30,6 +30,7 @@ const waCat = (cat: string) =>
                 src={asset(c.img)}
                 alt={c.alt}
                 class="h-full w-full object-cover"
+                style={`object-position:${c.pos ?? '50% 50%'};`}
                 width="1280"
                 height="853"
                 loading="lazy"
