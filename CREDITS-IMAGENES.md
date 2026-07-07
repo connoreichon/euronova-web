@@ -22,12 +22,11 @@ trabajos de clientes (ver `ASSETS_NEEDED.md`).
 Oficiales, descargados de bupisa.com y rugoplast.com. Confirmar conformidad
 de las marcas para su uso como distribuidor.
 
-## Tipografía del logotipo (`public/assets/fonts/`)
+## Logotipo (`public/assets/marca/`)
 
-- **Handel Gothic BT** (woff/woff2): es la fuente real del rótulo de la tienda.
-  ⚠️ Copia webfont obtenida de un repositorio público de GitHub — **antes de la
-  entrega final hay que licenciarla** (Handel Gothic está disponible en
-  MyFonts/Monotype, ~35-50 €) o confirmar que el cliente dispone de licencia
-  (p. ej. si la tiene el rotulista). Para desarrollo y demo interna vale.
-- Resto de fuentes (Archivo, Archivo Black, Audiowide, Inter): Google Fonts,
-  licencia libre OFL.
+- `logo-euronova.png` y `logo-euronova-header.png`: imagen REAL del rótulo de
+  la tienda (facilitada por el propietario del negocio), con el fondo rojo
+  eliminado por croma. Es marca propia del cliente: sin problema de derechos.
+- Ya NO se usa ninguna fuente comercial para el logo (la webfont Handel Gothic
+  se eliminó del proyecto). Fuentes de la web (Archivo, Archivo Black, Inter):
+  Google Fonts, licencia libre OFL.

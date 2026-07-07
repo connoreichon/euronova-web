@@ -16,7 +16,7 @@ web entera se actualiza. No hace falta tocar componentes.
 | Reparto local | `servicios` (04) | 🟡 Confirmar si reparte y en qué zona; si no, borrar el servicio 04. |
 | Año de apertura | `site.fundadoEn` | 🟡 Puesto 2003 para cuadrar "+20 años". Confirmar. |
 | Logos de marcas | `public/assets/marcas/` | 🟡 Son los oficiales de bupisa.com y rugoplast.com. Confirmar conformidad de las marcas (uso habitual de distribuidor, mejor por escrito). |
-| Logotipo Euronova | `src/components/LogoEuronova.astro` | 🟢 Calcado con la fuente REAL del rótulo (Handel Gothic BT autohospedada), pincelada azul y eslogan. ⚠️ Licenciar la fuente antes de la entrega final (ver CREDITS-IMAGENES.md). |
+| Logotipo Euronova | `public/assets/marca/` | 🟢 Imagen REAL del rótulo (facilitada por el propietario, fondo eliminado por croma). Sin fuentes comerciales que licenciar. |
 
 ## Cambios rápidos
 

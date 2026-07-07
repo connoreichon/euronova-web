@@ -1,19 +1,5 @@
 @import 'tailwindcss';
 
-/* Handel Gothic BT: la fuente REAL del rótulo de la tienda (autohospedada).
-   OJO licencia: copia webfont de repositorio público — licenciar la fuente
-   oficialmente antes de la entrega final (ver CAMBIAR_DATOS_CLIENTE.md).
-   La ruta lleva el `base` (/euronova-web) — cambiarla si cambia el dominio. */
-@font-face {
-  font-family: 'HandelGothic';
-  src:
-    url('/euronova-web/assets/fonts/HandelGothic.woff2') format('woff2'),
-    url('/euronova-web/assets/fonts/HandelGothic.woff') format('woff');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
 /* ===========================================================================
    Pinturas Euronova — dirección "Rojo de marca × negro, como el rótulo".
    Reskin rápido: cambia estos tokens y la web entera se adapta.
@@ -42,7 +28,6 @@
 
   --font-display: 'Archivo', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-brand: 'HandelGothic', 'Archivo', sans-serif;
 }
 
 html {
