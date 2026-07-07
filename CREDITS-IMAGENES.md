@@ -7,12 +7,12 @@ obligatoria). Descargadas 2026-07-07.
 
 | Archivo | Pixabay ID | Contenido |
 | --- | --- | --- |
-| `interior.jpg` | brush-7170365 | Brocha entrando en bote de pintura roja (encuadre alto para no mostrar la marca del bote) |
-| `fachadas.jpg` | andalusia-61116 | Fachadas blancas de pueblo andaluz |
-| `esmaltes.jpg` | red-652716 | Brochazos de esmalte rojo brillante |
-| `madera.jpg` | wood-1853403 | Tablas de madera con veta |
-| `suelos.jpg` | concrete-169641 | Hormigón alisado |
-| `imper.jpg` | roof-coating-2846324 | Operario aplicando impermeabilizante en cubierta |
+| `interior.jpg` | chair-with-wall-1550526 | Pared interior pintada de rojo intenso |
+| `fachadas.jpg` | architecture-2608240 | Fachada mediterránea pastel |
+| `esmaltes.jpg` | metal-2437487 | Reja de forja esmaltada azul y oro |
+| `madera.jpg` | furniture-998265 | Salón con muebles de madera barnizada |
+| `suelos.jpg` | tennis-7137976 | Pista de tenis de tierra batida |
+| `imper.jpg` | roof-terrace-354906 | Terraza impermeabilizada con tumbonas |
 
 Recomendación: sustituirlas poco a poco por fotos reales de la tienda y de
 trabajos de clientes (ver `ASSETS_NEEDED.md`).

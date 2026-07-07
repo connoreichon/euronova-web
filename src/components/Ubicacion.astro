@@ -1,13 +1,15 @@
 ---
 import { site } from '../data/site';
+import Mancha from './Mancha.astro';
 
 const wa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(site.whatsappMensaje)}`;
 ---
 
-<section id="tienda" class="bg-rojo-900 py-16 text-papel md:py-24">
+<section id="tienda" class="relative overflow-hidden bg-rojo-900 py-16 text-papel md:py-24">
+  <Mancha color="#efb700" forma={1} class="-top-12 -right-14 w-52 opacity-[0.12] md:w-64" rotar={40} />
   <div class="container-x grid gap-12 md:grid-cols-2">
     <div class="reveal">
-      <p class="kicker text-albero">Ven a vernos</p>
+      <p class="kicker-brocha text-albero">Ven a vernos</p>
       <h2 class="display mt-2 text-3xl text-white md:text-5xl">
         La tienda, en Las Lagunas.
       </h2>

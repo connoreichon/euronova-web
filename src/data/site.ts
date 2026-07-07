@@ -87,43 +87,42 @@ export const categorias = [
     acabado: 'Mate y satinado',
     desc: 'Plásticas mate y satinadas, antimanchas y antihumedad para paredes y techos.',
     img: '/assets/img/categorias/interior.jpg',
-    alt: 'Brocha entrando en un bote de pintura roja',
-    pos: '50% 14%'
+    alt: 'Pared interior pintada de rojo intenso con un banco delante'
   },
   {
     nombre: 'Fachadas y exterior',
     acabado: 'Liso y rugoso',
     desc: 'Revestimientos que aguantan el sol y el salitre de la costa.',
     img: '/assets/img/categorias/fachadas.jpg',
-    alt: 'Fachadas blancas de un pueblo andaluz al sol'
+    alt: 'Fachada mediterránea en tonos pastel con carpintería azul'
   },
   {
     nombre: 'Esmaltes',
     acabado: 'Brillo lacado',
     desc: 'Sintéticos y al agua. Para metal, puertas y radiadores.',
     img: '/assets/img/categorias/esmaltes.jpg',
-    alt: 'Brochazos de esmalte rojo brillante recién aplicado'
+    alt: 'Reja de forja esmaltada en azul con remates dorados'
   },
   {
     nombre: 'Madera y barnices',
     acabado: 'Veta satinada',
     desc: 'Barnices, lasures y protectores para dentro y para fuera.',
     img: '/assets/img/categorias/madera.jpg',
-    alt: 'Tablas de madera clara con veta natural'
+    alt: 'Salón con muebles de madera barnizada'
   },
   {
     nombre: 'Suelos',
     acabado: 'Pulido y epoxi',
     desc: 'Pintura para suelos, garajes y pavimentos deportivos.',
     img: '/assets/img/categorias/suelos.jpg',
-    alt: 'Superficie de hormigón alisado'
+    alt: 'Pista de tenis de tierra batida con raqueta y pelotas'
   },
   {
     nombre: 'Impermeabilización',
     acabado: 'Caucho elástico',
     desc: 'Caucho y membranas para terrazas y cubiertas. Adiós goteras.',
     img: '/assets/img/categorias/imper.jpg',
-    alt: 'Operario aplicando recubrimiento impermeabilizante en una cubierta'
+    alt: 'Terraza impermeabilizada en blanco con tumbonas y vistas'
   }
 ];
 // Complementos (sin protagonismo, por decisión de negocio: el foco es la pintura)

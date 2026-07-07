@@ -1,0 +1,33 @@
+---
+// Mancha de pintura decorativa para fondos de sección ("mancharse es parte
+// del oficio"). Tres formas orgánicas con gotitas satélite; se coloca en
+// absoluto dentro de una sección con `relative overflow-hidden`.
+interface Props {
+  color?: string;
+  forma?: 1 | 2 | 3;
+  class?: string; // posicionamiento + tamaño + opacidad (ej: "top-8 -right-10 w-64 opacity-10")
+  rotar?: number;
+}
+const { color = '#efb700', forma = 1, class: className = '', rotar = 0 } = Astro.props;
+
+const FORMAS = {
+  1: 'M1-49C13-47 15-31 27-28C39-25 49-17 46-4C43 9 31 10 26 21C21 32 13 42 0 40C-13 38-15 27-26 23C-37 19-46 10-44-3C-42-16-31-17-27-28C-23-39-11-51 1-49Z',
+  2: 'M4-44C18-46 20-28 32-22C44-16 42-2 36 8C30 18 34 30 22 36C10 42-2 34-14 36C-26 38-38 30-38 18C-38 6-46-6-40-18C-34-30-22-28-14-36C-6-44-6-42 4-44Z',
+  3: 'M-2-46C8-50 16-36 28-34C40-32 48-20 44-8C40 4 26 4 22 14C18 24 24 38 12 42C0 46-8 34-20 32C-32 30-44 24-42 10C-40-4-28-8-24-18C-20-28-12-42-2-46Z'
+};
+---
+
+<svg
+  viewBox="-64 -64 128 128"
+  class={`mancha ${className}`}
+  style={`transform: rotate(${rotar}deg);`}
+  aria-hidden="true"
+>
+  <g fill={color}>
+    <path d={FORMAS[forma]}></path>
+    <circle cx="52" cy="-30" r="4.5"></circle>
+    <circle cx="-54" cy="18" r="3.5"></circle>
+    <circle cx="40" cy="48" r="5"></circle>
+    <circle cx="-38" cy="-48" r="3"></circle>
+  </g>
+</svg>

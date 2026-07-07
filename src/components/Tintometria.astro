@@ -1,15 +1,18 @@
 ---
 import { site, coloresTinto } from '../data/site';
+import Mancha from './Mancha.astro';
 
 const wa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(
   'Hola, Pinturas Euronova. Quería pedir un color a medida.'
 )}`;
 ---
 
-<section id="color" class="bg-rojo py-16 text-white md:py-24">
+<section id="color" class="relative overflow-hidden bg-rojo py-16 text-white md:py-24">
+  <Mancha color="#171111" forma={2} class="-bottom-12 -right-10 w-64 opacity-[0.16] md:w-80" rotar={12} />
+  <Mancha color="#ffffff" forma={1} class="top-10 -left-14 w-44 opacity-[0.1]" rotar={70} />
   <div class="container-x grid items-center gap-10 md:grid-cols-2">
     <div class="reveal">
-      <p class="kicker text-negro">Tintometría en tienda</p>
+      <p class="kicker-brocha text-negro">Tintometría en tienda</p>
       <h2 class="display mt-2 text-3xl text-white md:text-5xl">
         Cualquier color.<br />Mezclado en minutos.
       </h2>

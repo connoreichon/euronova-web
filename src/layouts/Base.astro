@@ -25,7 +25,7 @@ const {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Archivo+Black&family=Inter:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Archivo+Black&family=Inter:wght@400;500;600&family=Nanum+Brush+Script&display=swap"
     />
 
     <title>{title}</title>
@@ -85,92 +85,58 @@ const {
     </script>
 
     <script>
-      // Splash de pintura al clicar/tocar (v3, físico):
-      //  - silueta de salpicadura GENERADA al vuelo (polígono radial con puntas
-      //    afiladas): cada clic produce una mancha distinta, como salpicaduras reales
-      //  - gotas que salen despedidas en arco y CAEN por gravedad (WAAPI)
-      //  - chorretón que resbala desde la mancha antes de secarse
-      // Respeta prefers-reduced-motion y limita splashes simultáneos.
+      // Salpicadura al clicar/tocar (v4, fina): SIN mancha grande.
+      // Solo gotitas pequeñas y nítidas que se dispersan en arco y caen con
+      // gravedad (Web Animations API), desvaneciéndose enseguida. Discreto.
+      // Respeta prefers-reduced-motion y limita ráfagas simultáneas.
       const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (!reduce) {
-        const COLORES = ['#d2262b', '#1a4fa8', '#efb700', '#3a7d5d'];
+        const COLORES = ['#d2262b', '#1a4fa8', '#efb700', '#3a7d5d', '#ffffff'];
         const rnd = (a: number, b: number) => a + Math.random() * (b - a);
-        const splatPath = () => {
-          const n = 22;
-          let d = '';
-          for (let i = 0; i < n; i++) {
-            const ang = (i / n) * Math.PI * 2 + rnd(-0.07, 0.07);
-            let r = rnd(15, 25);
-            if (Math.random() < 0.28) r *= rnd(1.9, 2.9);
-            d += (i ? 'L' : 'M') + (Math.cos(ang) * r).toFixed(1) + ' ' + (Math.sin(ang) * r).toFixed(1);
-          }
-          return d + 'Z';
-        };
         let vivos = 0;
         addEventListener('pointerdown', (e) => {
           if (vivos > 3) return;
           vivos++;
           const color = COLORES[(Math.random() * COLORES.length) | 0];
           const root = document.createElement('div');
-          root.className = 'splash3';
+          root.className = 'splash4';
           root.style.left = e.clientX + 'px';
           root.style.top = e.clientY + 'px';
-          root.innerHTML = `<svg class="splash3__splat" viewBox="-70 -70 140 140" aria-hidden="true"><path d="${splatPath()}" fill="${color}"/></svg>`;
           document.body.appendChild(root);
 
-          const splat = root.querySelector('.splash3__splat');
-          splat?.animate(
-            [
-              { transform: 'scale(0.2)', opacity: 1 },
-              { transform: 'scale(1.12)', opacity: 0.95, offset: 0.12 },
-              { transform: 'scale(0.98)', opacity: 0.9, offset: 0.26 },
-              { transform: 'scale(1)', opacity: 0.82, offset: 0.6 },
-              { transform: 'scale(1.01)', opacity: 0 }
-            ],
-            { duration: 1400, easing: 'cubic-bezier(.2,.9,.3,1)', fill: 'forwards' }
-          );
-
-          const n = 9 + ((Math.random() * 5) | 0);
+          const n = 11 + ((Math.random() * 5) | 0);
           for (let i = 0; i < n; i++) {
             const g = document.createElement('span');
-            g.className = 'splash3__gota';
-            const sz = rnd(2.5, 7);
+            g.className = 'splash4__gota';
+            const sz = rnd(1.6, 4.2);
             g.style.width = g.style.height = sz.toFixed(1) + 'px';
             g.style.marginLeft = g.style.marginTop = (-sz / 2).toFixed(1) + 'px';
             g.style.background = color;
             root.appendChild(g);
             const ang = rnd(0, Math.PI * 2);
-            const alcance = rnd(22, 80);
+            const alcance = rnd(14, 52);
             const dx = Math.cos(ang) * alcance;
-            const subida = -Math.abs(Math.sin(ang)) * rnd(10, 44) - rnd(4, 18);
-            const caida = rnd(28, 72);
+            const subida = Math.sin(ang) * alcance * 0.5 - rnd(6, 22);
+            const caida = rnd(16, 44);
             g.animate(
               [
-                { transform: 'translate(0,0) scale(1)', opacity: 0.95 },
-                { transform: `translate(${(dx * 0.6).toFixed(1)}px, ${subida.toFixed(1)}px) scale(0.9)`, opacity: 0.9, offset: 0.38 },
-                { transform: `translate(${dx.toFixed(1)}px, ${caida.toFixed(1)}px) scale(0.5)`, opacity: 0 }
+                { transform: 'translate(0,0) scale(0.6)', opacity: 0.9 },
+                { transform: `translate(${(dx * 0.62).toFixed(1)}px, ${subida.toFixed(1)}px) scale(1)`, opacity: 0.85, offset: 0.4 },
+                { transform: `translate(${dx.toFixed(1)}px, ${caida.toFixed(1)}px) scale(0.4)`, opacity: 0 }
               ],
-              { duration: rnd(550, 950), easing: 'cubic-bezier(.25,.45,.45,1)', fill: 'forwards' }
+              {
+                duration: rnd(420, 720),
+                delay: rnd(0, 60),
+                easing: 'cubic-bezier(.22,.61,.36,1)',
+                fill: 'forwards'
+              }
             );
           }
-
-          const ch = document.createElement('span');
-          ch.className = 'splash3__chorro';
-          ch.style.background = color;
-          root.appendChild(ch);
-          ch.animate(
-            [
-              { transform: 'translateY(6px) scaleY(0.2)', opacity: 0.9 },
-              { transform: 'translateY(14px) scaleY(1)', opacity: 0.85, offset: 0.45 },
-              { transform: 'translateY(34px) scaleY(1.7)', opacity: 0 }
-            ],
-            { duration: 1100, delay: 150, easing: 'cubic-bezier(.55,.06,.68,.19)', fill: 'forwards' }
-          );
 
           setTimeout(() => {
             root.remove();
             vivos--;
-          }, 1600);
+          }, 900);
         });
       }
     </script>

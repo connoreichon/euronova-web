@@ -1,11 +1,13 @@
 ---
 import { servicios } from '../data/site';
+import Mancha from './Mancha.astro';
 ---
 
-<section id="servicios" class="bg-rojo py-16 text-white md:py-24">
+<section id="servicios" class="relative overflow-hidden bg-rojo py-16 text-white md:py-24">
+  <Mancha color="#171111" forma={1} class="top-8 -right-16 w-56 opacity-[0.14] md:w-64" rotar={100} />
   <div class="container-x">
     <div class="reveal max-w-xl">
-      <p class="kicker text-white/75">Por qué Euronova</p>
+      <p class="kicker-brocha text-negro">Por qué Euronova</p>
       <h2 class="display mt-2 text-3xl text-white md:text-5xl">
         Lo que no te da<br />una gran superficie.
       </h2>

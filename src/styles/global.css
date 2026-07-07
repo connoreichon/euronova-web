@@ -187,42 +187,53 @@ body {
 }
 
 /* ===========================================================================
-   SPLASH DE PINTURA v3 (efecto al clicar / tocar)
-   Silueta procedural + gotas con gravedad + chorretón. Las animaciones van
-   por Web Animations API (Base.astro); aquí solo el posicionamiento.
+   SALPICADURA v4 (efecto al clicar / tocar)
+   Solo gotitas finas que se dispersan con gravedad (WAAPI en Base.astro).
    Se desactiva con prefers-reduced-motion.
    =========================================================================== */
-.splash3 {
+.splash4 {
   position: fixed;
   left: 0;
   top: 0;
   pointer-events: none;
   z-index: 55; /* bajo el botón de WhatsApp (z-70) */
 }
-.splash3__splat {
-  position: absolute;
-  width: 130px;
-  height: 130px;
-  left: -65px;
-  top: -65px;
-  opacity: 0;
-}
-.splash3__gota {
+.splash4__gota {
   position: absolute;
   left: 0;
   top: 0;
   border-radius: 9999px;
   opacity: 0;
 }
-.splash3__chorro {
+
+/* ===========================================================================
+   ROTULACIÓN A BROCHA (títulos de apartado) y MANCHAS DE FONDO
+   =========================================================================== */
+/* Etiqueta de sección escrita "a brocha", grande y legible */
+.kicker-brocha {
+  font-family: 'Nanum Brush Script', 'Segoe Script', cursive;
+  font-size: 2.2rem;
+  line-height: 0.9;
+  letter-spacing: 0.01em;
+  display: inline-block;
+  transform: rotate(-2deg);
+}
+@media (min-width: 768px) {
+  .kicker-brocha {
+    font-size: 2.6rem;
+  }
+}
+
+/* Mancha decorativa de pintura en el fondo de una sección */
+.mancha {
   position: absolute;
-  left: -2px;
-  top: 8px;
-  width: 4px;
-  height: 15px;
-  border-radius: 9999px;
-  transform-origin: top center;
-  opacity: 0;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+.mancha ~ * {
+  position: relative;
+  z-index: 1;
 }
 
 /* Goteo del borde inferior del hero (rojo sobre la sección siguiente) */

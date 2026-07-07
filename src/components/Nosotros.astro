@@ -1,10 +1,12 @@
 ---
 import { site } from '../data/site';
+import Mancha from './Mancha.astro';
 
 const anios = site.anioActual - site.fundadoEn;
 ---
 
-<section id="nosotros" class="bg-negro py-16 text-papel md:py-24">
+<section id="nosotros" class="relative overflow-hidden bg-negro py-16 text-papel md:py-24">
+  <Mancha color="#1a4fa8" forma={2} class="-bottom-14 -right-12 w-56 opacity-[0.13] md:w-72" rotar={-60} />
   <div class="container-x grid items-center gap-10 md:grid-cols-[1fr_1.15fr]">
     <!-- Hueco para foto real de la tienda (ver ASSETS_NEEDED.md) -->
     <div class="reveal">
@@ -20,7 +22,7 @@ const anios = site.anioActual - site.fundadoEn;
     </div>
 
     <div class="reveal">
-      <p class="kicker text-rojo">La tienda</p>
+      <p class="kicker-brocha text-albero">La tienda</p>
       <h2 class="display mt-2 text-3xl text-white md:text-5xl">
         Más de {anios} años<br />vendiendo pintura aquí.
       </h2>
