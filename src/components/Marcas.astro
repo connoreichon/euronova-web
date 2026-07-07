@@ -3,11 +3,11 @@ import { marcas } from '../data/site';
 import { asset } from '../lib/asset';
 ---
 
-<section id="marcas" class="py-16 md:py-24">
+<section id="marcas" class="bg-negro py-16 text-papel md:py-24">
   <div class="container-x">
     <div class="reveal max-w-xl">
       <p class="kicker text-rojo">Marcas</p>
-      <h2 class="display mt-2 text-3xl text-tinta md:text-5xl">
+      <h2 class="display mt-2 text-3xl text-white md:text-5xl">
         Fabricantes que rinden en la obra.
       </h2>
     </div>
@@ -18,7 +18,7 @@ import { asset } from '../lib/asset';
         href={marcas[0].web}
         target="_blank"
         rel="noopener"
-        class="group flex flex-col items-center justify-center gap-5 bg-papel-200 px-8 py-14 transition-colors hover:bg-white"
+        class="group flex flex-col items-center justify-center gap-5 bg-papel px-8 py-14 transition-colors hover:bg-white"
       >
         <img
           src={asset(marcas[0].logo)}
@@ -36,7 +36,7 @@ import { asset } from '../lib/asset';
         href={marcas[1].web}
         target="_blank"
         rel="noopener"
-        class="group flex flex-col items-center justify-center gap-5 bg-tinta px-8 py-14 transition-colors hover:bg-tinta-600"
+        class="group flex flex-col items-center justify-center gap-5 bg-negro-600 px-8 py-14 transition-colors hover:bg-tinta-600 md:border-l md:border-white/10"
       >
         <img
           src={asset(marcas[1].logo)}
@@ -52,7 +52,7 @@ import { asset } from '../lib/asset';
       </a>
     </div>
 
-    <p class="reveal mt-5 text-[13px] text-tinta-600/80">
+    <p class="reveal mt-5 text-[13px] text-papel/50">
       ¿Buscas otra marca o un producto concreto? Pregúntanos: si no lo tenemos, te lo conseguimos.
     </p>
   </div>

@@ -1,5 +1,6 @@
 ---
 import { site, categorias, complementosNota } from '../data/site';
+import { asset } from '../lib/asset';
 
 const waCat = (cat: string) =>
   `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(
@@ -7,14 +8,14 @@ const waCat = (cat: string) =>
   )}`;
 ---
 
-<section id="productos" class="py-16 md:py-24">
+<section id="productos" class="bg-negro py-16 text-papel md:py-24">
   <div class="container-x">
     <div class="reveal max-w-xl">
       <p class="kicker text-rojo">Escaparate</p>
-      <h2 class="display mt-2 text-3xl text-tinta md:text-5xl">
+      <h2 class="display mt-2 text-3xl text-white md:text-5xl">
         Todo en pintura,<br />del bote a tu pared.
       </h2>
-      <p class="mt-4 text-[15px] leading-relaxed text-tinta-600">
+      <p class="mt-4 text-[15px] leading-relaxed text-papel/70">
         Cada ficha, un acabado. Sin tienda online y sin líos: mira lo que
         trabajamos, pregunta por WhatsApp y te lo dejamos preparado en el mostrador.
       </p>
@@ -24,7 +25,16 @@ const waCat = (cat: string) =>
       {
         categorias.map((c) => (
           <article class="cat-card reveal">
-            <div class={`cat-swatch ${c.mat}`}></div>
+            <div class="cat-swatch">
+              <img
+                src={asset(c.img)}
+                alt={c.alt}
+                class="h-full w-full object-cover"
+                width="1280"
+                height="853"
+                loading="lazy"
+              />
+            </div>
             <div class="flex flex-1 flex-col p-5">
               <p class="kicker text-[10px] text-tinta-600/70">{c.acabado}</p>
               <h3 class="font-display mt-1 text-lg font-bold text-tinta">{c.nombre}</h3>
@@ -46,6 +56,6 @@ const waCat = (cat: string) =>
       }
     </div>
 
-    <p class="reveal mt-6 text-[13px] text-tinta-600/80">{complementosNota}</p>
+    <p class="reveal mt-6 text-[13px] text-papel/50">{complementosNota}</p>
   </div>
 </section>

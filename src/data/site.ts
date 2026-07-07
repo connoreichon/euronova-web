@@ -82,44 +82,50 @@ export const marcas = [
 ];
 
 // --- Categorías de producto (escaparate, sin tienda online) ------------------
-// `mat`: clase CSS del acabado del material (fichas de muestrario, global.css).
+// `img`: foto real (Pixabay, uso comercial sin atribución — ver CREDITS-IMAGENES.md).
 // `acabado`: etiqueta pequeña que acompaña al nombre en la ficha.
 export const categorias = [
   {
     nombre: 'Pintura interior',
     acabado: 'Mate y satinado',
     desc: 'Plásticas mate y satinadas, antimanchas y antihumedad para paredes y techos.',
-    mat: 'mat-interior'
+    img: '/assets/img/categorias/interior.jpg',
+    alt: 'Pintor aplicando pintura gris con rodillo en una pared interior'
   },
   {
     nombre: 'Fachadas y exterior',
     acabado: 'Liso y rugoso',
     desc: 'Revestimientos que aguantan el sol y el salitre de la costa.',
-    mat: 'mat-fachada'
+    img: '/assets/img/categorias/fachadas.jpg',
+    alt: 'Textura de revestimiento de fachada en tono cálido'
   },
   {
     nombre: 'Esmaltes',
     acabado: 'Brillo lacado',
     desc: 'Sintéticos y al agua. Para metal, puertas y radiadores.',
-    mat: 'mat-esmalte'
+    img: '/assets/img/categorias/esmaltes.jpg',
+    alt: 'Brochazos de esmalte rojo brillante recién aplicado'
   },
   {
     nombre: 'Madera y barnices',
     acabado: 'Veta satinada',
     desc: 'Barnices, lasures y protectores para dentro y para fuera.',
-    mat: 'mat-madera'
+    img: '/assets/img/categorias/madera.jpg',
+    alt: 'Tablas de madera clara con veta natural'
   },
   {
     nombre: 'Suelos',
     acabado: 'Pulido y epoxi',
     desc: 'Pintura para suelos, garajes y pavimentos deportivos.',
-    mat: 'mat-suelo'
+    img: '/assets/img/categorias/suelos.jpg',
+    alt: 'Superficie de hormigón alisado'
   },
   {
     nombre: 'Impermeabilización',
     acabado: 'Caucho elástico',
     desc: 'Caucho y membranas para terrazas y cubiertas. Adiós goteras.',
-    mat: 'mat-imper'
+    img: '/assets/img/categorias/imper.jpg',
+    alt: 'Operarios impermeabilizando una cubierta plana'
   }
 ];
 // Complementos (sin protagonismo, por decisión de negocio: el foco es la pintura)

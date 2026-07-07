@@ -1,7 +1,21 @@
 @import 'tailwindcss';
 
+/* Handel Gothic BT: la fuente REAL del rótulo de la tienda (autohospedada).
+   OJO licencia: copia webfont de repositorio público — licenciar la fuente
+   oficialmente antes de la entrega final (ver CAMBIAR_DATOS_CLIENTE.md).
+   La ruta lleva el `base` (/euronova-web) — cambiarla si cambia el dominio. */
+@font-face {
+  font-family: 'HandelGothic';
+  src:
+    url('/euronova-web/assets/fonts/HandelGothic.woff2') format('woff2'),
+    url('/euronova-web/assets/fonts/HandelGothic.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ===========================================================================
-   Pinturas Euronova — dirección "Rojo de marca × escaparate elegante".
+   Pinturas Euronova — dirección "Rojo de marca × negro, como el rótulo".
    Reskin rápido: cambia estos tokens y la web entera se adapta.
    =========================================================================== */
 @theme {
@@ -22,8 +36,13 @@
   --color-wasap: #25d366; /* verde oficial WhatsApp */
   --color-albero: #d9a441;
 
+  /* Negro de marca (rótulo) */
+  --color-negro: #171111;
+  --color-negro-600: #241b1b;
+
   --font-display: 'Archivo', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-brand: 'HandelGothic', 'Archivo', sans-serif;
 }
 
 html {
@@ -34,8 +53,8 @@ html {
 
 body {
   font-family: var(--font-body);
-  background-color: var(--color-papel);
-  color: var(--color-tinta);
+  background-color: var(--color-negro);
+  color: var(--color-papel);
   overflow-x: hidden;
 }
 
