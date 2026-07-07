@@ -1,0 +1,122 @@
+---
+// Calco vectorial del rótulo real de la tienda (foto frontal del cliente):
+//  - "€uronov@" negro con borde blanco, ligera cursiva. La € (una sola barra,
+//    estilo Handel Gothic) va dibujada a mano para que sea EXACTA a la marca.
+//    El resto usa Audiowide (la alternativa libre más cercana a Handel Gothic)
+//    inclinada como en el cartel. Con el archivo del rotulista se afinará al 100%.
+//  - "pinturas" en negro cursiva sobre la pincelada azul.
+//  - Eslogan: "La vida es del color que tú quieras pintarla".
+// `variant="compact"`: solo el wordmark (para el header).
+interface Props {
+  variant?: 'full' | 'compact';
+  class?: string;
+}
+const { variant = 'full', class: className = '' } = Astro.props;
+---
+
+{
+  variant === 'compact' ? (
+    <svg
+      viewBox="0 0 620 132"
+      class={className}
+      role="img"
+      aria-label="Pinturas Euronova"
+    >
+      <g transform="skewX(-7)" stroke-linejoin="round">
+        <g fill="none" stroke="#111" stroke-width="19">
+          <path d="M120 34 A41 41 0 1 0 120 98" stroke="#fff" stroke-width="29" />
+          <path d="M120 34 A41 41 0 1 0 120 98" />
+        </g>
+        <rect x="42" y="57" width="74" height="18" fill="#fff" stroke="#fff" stroke-width="9" rx="2" />
+        <rect x="42" y="57" width="74" height="18" fill="#111" rx="2" />
+        <text
+          x="128"
+          y="102"
+          font-family="'Audiowide', sans-serif"
+          font-size="92"
+          fill="#111"
+          stroke="#fff"
+          stroke-width="7"
+          paint-order="stroke"
+          letter-spacing="-3"
+          textLength="470"
+          lengthAdjust="spacingAndGlyphs"
+        >
+          uronov@
+        </text>
+      </g>
+    </svg>
+  ) : (
+    <svg
+      viewBox="0 0 780 268"
+      class={className}
+      role="img"
+      aria-label="Pinturas Euronova — La vida es del color que tú quieras pintarla"
+    >
+      <g transform="translate(398 6) skewX(-9)">
+        <path
+          d="M8 30 C 40 16 90 14 140 18 C 200 12 260 16 300 22 C 322 24 340 20 352 30 C 342 34 348 42 336 40 C 344 50 322 46 326 54 C 310 60 300 50 282 56 C 220 64 150 62 96 58 C 60 62 24 58 10 48 C 2 42 0 36 8 30 Z"
+          fill="#1c56b0"
+        />
+        <path
+          d="M310 24 C 330 22 344 26 352 30 C 342 34 348 42 336 40 C 344 50 322 46 326 54 C 316 58 306 52 296 54 C 310 46 302 32 310 24 Z"
+          fill="#2f7ad6"
+          opacity="0.85"
+        />
+        <text
+          x="30"
+          y="52"
+          font-family="'Archivo Black', 'Archivo', sans-serif"
+          font-size="44"
+          fill="#111"
+          stroke="#fff"
+          stroke-width="5"
+          paint-order="stroke"
+        >
+          pinturas
+        </text>
+      </g>
+
+      <g transform="translate(0 44) skewX(-7)" stroke-linejoin="round">
+        <g fill="none">
+          <path d="M118 22 A47 47 0 1 0 118 96" stroke="#fff" stroke-width="34" />
+          <path d="M118 22 A47 47 0 1 0 118 96" stroke="#111" stroke-width="22" />
+        </g>
+        <rect x="30" y="48" width="86" height="21" fill="#fff" stroke="#fff" stroke-width="10" rx="2" />
+        <rect x="30" y="48" width="86" height="21" fill="#111" rx="2" />
+        <text
+          x="134"
+          y="106"
+          font-family="'Audiowide', sans-serif"
+          font-size="110"
+          fill="#111"
+          stroke="#fff"
+          stroke-width="8"
+          paint-order="stroke"
+          letter-spacing="-3"
+          textLength="580"
+          lengthAdjust="spacingAndGlyphs"
+        >
+          uronov@
+        </text>
+      </g>
+
+      <text
+        x="390"
+        y="242"
+        text-anchor="middle"
+        font-family="'Archivo Black', 'Archivo', sans-serif"
+        font-size="33"
+        fill="#111"
+        stroke="#fff"
+        stroke-width="4.5"
+        paint-order="stroke"
+        transform="skewX(-7)"
+        textLength="740"
+        lengthAdjust="spacingAndGlyphs"
+      >
+        La vida es del color que tú quieras pintarla
+      </text>
+    </svg>
+  )
+}

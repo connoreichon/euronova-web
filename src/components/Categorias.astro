@@ -15,42 +15,32 @@ const waCat = (cat: string) =>
         Todo en pintura,<br />del bote a tu pared.
       </h2>
       <p class="mt-4 text-[15px] leading-relaxed text-tinta-600">
-        Sin tienda online y sin líos: mira lo que trabajamos, pregunta por WhatsApp
-        y te lo dejamos preparado en el mostrador.
+        Cada ficha, un acabado. Sin tienda online y sin líos: mira lo que
+        trabajamos, pregunta por WhatsApp y te lo dejamos preparado en el mostrador.
       </p>
     </div>
 
     <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
       {
         categorias.map((c) => (
-          <article class={`cat-card reveal ${c.tex} cat-card--${c.tono} p-6`}>
-            <h3
-              class={`font-display text-xl font-bold ${
-                c.tono === 'claro' ? 'text-white' : 'text-tinta'
-              }`}
-            >
-              {c.nombre}
-            </h3>
-            <p
-              class={`mt-1.5 text-[13px] leading-relaxed ${
-                c.tono === 'claro' ? 'text-white/85' : 'text-tinta-600'
-              }`}
-            >
-              {c.desc}
-            </p>
-            <a
-              href={waCat(c.nombre)}
-              target="_blank"
-              rel="noopener"
-              class={`mt-4 inline-flex w-fit items-center gap-1.5 text-[13px] font-bold ${
-                c.tono === 'claro' ? 'text-white' : 'text-rojo'
-              } underline-offset-4 hover:underline`}
-            >
-              Pregunta stock y precio
-              <svg viewBox="0 0 16 16" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-            </a>
+          <article class="cat-card reveal">
+            <div class={`cat-swatch ${c.mat}`}></div>
+            <div class="flex flex-1 flex-col p-5">
+              <p class="kicker text-[10px] text-tinta-600/70">{c.acabado}</p>
+              <h3 class="font-display mt-1 text-lg font-bold text-tinta">{c.nombre}</h3>
+              <p class="mt-1.5 text-[13px] leading-relaxed text-tinta-600">{c.desc}</p>
+              <a
+                href={waCat(c.nombre)}
+                target="_blank"
+                rel="noopener"
+                class="mt-auto inline-flex w-fit items-center gap-1.5 pt-4 text-[13px] font-bold text-rojo underline-offset-4 hover:underline"
+              >
+                Pregunta stock y precio
+                <svg viewBox="0 0 16 16" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </a>
+            </div>
           </article>
         ))
       }

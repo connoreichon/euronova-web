@@ -92,148 +92,167 @@ body {
 }
 
 /* ===========================================================================
-   TEXTURAS DE MATERIAL (categorías de producto)
-   Cada tarjeta lleva el "material" de fondo: hechas con CSS/SVG, sin fotos
-   con derechos. Sustituibles por fotos reales del cliente más adelante.
+   FICHAS DE MUESTRARIO (categorías de producto)
+   Cada tarjeta imita una ficha de extensión de pintura ("drawdown"): banda
+   superior con el acabado del material (sutil, elegante) y etiqueta blanca
+   limpia debajo. Sin fotos con derechos; sustituible por fotos del cliente.
    =========================================================================== */
-
-/* Pintura interior: pared mate recién pasada con rodillo (vetas verticales suaves) */
-.tex-interior {
-  background-color: #efe9dd;
-  background-image:
-    repeating-linear-gradient(
-      90deg,
-      rgba(190, 178, 158, 0.28) 0px,
-      rgba(190, 178, 158, 0) 3px,
-      rgba(255, 255, 255, 0.35) 6px,
-      rgba(190, 178, 158, 0) 9px,
-      rgba(190, 178, 158, 0.22) 12px
-    ),
-    linear-gradient(180deg, #f4efe4 0%, #e9e2d2 100%);
-}
-
-/* Fachadas: revestimiento rugoso tipo árido/gotelé (grano de ruido) */
-.tex-fachada {
-  background-color: #e3dac9;
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)' opacity='0.4'/%3E%3C/svg%3E"),
-    linear-gradient(180deg, #e8e0d0 0%, #d9cfba 100%);
-}
-
-/* Esmaltes: superficie lacada brillante con reflejo diagonal */
-.tex-esmalte {
-  background-color: #8e1418;
-  background-image:
-    linear-gradient(
-      118deg,
-      rgba(255, 255, 255, 0) 34%,
-      rgba(255, 255, 255, 0.38) 45%,
-      rgba(255, 255, 255, 0.1) 52%,
-      rgba(255, 255, 255, 0) 60%
-    ),
-    linear-gradient(160deg, #b81e23 0%, #8e1418 55%, #6d1013 100%);
-}
-
-/* Madera y barnices: veta de madera barnizada */
-.tex-madera {
-  background-color: #9a6a3e;
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='120'%3E%3Cg fill='none' stroke='%236f4726' stroke-opacity='0.5'%3E%3Cpath d='M0 14 Q 70 8 130 15 T 260 12' stroke-width='2'/%3E%3Cpath d='M0 34 Q 60 40 120 33 T 260 36' stroke-width='1.4'/%3E%3Cpath d='M0 55 Q 80 48 150 56 T 260 52' stroke-width='2.4'/%3E%3Cpath d='M0 76 Q 55 82 125 75 T 260 78' stroke-width='1.2'/%3E%3Cpath d='M0 97 Q 75 91 140 98 T 260 94' stroke-width='2'/%3E%3Cellipse cx='185' cy='55' rx='16' ry='7' stroke-width='1.6'/%3E%3Cellipse cx='185' cy='55' rx='8' ry='3.5' stroke-width='1.2'/%3E%3C/g%3E%3C/svg%3E"),
-    linear-gradient(
-      118deg,
-      rgba(255, 244, 220, 0) 40%,
-      rgba(255, 244, 220, 0.22) 48%,
-      rgba(255, 244, 220, 0) 56%
-    ),
-    linear-gradient(180deg, #a97845 0%, #8a5c33 100%);
-}
-
-/* Suelos: hormigón pulido gris con motas */
-.tex-suelo {
-  background-color: #b5b2ab;
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23s)' opacity='0.28'/%3E%3C/svg%3E"),
-    linear-gradient(165deg, #c2bfb8 0%, #a5a29a 100%);
-}
-
-/* Impermeabilización: membrana de caucho roja con nervios diagonales */
-.tex-imper {
-  background-color: #99342a;
-  background-image:
-    repeating-linear-gradient(
-      45deg,
-      rgba(0, 0, 0, 0.14) 0px,
-      rgba(0, 0, 0, 0.14) 3px,
-      rgba(255, 255, 255, 0.06) 3px,
-      rgba(255, 255, 255, 0.06) 6px,
-      rgba(0, 0, 0, 0) 6px,
-      rgba(0, 0, 0, 0) 14px
-    ),
-    linear-gradient(180deg, #a63d2f 0%, #7e281f 100%);
-}
-
-/* Tarjeta de categoría sobre textura */
 .cat-card {
-  position: relative;
-  overflow: hidden;
-  border-radius: 1.25rem;
-  min-height: 13rem;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  overflow: hidden;
+  border-radius: 1.25rem;
+  background: #ffffff;
+  border: 1px solid rgba(32, 23, 23, 0.07);
+  box-shadow: 0 1px 2px rgba(32, 23, 23, 0.05);
   transition:
     transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 0.35s ease;
 }
 .cat-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 18px 40px -18px rgba(32, 23, 23, 0.45);
+  transform: translateY(-5px);
+  box-shadow: 0 22px 44px -20px rgba(32, 23, 23, 0.3);
 }
-/* Velo inferior para que el texto respire sobre la textura */
-.cat-card--oscuro::after,
-.cat-card--claro::after {
+.cat-swatch {
+  height: 9.5rem;
+  position: relative;
+}
+/* Brillo superior común, como pintura extendida con luz de estudio */
+.cat-swatch::before {
   content: '';
   position: absolute;
   inset: 0;
+  background: radial-gradient(120% 90% at 28% -10%, rgba(255, 255, 255, 0.32), transparent 55%);
   pointer-events: none;
 }
-.cat-card--oscuro::after {
-  background: linear-gradient(180deg, rgba(250, 247, 242, 0) 30%, rgba(250, 247, 242, 0.88) 78%);
+
+/* Interior: plástica mate blanco roto, pasadas de rodillo casi imperceptibles */
+.mat-interior {
+  background-color: #f2ecdf;
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.4) 0 2px,
+      rgba(214, 204, 186, 0.14) 2px 4px,
+      transparent 4px 30px
+    ),
+    linear-gradient(180deg, #f6f1e6 0%, #ebe4d4 100%);
 }
-.cat-card--claro::after {
-  background: linear-gradient(180deg, rgba(24, 12, 12, 0) 30%, rgba(24, 12, 12, 0.62) 82%);
+
+/* Fachadas: revestimiento con grano fino, cálido y suave */
+.mat-fachada {
+  background-color: #ddd3c0;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)' opacity='0.14'/%3E%3C/svg%3E"),
+    linear-gradient(180deg, #e4dbc9 0%, #d3c8b1 100%);
 }
-.cat-card > * {
-  position: relative;
-  z-index: 1;
+
+/* Esmaltes: laca roja profunda con reflejo curvo de estudio */
+.mat-esmalte {
+  background-color: #9c1418;
+  background-image:
+    radial-gradient(90% 65% at 24% 8%, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0) 55%),
+    linear-gradient(115deg, transparent 46%, rgba(255, 255, 255, 0.2) 50%, transparent 55%),
+    linear-gradient(165deg, #c01d22 0%, #8e1216 60%, #6d0e11 100%);
+}
+
+/* Madera: veta horizontal cálida de contraste bajo, con barniz satinado */
+.mat-madera {
+  background-color: #a5713f;
+  background-image:
+    linear-gradient(115deg, transparent 44%, rgba(255, 240, 214, 0.2) 50%, transparent 57%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='96'%3E%3Cg fill='none' stroke='%23754c27' stroke-opacity='0.28'%3E%3Cpath d='M0 12 Q 90 8 170 13 T 320 11' stroke-width='1.6'/%3E%3Cpath d='M0 30 Q 80 34 160 29 T 320 32' stroke-width='1.1'/%3E%3Cpath d='M0 50 Q 100 45 190 51 T 320 48' stroke-width='1.8'/%3E%3Cpath d='M0 70 Q 70 74 150 69 T 320 72' stroke-width='1'/%3E%3Cpath d='M0 88 Q 95 84 180 89 T 320 86' stroke-width='1.4'/%3E%3C/g%3E%3C/svg%3E"),
+    linear-gradient(180deg, #b07c48 0%, #8f6136 100%);
+}
+
+/* Suelos: hormigón pulido con reflejo suave, motas mínimas */
+.mat-suelo {
+  background-color: #bcb9b2;
+  background-image:
+    linear-gradient(100deg, transparent 52%, rgba(255, 255, 255, 0.2) 60%, transparent 70%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23s)' opacity='0.08'/%3E%3C/svg%3E"),
+    linear-gradient(180deg, #c9c6c0 0%, #a9a69f 100%);
+}
+
+/* Impermeabilización: caucho teja satinado, liso y profundo */
+.mat-imper {
+  background-color: #8f2c22;
+  background-image:
+    radial-gradient(100% 70% at 25% 0%, rgba(255, 255, 255, 0.16), transparent 55%),
+    linear-gradient(165deg, #a03526 0%, #6f1d15 100%);
 }
 
 /* ===========================================================================
-   SPLASH DE PINTURA (efecto al clicar / tocar)
-   Discreto: mancha que aparece y se desvanece bajo el cursor. Sin trail.
+   SPLASH DE PINTURA v2 (efecto al clicar / tocar)
+   Mancha central orgánica + gotitas despedidas + goterón que resbala.
    Se desactiva con prefers-reduced-motion.
    =========================================================================== */
-.splash {
+.splash2 {
   position: fixed;
   left: 0;
   top: 0;
-  width: 96px;
-  height: 96px;
-  margin: -48px 0 0 -48px;
   pointer-events: none;
   z-index: 55; /* bajo el botón de WhatsApp (z-70) */
-  animation: splash-pop 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
-@keyframes splash-pop {
+.splash2__splat {
+  position: absolute;
+  width: 110px;
+  height: 110px;
+  left: -55px;
+  top: -55px;
+  animation: splat-in 1.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes splat-in {
   0% {
-    transform: scale(0.25) rotate(var(--rot, 0deg));
-    opacity: 0.85;
+    transform: rotate(var(--rot, 0deg)) scale(0.15);
+    opacity: 0.95;
   }
-  60% {
-    opacity: 0.5;
+  16% {
+    transform: rotate(var(--rot, 0deg)) scale(1.07);
+    opacity: 0.9;
+  }
+  28% {
+    transform: rotate(var(--rot, 0deg)) scale(0.99);
+  }
+  55% {
+    opacity: 0.72;
   }
   100% {
-    transform: scale(1.05) rotate(var(--rot, 0deg));
+    transform: rotate(var(--rot, 0deg)) scale(1.03);
+    opacity: 0;
+  }
+}
+.splash2__drop {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--sz, 4px);
+  height: var(--sz, 4px);
+  margin-left: calc(var(--sz, 4px) / -2);
+  margin-top: calc(var(--sz, 4px) / -2);
+  border-radius: 9999px;
+  opacity: 0.95;
+  animation: drop-fly var(--dur, 600ms) cubic-bezier(0.15, 0.8, 0.3, 1) var(--del, 0ms) forwards;
+}
+@keyframes drop-fly {
+  to {
+    transform: translate(var(--dx, 0), var(--dy, 0)) scale(0.45);
+    opacity: 0;
+  }
+}
+.splash2__drip {
+  position: absolute;
+  left: -2px;
+  top: 8px;
+  width: 4px;
+  height: 11px;
+  border-radius: 9999px;
+  opacity: 0.9;
+  animation: drip-fall 0.9s cubic-bezier(0.5, 0, 0.8, 0.5) 0.12s forwards;
+}
+@keyframes drip-fall {
+  to {
+    transform: translateY(28px) scaleY(1.9);
     opacity: 0;
   }
 }

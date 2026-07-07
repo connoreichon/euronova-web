@@ -25,7 +25,7 @@ const {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Inter:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Archivo+Black&family=Audiowide&family=Inter:wght@400;500;600&display=swap"
     />
 
     <title>{title}</title>
@@ -85,32 +85,62 @@ const {
     </script>
 
     <script>
-      // Splash de pintura al clicar/tocar: mancha breve bajo el puntero.
-      // Colores de la marca; respeta prefers-reduced-motion; máx. 1 cada 120 ms.
+      // Splash de pintura al clicar/tocar, versión elaborada:
+      //  - mancha central orgánica (3 formas, rotación aleatoria) con rebote suave
+      //  - gotitas que salen despedidas en direcciones aleatorias
+      //  - una gota que resbala hacia abajo (goterón)
+      // Respeta prefers-reduced-motion y limita splashes simultáneos.
       const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (!reduce) {
-        const colores = ['#d2262b', '#2a5cad', '#d9a441', '#5f6b3a'];
-        const SPLAT =
-          'M52 8c6 0 9 6 14 8s13-1 16 5-3 10-2 16 8 9 6 15-9 5-13 9-4 12-11 13-9-6-15-7-13 4-17-2 2-11 0-17S18 38 20 31s10-4 14-8 4-11 11-13c3-1 5-2 7-2z';
-        let last = 0;
+        const COLORES = ['#d2262b', '#2a5cad', '#efb700', '#3a7d5d'];
+        const SPLATS = [
+          'M1-49C13-47 15-31 27-28C39-25 49-17 46-4C43 9 31 10 26 21C21 32 13 42 0 40C-13 38-15 27-26 23C-37 19-46 10-44-3C-42-16-31-17-27-28C-23-39-11-51 1-49Z',
+          'M4-44C18-46 20-28 32-22C44-16 42-2 36 8C30 18 34 30 22 36C10 42-2 34-14 36C-26 38-38 30-38 18C-38 6-46-6-40-18C-34-30-22-28-14-36C-6-44-6-42 4-44Z',
+          'M-2-46C8-50 16-36 28-34C40-32 48-20 44-8C40 4 26 4 22 14C18 24 24 38 12 42C0 46-8 34-20 32C-32 30-44 24-42 10C-40-4-28-8-24-18C-20-28-12-42-2-46Z'
+        ];
+        let vivos = 0;
         addEventListener('pointerdown', (e) => {
-          const now = Date.now();
-          if (now - last < 120) return;
-          last = now;
-          const c = colores[Math.floor(Math.random() * colores.length)];
-          const el = document.createElement('div');
-          el.className = 'splash';
-          el.style.left = e.clientX + 'px';
-          el.style.top = e.clientY + 'px';
-          el.style.setProperty('--rot', Math.floor(Math.random() * 360) + 'deg');
-          el.innerHTML =
-            `<svg viewBox="0 0 104 104" fill="${c}" aria-hidden="true">` +
-            `<path d="${SPLAT}"/>` +
-            `<circle cx="14" cy="22" r="4"/><circle cx="92" cy="30" r="3"/>` +
-            `<circle cx="88" cy="86" r="5"/><circle cx="18" cy="88" r="3"/>` +
-            `</svg>`;
-          document.body.appendChild(el);
-          el.addEventListener('animationend', () => el.remove());
+          if (vivos > 3) return;
+          vivos++;
+          const color = COLORES[(Math.random() * COLORES.length) | 0];
+          const root = document.createElement('div');
+          root.className = 'splash2';
+          root.style.left = e.clientX + 'px';
+          root.style.top = e.clientY + 'px';
+
+          const splat = document.createElement('div');
+          splat.className = 'splash2__splat';
+          splat.style.setProperty('--rot', ((Math.random() * 360) | 0) + 'deg');
+          splat.innerHTML =
+            `<svg viewBox="-60 -60 120 120" fill="${color}" aria-hidden="true">` +
+            `<path d="${SPLATS[(Math.random() * SPLATS.length) | 0]}"/></svg>`;
+          root.appendChild(splat);
+
+          const n = 7 + ((Math.random() * 4) | 0);
+          for (let i = 0; i < n; i++) {
+            const d = document.createElement('span');
+            d.className = 'splash2__drop';
+            const ang = Math.random() * Math.PI * 2;
+            const dist = 26 + Math.random() * 46;
+            d.style.setProperty('--dx', (Math.cos(ang) * dist).toFixed(1) + 'px');
+            d.style.setProperty('--dy', (Math.sin(ang) * dist - 8).toFixed(1) + 'px');
+            d.style.setProperty('--sz', (3 + Math.random() * 5).toFixed(1) + 'px');
+            d.style.setProperty('--dur', (450 + ((Math.random() * 350) | 0)) + 'ms');
+            d.style.setProperty('--del', ((Math.random() * 70) | 0) + 'ms');
+            d.style.background = color;
+            root.appendChild(d);
+          }
+
+          const drip = document.createElement('span');
+          drip.className = 'splash2__drip';
+          drip.style.background = color;
+          root.appendChild(drip);
+
+          document.body.appendChild(root);
+          setTimeout(() => {
+            root.remove();
+            vivos--;
+          }, 1300);
         });
       }
     </script>

@@ -1,6 +1,7 @@
 ---
 import { site, marcas, categorias } from '../data/site';
 import { asset } from '../lib/asset';
+import LogoEuronova from './LogoEuronova.astro';
 
 const wa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(site.whatsappMensaje)}`;
 ---
@@ -8,11 +9,9 @@ const wa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(site.whatsa
 <section id="top" class="relative bg-rojo pt-24 pb-14 text-white md:pt-32 md:pb-16">
   <div class="container-x grid items-center gap-12 md:grid-cols-[1.3fr_1fr]">
     <div>
-      <p class="kicker text-white/80" style="letter-spacing:0.42em;">{site.kickerHero}</p>
-      <h1 class="display mt-1 text-[clamp(3.2rem,13vw,6.5rem)] text-white">
-        {site.titularHero}
-      </h1>
-      <p class="mt-4 max-w-md text-[15px] leading-relaxed text-white/85">
+      <h1 class="sr-only">{site.nombre} — {site.reclamo}</h1>
+      <LogoEuronova class="w-full max-w-2xl" />
+      <p class="mt-5 max-w-md text-[15px] leading-relaxed text-white/85">
         {site.subtituloHero}
       </p>
 

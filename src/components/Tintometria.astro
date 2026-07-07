@@ -33,16 +33,16 @@ const wa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(
       <div
         id="pared-demo"
         class="flex min-h-56 flex-col justify-end rounded-3xl p-6 transition-colors duration-500 md:min-h-72"
-        style="background-color:#d2262b;"
+        style="background-color:#383e42;"
       >
         <span
           id="pared-nombre"
-          class="w-fit rounded-full bg-black/25 px-3.5 py-1.5 text-[12px] font-semibold text-white backdrop-blur-sm"
+          class="w-fit rounded-full bg-black/30 px-3.5 py-1.5 text-[12px] font-semibold text-white backdrop-blur-sm"
         >
-          Rojo Euronova
+          Gris antracita · RAL 7016
         </span>
       </div>
-      <div class="mt-4 flex flex-wrap gap-2.5" role="group" aria-label="Prueba colores de muestra">
+      <div class="mt-4 flex flex-wrap gap-2.5" role="group" aria-label="Prueba colores de carta RAL y NCS">
         {
           coloresTinto.map((c, i) => (
             <button
@@ -51,14 +51,17 @@ const wa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(
               style={`background-color:${c.hex};`}
               data-hex={c.hex}
               data-nombre={c.nombre}
-              aria-label={`Ver pared en ${c.nombre}`}
+              data-codigo={c.codigo}
+              title={`${c.nombre} · ${c.codigo}`}
+              aria-label={`Ver pared en ${c.nombre} (${c.codigo})`}
               aria-pressed={i === 0 ? 'true' : 'false'}
             />
           ))
         }
       </div>
       <p class="mt-3 text-[12px] text-papel/50">
-        Ocho de muestra. En tienda, miles: cartas RAL, NCS y las de cada fabricante.
+        Colores reales de carta RAL y NCS. En tienda, miles más: RAL, NCS y las
+        cartas de cada fabricante.
       </p>
     </div>
   </div>
@@ -71,8 +74,8 @@ const wa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(
   chips.forEach((chip) => {
     chip.addEventListener('click', () => {
       if (!pared || !nombre) return;
-      pared.style.backgroundColor = chip.dataset.hex ?? '#d2262b';
-      nombre.textContent = chip.dataset.nombre ?? '';
+      pared.style.backgroundColor = chip.dataset.hex ?? '#383e42';
+      nombre.textContent = `${chip.dataset.nombre ?? ''} · ${chip.dataset.codigo ?? ''}`;
       chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
     });
   });

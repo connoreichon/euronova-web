@@ -10,6 +10,7 @@ export const site = {
   reclamo: 'Tienda de pinturas en Las Lagunas de Mijas',
   titularHero: 'EURONOVA',
   kickerHero: 'PINTURAS',
+  eslogan: 'La vida es del color que tú quieras pintarla',
   subtituloHero:
     'Tu tienda de pinturas en Las Lagunas de Mijas. Más de 20 años mezclando el color exacto para tu casa o tu obra.',
   fundadoEn: 2003, // PENDIENTE: confirmar año real de apertura ("+20 años")
@@ -81,60 +82,61 @@ export const marcas = [
 ];
 
 // --- Categorías de producto (escaparate, sin tienda online) ------------------
-// `tex`: clase CSS de textura del material (definidas en global.css).
-// `tono`: 'claro' u 'oscuro' según el color del texto que necesita la textura.
+// `mat`: clase CSS del acabado del material (fichas de muestrario, global.css).
+// `acabado`: etiqueta pequeña que acompaña al nombre en la ficha.
 export const categorias = [
   {
     nombre: 'Pintura interior',
+    acabado: 'Mate y satinado',
     desc: 'Plásticas mate y satinadas, antimanchas y antihumedad para paredes y techos.',
-    tex: 'tex-interior',
-    tono: 'oscuro'
+    mat: 'mat-interior'
   },
   {
     nombre: 'Fachadas y exterior',
-    desc: 'Revestimientos lisos y rugosos que aguantan el sol y el salitre de la costa.',
-    tex: 'tex-fachada',
-    tono: 'oscuro'
+    acabado: 'Liso y rugoso',
+    desc: 'Revestimientos que aguantan el sol y el salitre de la costa.',
+    mat: 'mat-fachada'
   },
   {
     nombre: 'Esmaltes',
-    desc: 'Sintéticos y al agua, brillo, satinado o mate. Para metal, puertas y radiadores.',
-    tex: 'tex-esmalte',
-    tono: 'claro'
+    acabado: 'Brillo lacado',
+    desc: 'Sintéticos y al agua. Para metal, puertas y radiadores.',
+    mat: 'mat-esmalte'
   },
   {
     nombre: 'Madera y barnices',
-    desc: 'Barnices, lasures y protectores que alimentan la madera por dentro y por fuera.',
-    tex: 'tex-madera',
-    tono: 'claro'
+    acabado: 'Veta satinada',
+    desc: 'Barnices, lasures y protectores para dentro y para fuera.',
+    mat: 'mat-madera'
   },
   {
     nombre: 'Suelos',
-    desc: 'Pintura para suelos, garajes y pavimentos deportivos, al agua o epoxi.',
-    tex: 'tex-suelo',
-    tono: 'oscuro'
+    acabado: 'Pulido y epoxi',
+    desc: 'Pintura para suelos, garajes y pavimentos deportivos.',
+    mat: 'mat-suelo'
   },
   {
     nombre: 'Impermeabilización',
-    desc: 'Caucho y membranas para terrazas y cubiertas. Se acabaron las goteras.',
-    tex: 'tex-imper',
-    tono: 'claro'
+    acabado: 'Caucho elástico',
+    desc: 'Caucho y membranas para terrazas y cubiertas. Adiós goteras.',
+    mat: 'mat-imper'
   }
 ];
 // Complementos (sin protagonismo, por decisión de negocio: el foco es la pintura)
 export const complementosNota =
   'Y además, brochas, rodillos, cintas y algunos accesorios y complementos para rematar el trabajo.';
 
-// --- Tintometría: colores de muestra del panel interactivo -------------------
+// --- Tintometría: colores reales de carta (RAL / NCS) para el panel ----------
+// Hex aproximado en pantalla; el código es el que se pide en tienda.
 export const coloresTinto = [
-  { nombre: 'Rojo Euronova', hex: '#d2262b' },
-  { nombre: 'Albero andaluz', hex: '#d9a441' },
-  { nombre: 'Azul añil', hex: '#2a5cad' },
-  { nombre: 'Verde oliva', hex: '#5f6b3a' },
-  { nombre: 'Teja', hex: '#a63d2f' },
-  { nombre: 'Lino claro', hex: '#e7e1d3' },
-  { nombre: 'Gris piedra', hex: '#8d8a82' },
-  { nombre: 'Blanco roto', hex: '#f4efe6' }
+  { nombre: 'Gris antracita', codigo: 'RAL 7016', hex: '#383e42' },
+  { nombre: 'Blanco puro', codigo: 'RAL 9010', hex: '#f1ece1' },
+  { nombre: 'Rojo tráfico', codigo: 'RAL 3020', hex: '#c1121c' },
+  { nombre: 'Azul genciana', codigo: 'RAL 5010', hex: '#0e518d' },
+  { nombre: 'Marfil claro', codigo: 'RAL 1015', hex: '#e6d2b5' },
+  { nombre: 'Verde pálido', codigo: 'RAL 6021', hex: '#89ac76' },
+  { nombre: 'Blanco cálido', codigo: 'NCS S 0502-Y', hex: '#f4efe2' },
+  { nombre: 'Pardo grisáceo', codigo: 'NCS S 7005-Y20R', hex: '#4b443c' }
 ];
 
 // --- Servicios (numerados, editorial) ----------------------------------------
