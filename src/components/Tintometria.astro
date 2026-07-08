@@ -72,7 +72,7 @@ const chips = RAPIDOS.map((c) => TODOS.find((x) => x.c === c)).filter(Boolean);
 
       <div
         id="pared-demo"
-        class="cinta-top relative mt-6 flex min-h-64 flex-col justify-end rounded-3xl p-6 shadow-xl shadow-black/50 transition-colors duration-500 md:min-h-72"
+        class="mt-6 flex min-h-64 flex-col justify-end rounded-2xl p-6 shadow-lg shadow-black/40 transition-colors duration-500 md:min-h-72"
         style="background-color:#293133;"
       >
         <p id="pared-codigo" class="font-display text-3xl font-extrabold tracking-tight text-white md:text-4xl">
@@ -125,7 +125,7 @@ const chips = RAPIDOS.map((c) => TODOS.find((x) => x.c === c)).filter(Boolean);
         BLANCOS_ROTOS.map((b) => (
           <button
             type="button"
-            class="blanco-item cinta-top reveal group relative cursor-pointer rounded-2xl bg-white/5 text-left transition-all hover:-translate-y-1.5 hover:shadow-xl hover:shadow-black/50"
+            class="blanco-item reveal group cursor-pointer overflow-hidden rounded-xl border border-white/10 bg-white/5 text-left transition-all hover:-translate-y-1 hover:border-white/25"
             data-hex={b.h}
             data-nombre={b.n}
             data-codigo={b.c}

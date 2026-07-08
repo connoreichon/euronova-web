@@ -85,42 +85,42 @@ export const categorias = [
   {
     nombre: 'Pintura interior',
     acabado: 'Mate y satinado',
-    desc: 'Plásticas mate y satinadas, antimanchas y antihumedad para paredes y techos.',
+    desc: 'Mate, satinada y lavable para paredes, techos y estancias con uso diario.',
     img: '/assets/img/categorias/interior.jpg',
     alt: 'Pared interior pintada de rojo intenso con un banco delante'
   },
   {
     nombre: 'Fachadas y exterior',
     acabado: 'Liso y rugoso',
-    desc: 'Revestimientos que aguantan el sol y el salitre de la costa.',
+    desc: 'Revestimientos preparados para sol, lluvia y salitre de la costa.',
     img: '/assets/img/categorias/fachadas.jpg',
     alt: 'Fachada mediterránea en tonos pastel con carpintería azul'
   },
   {
     nombre: 'Esmaltes',
     acabado: 'Brillo lacado',
-    desc: 'Sintéticos y al agua. Para metal, puertas y radiadores.',
+    desc: 'Acabados resistentes para metal, puertas, radiadores y pequeños trabajos.',
     img: '/assets/img/categorias/esmaltes.jpg',
     alt: 'Reja de forja esmaltada en azul con remates dorados'
   },
   {
     nombre: 'Madera y barnices',
     acabado: 'Veta satinada',
-    desc: 'Barnices, lasures y protectores para dentro y para fuera.',
+    desc: 'Barnices, lasures y protectores para cuidar madera interior y exterior.',
     img: '/assets/img/categorias/madera.jpg',
     alt: 'Salón con muebles de madera barnizada'
   },
   {
     nombre: 'Suelos',
     acabado: 'Pulido y epoxi',
-    desc: 'Pintura para suelos, garajes y pavimentos deportivos.',
+    desc: 'Pinturas y sistemas para garajes, pavimentos y zonas de paso.',
     img: '/assets/img/categorias/suelos.jpg',
     alt: 'Pista de tenis de tierra batida con raqueta y pelotas'
   },
   {
     nombre: 'Impermeabilización',
     acabado: 'Caucho elástico',
-    desc: 'Caucho y membranas para terrazas y cubiertas. Adiós goteras.',
+    desc: 'Cauchos, membranas y soluciones para terrazas, cubiertas y filtraciones.',
     img: '/assets/img/categorias/imper.jpg',
     alt: 'Terraza impermeabilizada en blanco con tumbonas y vistas'
   }
