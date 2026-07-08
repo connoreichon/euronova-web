@@ -37,4 +37,5 @@ de las marcas para su uso como distribuidor.
 
 Siluetas de salpicadura reales de **Pixabay** (licencia Pixabay, uso comercial
 sin atribución), teñidas a los colores de marca con Python/PIL:
-paint-2174689 (splat1), paint-splatter-312092 (splat2), paint-2174687 (splat3).
+paint-2174689 (splat1), paint-splatter-312092 (splat2), paint-2174687 (splat3),
+ink-5949451 (splat4 = mancha grande de borde y splat5 = mancha estrella).

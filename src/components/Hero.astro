@@ -1,7 +1,8 @@
 ---
-import { site, marcas, categorias } from '../data/site';
+import { site, categorias } from '../data/site';
 import { asset } from '../lib/asset';
 import LogoEuronova from './LogoEuronova.astro';
+import Mancha from './Mancha.astro';
 
 const wa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(site.whatsappMensaje)}`;
 ---
@@ -59,32 +60,11 @@ const wa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(site.whatsa
       </div>
     </div>
 
-    <!-- Distribuidores oficiales: logos reales, sin fondos, sobre el rojo -->
-    <div class="flex flex-col items-center gap-6 md:items-center">
-      <p class="kicker-brocha text-white" style="font-size:1.9rem;">Distribuidores oficiales</p>
-      <div class="flex flex-col items-center gap-7">
-        <a href="#marcas" aria-label="Bupisa Pinturas">
-          <img
-            src={asset(marcas[0].logo)}
-            alt="Logotipo de Bupisa Pinturas"
-            class="h-12 w-auto md:h-14"
-            width="237"
-            height="60"
-            loading="eager"
-          />
-        </a>
-        <a href="#marcas" aria-label="Rugoplast">
-          <img
-            src={asset(marcas[1].logo)}
-            alt="Logotipo de Rugoplast"
-            class="h-6 w-auto md:h-7"
-            width="520"
-            height="65"
-            loading="eager"
-          />
-        </a>
-      </div>
-      <p class="text-[12px] text-white/60">+ tintometría con miles de colores</p>
+    <!-- Manchas de pintura negra (decoración, "mancharse es parte del oficio") -->
+    <div class="relative hidden min-h-72 md:block" aria-hidden="true">
+      <Mancha color="negro" forma={5} class="top-1/2 left-1/2 w-72 -translate-x-1/2 -translate-y-1/2 opacity-90" rotar={-14} />
+      <Mancha color="negro" forma={5} class="top-6 right-2 w-24 opacity-70" rotar={48} />
+      <Mancha color="negro" forma={5} class="bottom-4 left-4 w-16 opacity-60" rotar={160} />
     </div>
   </div>
 </section>

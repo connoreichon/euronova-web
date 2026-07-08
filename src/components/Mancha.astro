@@ -5,8 +5,9 @@
 import { asset } from '../lib/asset';
 
 interface Props {
-  forma?: 1 | 2 | 3;
-  color?: 'rojo' | 'azul' | 'albero' | 'blanco';
+  // 1-3: salpicaduras con spray · 4: mancha grande de borde · 5: mancha estrella sólida
+  forma?: 1 | 2 | 3 | 4 | 5;
+  color?: 'rojo' | 'azul' | 'albero' | 'blanco' | 'negro';
   class?: string; // posicionamiento + tamaño + opacidad
   rotar?: number;
 }
