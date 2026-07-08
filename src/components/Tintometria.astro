@@ -1,7 +1,6 @@
 ---
 import { site } from '../data/site';
 import { RAL, NCS, BLANCOS_ROTOS } from '../data/cartas';
-import Mancha from './Mancha.astro';
 import BadgeCarta from './BadgeCarta.astro';
 import { asset } from '../lib/asset';
 
@@ -20,8 +19,7 @@ const RAPIDOS = ['RAL 7016', 'RAL 9010', 'RAL 3020', 'RAL 5010', 'NCS S 0502-Y',
 const chips = RAPIDOS.map((c) => TODOS.find((x) => x.c === c)).filter(Boolean);
 ---
 
-<section id="color" class="relative overflow-hidden bg-negro py-16 text-papel md:py-24">
-  <Mancha color="rojo" forma={6} class="-top-6 -left-14 w-44 opacity-85" rotar={-6} />
+<section id="color" class="bg-negro py-16 text-papel md:py-24">
   <div class="container-x grid items-center gap-10 md:grid-cols-2">
     <div class="reveal">
       <p class="kicker-brocha text-rojo">Tu color exacto</p>
@@ -57,7 +55,7 @@ const chips = RAPIDOS.map((c) => TODOS.find((x) => x.c === c)).filter(Boolean);
     <!-- Tintómetro: busca un código y la pared se pinta de ese color -->
     <div class="reveal">
       <label for="tinto-buscar" class="sr-only">Busca un color por código</label>
-      <div class="flex items-center gap-2.5 rounded-full bg-white px-5 py-3 shadow-[4px_4px_0_0_#d2262b] transition-shadow focus-within:shadow-[6px_6px_0_0_#d2262b]">
+      <div class="flex items-center gap-2.5 rounded-full bg-white px-5 py-3 shadow-lg shadow-black/40">
         <svg viewBox="0 0 24 24" class="h-4.5 w-4.5 shrink-0 text-negro/50" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
           <circle cx="11" cy="11" r="7" />
           <path d="m20 20-3.8-3.8" stroke-linecap="round" />
@@ -74,7 +72,7 @@ const chips = RAPIDOS.map((c) => TODOS.find((x) => x.c === c)).filter(Boolean);
 
       <div
         id="pared-demo"
-        class="mt-4 flex min-h-64 flex-col justify-end rounded-3xl border-2 border-white/10 p-6 shadow-[8px_8px_0_0_rgba(210,38,43,0.55)] transition-colors duration-500 md:min-h-72"
+        class="cinta-top relative mt-6 flex min-h-64 flex-col justify-end rounded-3xl p-6 shadow-xl shadow-black/50 transition-colors duration-500 md:min-h-72"
         style="background-color:#293133;"
       >
         <p id="pared-codigo" class="font-display text-3xl font-extrabold tracking-tight text-white md:text-4xl">
@@ -127,14 +125,14 @@ const chips = RAPIDOS.map((c) => TODOS.find((x) => x.c === c)).filter(Boolean);
         BLANCOS_ROTOS.map((b) => (
           <button
             type="button"
-            class="blanco-item reveal group cursor-pointer overflow-hidden rounded-2xl border-2 border-white/10 bg-white/5 text-left transition-all hover:-translate-x-0.5 hover:-translate-y-1 hover:shadow-[6px_6px_0_0_#d2262b]"
+            class="blanco-item cinta-top reveal group relative cursor-pointer rounded-2xl bg-white/5 text-left transition-all hover:-translate-y-1.5 hover:shadow-xl hover:shadow-black/50"
             data-hex={b.h}
             data-nombre={b.n}
             data-codigo={b.c}
             data-carta={b.carta}
             aria-label={`Ver ${b.n} (${b.c}) en el tintómetro`}
           >
-            <div class="aspect-[5/3] transition-transform group-hover:scale-[1.03]" style={`background-color:${b.h};`} />
+            <div class="aspect-[5/3] rounded-t-2xl" style={`background-color:${b.h};`} />
             <div class="px-3.5 py-3">
               <div class="flex items-center justify-between gap-2">
                 <p class="truncate text-[13px] font-bold text-white">{b.n}</p>

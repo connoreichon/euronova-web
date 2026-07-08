@@ -3,7 +3,6 @@ import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import WhatsAppFloat from '../components/WhatsAppFloat.astro';
-import Mancha from '../components/Mancha.astro';
 import { site } from '../data/site';
 import { RAL, EUROTREND } from '../data/cartas';
 import { asset } from '../lib/asset';
@@ -25,8 +24,7 @@ const cartas = [
 >
   <Header />
   <main class="pt-16 md:pt-20">
-    <section class="relative overflow-hidden bg-negro py-14 text-papel md:py-20">
-      <Mancha color="rojo" forma={8} class="-top-10 -right-14 w-56 opacity-90 md:w-72" rotar={8} />
+    <section class="bg-negro py-14 text-papel md:py-20">
       <div class="container-x">
         <p class="kicker-brocha text-rojo">Cartas de colores</p>
         <h1 class="display mt-2 max-w-2xl text-3xl text-white md:text-5xl">
@@ -54,7 +52,7 @@ const cartas = [
                 data-carta={carta.id}
                 class={`tab-carta flex cursor-pointer items-center gap-2.5 rounded-2xl border-2 px-4 py-2.5 text-left transition-all ${
                   i === 0
-                    ? 'border-rojo bg-rojo/15 shadow-[4px_4px_0_0_#d2262b]'
+                    ? 'border-white/70 bg-white/12'
                     : 'border-white/12 bg-white/6 hover:border-white/30'
                 }`}
               >
@@ -127,7 +125,7 @@ const cartas = [
                 <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
                   {carta.colores.map((color) => (
                     <div
-                      class="color-item overflow-hidden rounded-xl border border-white/10 bg-white/5 transition-all hover:-translate-y-1 hover:shadow-[5px_5px_0_0_#d2262b]"
+                      class="color-item overflow-hidden rounded-xl border border-white/10 bg-white/5 transition-all hover:-translate-y-1 hover:ring-2 hover:ring-white/40"
                       data-buscar={`${color.c} ${color.n}`.toLowerCase()}
                     >
                       <div class="aspect-[4/3]" style={`background-color:${color.h};`} />
@@ -234,7 +232,7 @@ const cartas = [
     const añadir = (codigo: string, hex: string) => {
       const el = document.createElement('div');
       el.className =
-        'color-item overflow-hidden rounded-xl border border-white/10 bg-white/5 transition-all hover:-translate-y-1 hover:shadow-[5px_5px_0_0_#d2262b]';
+        'color-item overflow-hidden rounded-xl border border-white/10 bg-white/5 transition-all hover:-translate-y-1 hover:ring-2 hover:ring-white/40';
       el.dataset.buscar = codigo.toLowerCase();
       el.innerHTML = `<div class="aspect-[4/3]" style="background-color:${hex};"></div><div class="px-3 py-2.5"><p class="text-[12.5px] font-bold text-white">${codigo}</p></div>`;
       frag.appendChild(el);
@@ -262,7 +260,7 @@ const cartas = [
   const info = document.getElementById('resultado-info');
   const sinResultados = document.getElementById('sin-resultados');
   let activa = 'ral';
-  const CL_ON = ['border-rojo', 'bg-rojo/15', 'shadow-[4px_4px_0_0_#d2262b]'];
+  const CL_ON = ['border-white/70', 'bg-white/12'];
   const CL_OFF = ['border-white/12', 'bg-white/6'];
 
   const filtrar = () => {

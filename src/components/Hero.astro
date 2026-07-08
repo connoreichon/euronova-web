@@ -2,14 +2,13 @@
 import { site, categorias } from '../data/site';
 import { asset } from '../lib/asset';
 import LogoEuronova from './LogoEuronova.astro';
-import Mancha from './Mancha.astro';
 
 const wa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(site.whatsappMensaje)}`;
 ---
 
 <section id="top" class="relative bg-rojo pt-24 pb-14 text-white md:pt-32 md:pb-16">
-  <div class="container-x grid items-center gap-12 md:grid-cols-[1.3fr_1fr]">
-    <div>
+  <div class="container-x">
+    <div class="max-w-2xl">
       <h1 class="sr-only">{site.nombre} — {site.reclamo}</h1>
       <LogoEuronova class="w-full max-w-2xl" />
       <p class="mt-5 max-w-md text-[15px] leading-relaxed text-white/85">
@@ -60,12 +59,6 @@ const wa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(site.whatsa
       </div>
     </div>
 
-    <!-- Manchas de pintura negra (decoración, "mancharse es parte del oficio") -->
-    <div class="relative hidden min-h-72 md:block" aria-hidden="true">
-      <Mancha color="negro" forma={6} class="top-1/2 left-1/2 w-72 -translate-x-1/2 -translate-y-1/2 opacity-90" rotar={-6} />
-      <Mancha color="negro" forma={7} class="top-4 right-0 w-24 opacity-70" rotar={14} />
-      <Mancha color="negro" forma={7} class="bottom-2 left-2 w-16 opacity-60" rotar={-18} />
-    </div>
   </div>
 </section>
 

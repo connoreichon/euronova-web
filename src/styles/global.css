@@ -115,33 +115,71 @@ body {
    limpia debajo. Sin fotos con derechos; sustituible por fotos del cliente.
    =========================================================================== */
 .cat-card {
+  position: relative;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
   border-radius: 1.25rem;
   background: #ffffff;
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 5px 5px 0 rgba(210, 38, 43, 0.4);
+  box-shadow: 0 10px 24px -12px rgba(0, 0, 0, 0.55);
   transition:
     transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
     rotate 0.3s cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 0.3s ease;
 }
-/* Ligera inclinación alterna, como fichas puestas a mano */
+/* Ligera inclinación alterna, como fichas pegadas a mano en la pared */
 .cat-card:nth-child(odd) {
-  rotate: -0.7deg;
+  rotate: -0.8deg;
 }
 .cat-card:nth-child(even) {
-  rotate: 0.7deg;
+  rotate: 0.8deg;
 }
 .cat-card:hover {
-  transform: translate(-3px, -3px);
+  transform: translateY(-5px);
   rotate: 0deg;
-  box-shadow: 9px 9px 0 #d2262b;
+  box-shadow: 0 22px 40px -16px rgba(0, 0, 0, 0.65);
 }
 .cat-swatch {
   height: 9.5rem;
   position: relative;
+  overflow: hidden;
+  border-radius: 1.25rem 1.25rem 0 0;
+}
+
+/* ===========================================================================
+   CINTA DE CARROCERO: los paneles van "pegados" con cinta de pintor.
+   Trocitos beige translúcidos con extremos rasgados (clip-path).
+   =========================================================================== */
+.cinta-esquinas::before,
+.cinta-esquinas::after,
+.cinta-top::before {
+  content: '';
+  position: absolute;
+  height: 15px;
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.22) 0 2px, transparent 2px 7px),
+    rgba(224, 210, 172, 0.88);
+  clip-path: polygon(1.5% 0, 98% 5%, 100% 42%, 97.5% 97%, 2% 100%, 0 52%);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  z-index: 2;
+  pointer-events: none;
+}
+.cinta-esquinas::before {
+  width: 52px;
+  top: -4px;
+  left: -15px;
+  transform: rotate(-45deg);
+}
+.cinta-esquinas::after {
+  width: 52px;
+  top: -4px;
+  right: -15px;
+  transform: rotate(45deg);
+}
+.cinta-top::before {
+  width: 76px;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2.5deg);
 }
 /* Brillo superior común, como pintura extendida con luz de estudio */
 .cat-swatch::before {
