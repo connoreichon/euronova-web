@@ -226,14 +226,13 @@ body {
 /* ===========================================================================
    ROTULACIÓN A BROCHA (títulos de apartado) y MANCHAS DE FONDO
    =========================================================================== */
-/* Etiqueta de sección escrita "a brocha", grande y legible */
+/* Etiqueta de sección escrita "a brocha", grande, legible y RECTA */
 .kicker-brocha {
   font-family: 'Nanum Brush Script', 'Segoe Script', cursive;
   font-size: 2.2rem;
   line-height: 0.9;
   letter-spacing: 0.01em;
   display: inline-block;
-  transform: rotate(-2deg);
 }
 @media (min-width: 768px) {
   .kicker-brocha {

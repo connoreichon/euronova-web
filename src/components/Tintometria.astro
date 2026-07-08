@@ -20,12 +20,12 @@ const RAPIDOS = ['RAL 7016', 'RAL 9010', 'RAL 3020', 'RAL 5010', 'NCS S 0502-Y',
 const chips = RAPIDOS.map((c) => TODOS.find((x) => x.c === c)).filter(Boolean);
 ---
 
-<section id="color" class="relative overflow-hidden bg-negro-600 py-16 text-papel md:py-24">
-  <Mancha color="rojo" forma={3} class="-bottom-14 -right-16 w-72 opacity-[0.15] md:w-96" rotar={12} />
-  <Mancha color="blanco" forma={2} class="top-10 -left-16 w-44 opacity-[0.08]" rotar={70} />
+<section id="color" class="relative overflow-hidden bg-negro py-16 text-papel md:py-24">
+  <Mancha color="rojo" forma={3} class="-bottom-14 -right-16 w-72 opacity-30 md:w-96" rotar={12} />
+  <Mancha color="rojo" forma={1} class="top-10 -left-20 w-52 opacity-20" rotar={70} />
   <div class="container-x grid items-center gap-10 md:grid-cols-2">
     <div class="reveal">
-      <p class="kicker-brocha text-rojo">Tintometría en tienda</p>
+      <p class="kicker-brocha text-rojo">Tu color exacto</p>
       <h2 class="display mt-2 text-3xl text-white md:text-5xl">
         Cualquier color.<br />Mezclado en minutos.
       </h2>
