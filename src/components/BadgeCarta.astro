@@ -1,0 +1,26 @@
+---
+// Distintivo de carta de colores, evocando la identidad de cada sistema:
+// RAL = cuadrado rojo con letras blancas; NCS = chip claro con wordmark negro.
+// (Wordmarks recreados con tipografía, no se usan los logos registrados.)
+interface Props {
+  carta: 'RAL' | 'NCS';
+  class?: string;
+}
+const { carta, class: className = '' } = Astro.props;
+---
+
+{
+  carta === 'RAL' ? (
+    <span
+      class={`inline-flex h-6 items-center rounded-[5px] bg-[#c1121c] px-2 font-display text-[11px] font-extrabold tracking-wide text-white ${className}`}
+    >
+      RAL
+    </span>
+  ) : (
+    <span
+      class={`inline-flex h-6 items-baseline gap-0.5 rounded-[5px] bg-papel px-2 font-display text-[11px] font-extrabold tracking-wide text-[#111] ${className}`}
+    >
+      NCS<span class="text-[7px]">®</span>
+    </span>
+  )
+}

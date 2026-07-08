@@ -1,118 +1,49 @@
 ---
-// Logotipo VECTORIAL del rótulo (nítido a cualquier tamaño, sin parches):
-//  - "E" dibujada a mano según el cartel (corte diagonal arriba-izquierda,
-//    barra central corta).
-//  - "uronov@" en Handel Gothic BT (la fuente real del rótulo, autohospedada).
-//  - "pinturas" en negra cursiva sobre pincelada azul de curvas suaves,
-//    calcada de la silueta del cartel.
-//  - Eslogan: "La vida es del color que tú quieras pintarla".
-// `variant="compact"`: solo el wordmark (para el header).
+// Logotipo DEFINITIVO: arte original del rotulista (archivo del cliente,
+// versión sobre blanco pasada a transparente, borde blanco horneado) con la
+// "e" sustituida por la E del cartel (mayúscula con el corte a la izquierda),
+// dibujada en vectorial y superpuesta en su sitio exacto.
+//  - `full`: pinturas + brochazo + Euronov@ + eslogan (lockup completo).
+//  - `compact`: solo el wordmark (para el header).
+import { asset } from '../lib/asset';
+
 interface Props {
   variant?: 'full' | 'compact';
   class?: string;
 }
 const { variant = 'full', class: className = '' } = Astro.props;
 
-// E del cartel (caja local 0..96 x, 0..104 y)
+// E del cartel (caja local 0..96 x, 0..104 y): corte diagonal arriba-izquierda
+// y barra central corta.
 const E_PATH =
   'M92 24 A48 48 0 0 0 40 2 L16 20 A48 48 0 0 0 2 54 A48 48 0 0 0 44 102 ' +
   'A48 48 0 0 0 92 80 L76 66 A28 28 0 0 1 50 82 A28 28 0 0 1 22 52 ' +
   'A28 28 0 0 1 50 22 A28 28 0 0 1 76 38 Z';
 const E_BAR =
   'M24 42 H70 Q75 42 75 47 V57 Q75 62 70 62 H24 Q20 62 20 57 V47 Q20 42 24 42 Z';
-
-// Pincelada azul de "pinturas": barrido horizontal con lengüetas de llama a la
-// derecha, todo con curvas suaves (sin temblor).
-const SMEAR =
-  'M14 38 C 12 28 24 21 46 19 C 110 13 190 12 250 16 C 280 18 304 17 320 19 ' +
-  'C 336 14 350 8 364 4 C 356 14 368 12 378 9 C 368 21 380 22 372 29 ' +
-  'C 362 34 372 39 358 44 C 348 48 354 53 338 54 C 316 58 294 56 266 58 ' +
-  'C 190 63 104 61 50 56 C 27 54 15 47 14 38 Z';
-const SMEAR_LUZ =
-  'M298 22 C 318 19 340 13 358 9 C 350 18 362 18 370 14 C 360 25 372 27 364 33 ' +
-  'C 352 39 330 39 314 39 C 322 31 306 27 298 22 Z';
 ---
 
 {
   variant === 'compact' ? (
-    <svg viewBox="0 0 600 112" class={className} role="img" aria-label="Pinturas Euronova">
-      <g transform="skewX(-8)" stroke="#fff" stroke-linejoin="round" paint-order="stroke" fill="#0d0d0d">
-        <g transform="translate(16 16) scale(0.7)">
-          <path d={E_PATH} stroke-width="10" />
-          <path d={E_BAR} stroke-width="10" />
-        </g>
-        <text
-          x="92"
-          y="88"
-          font-family="'HandelGothic', 'Archivo', sans-serif"
-          font-size="80"
-          stroke-width="6"
-          textLength="472"
-          lengthAdjust="spacingAndGlyphs"
-        >
-          uronov@
-        </text>
+    <svg viewBox="0 -16 622 108" class={className} role="img" aria-label="Pinturas Euronova">
+      <g fill="#000" stroke="#fff" stroke-linejoin="round" paint-order="stroke" transform="translate(0 -14) scale(0.79)">
+        <path d={E_PATH} stroke-width="10" />
+        <path d={E_BAR} stroke-width="10" />
       </g>
+      <image href={asset('/assets/marca/word.png')} x="80" y="0" width="536" height="91" />
     </svg>
   ) : (
     <svg
-      viewBox="0 0 780 258"
+      viewBox="0 0 880 251"
       class={className}
       role="img"
       aria-label="Pinturas Euronova — La vida es del color que tú quieras pintarla"
     >
-      <g transform="translate(392 2)">
-        <path d={SMEAR} fill="#1a4fa8" />
-        <path d={SMEAR_LUZ} fill="#2f74d0" opacity="0.9" />
-        <text
-          x="40"
-          y="52"
-          font-family="'Archivo Black', 'Archivo', sans-serif"
-          font-size="45"
-          fill="#0d0d0d"
-          stroke="#fff"
-          stroke-width="5"
-          paint-order="stroke"
-          transform="skewX(-12)"
-        >
-          pinturas
-        </text>
+      <image href={asset('/assets/marca/lockup.png')} x="0" y="0" width="880" height="251" />
+      <g fill="#000" stroke="#fff" stroke-linejoin="round" paint-order="stroke" transform="translate(10 82) scale(0.79)">
+        <path d={E_PATH} stroke-width="10" />
+        <path d={E_BAR} stroke-width="10" />
       </g>
-
-      <g transform="skewX(-8)" stroke="#fff" stroke-linejoin="round" paint-order="stroke" fill="#0d0d0d">
-        <g transform="translate(24 62) scale(0.99)">
-          <path d={E_PATH} stroke-width="10" />
-          <path d={E_BAR} stroke-width="10" />
-        </g>
-        <text
-          x="132"
-          y="164"
-          font-family="'HandelGothic', 'Archivo', sans-serif"
-          font-size="110"
-          stroke-width="8"
-          textLength="600"
-          lengthAdjust="spacingAndGlyphs"
-        >
-          uronov@
-        </text>
-      </g>
-
-      <text
-        x="404"
-        y="234"
-        text-anchor="middle"
-        font-family="'Archivo Black', 'Archivo', sans-serif"
-        font-size="33"
-        fill="#0d0d0d"
-        stroke="#fff"
-        stroke-width="4.5"
-        paint-order="stroke"
-        transform="skewX(-8)"
-        textLength="716"
-        lengthAdjust="spacingAndGlyphs"
-      >
-        La vida es del color que tú quieras pintarla
-      </text>
     </svg>
   )
 }

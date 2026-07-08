@@ -1,11 +1,23 @@
 ---
-import { site, coloresTinto } from '../data/site';
+import { site } from '../data/site';
+import { RAL, NCS, BLANCOS_ROTOS } from '../data/cartas';
 import Mancha from './Mancha.astro';
+import BadgeCarta from './BadgeCarta.astro';
 import { asset } from '../lib/asset';
 
 const wa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(
-  'Hola, Pinturas Euronova. Quería pedir un color a medida.'
+  'Hola, Pinturas Euronova. Quería pedir un color a medida: '
 )}`;
+
+// Todos los colores buscables en el tintómetro (RAL completa + selección NCS)
+const TODOS = [
+  ...RAL.map((x) => ({ ...x, carta: 'RAL' })),
+  ...NCS.map((x) => ({ ...x, carta: 'NCS' }))
+];
+
+// Accesos rápidos bajo el panel
+const RAPIDOS = ['RAL 7016', 'RAL 9010', 'RAL 3020', 'RAL 5010', 'NCS S 0502-Y', 'RAL 1015', 'RAL 6021', 'NCS S 1505-Y'];
+const chips = RAPIDOS.map((c) => TODOS.find((x) => x.c === c)).filter(Boolean);
 ---
 
 <section id="color" class="relative overflow-hidden bg-negro-600 py-16 text-papel md:py-24">
@@ -43,55 +55,151 @@ const wa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(
       </div>
     </div>
 
-    <!-- Panel interactivo: toca un chip y la "pared" cambia de color -->
+    <!-- Tintómetro: busca un código y la pared se pinta de ese color -->
     <div class="reveal">
+      <label for="tinto-buscar" class="sr-only">Busca un color por código</label>
+      <div class="flex items-center gap-2.5 rounded-full border border-white/20 bg-white/8 px-5 py-3 transition-colors focus-within:border-rojo">
+        <svg viewBox="0 0 24 24" class="h-4.5 w-4.5 shrink-0 text-papel/60" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" />
+          <path d="m20 20-3.8-3.8" stroke-linecap="round" />
+        </svg>
+        <input
+          id="tinto-buscar"
+          type="search"
+          placeholder="Escribe un código: 7016, 9010, S 0502-Y…"
+          autocomplete="off"
+          class="w-full bg-transparent text-[14px] text-white placeholder:text-papel/40 focus:outline-none"
+        />
+      </div>
+      <p id="tinto-info" class="mt-2 h-4 pl-2 text-[12px] text-papel/50" aria-live="polite"></p>
+
       <div
         id="pared-demo"
-        class="flex min-h-56 flex-col justify-end rounded-3xl p-6 transition-colors duration-500 md:min-h-72"
-        style="background-color:#383e42;"
+        class="mt-3 flex min-h-64 flex-col justify-end rounded-3xl p-6 transition-colors duration-500 md:min-h-72"
+        style="background-color:#293133;"
       >
-        <span
-          id="pared-nombre"
-          class="w-fit rounded-full bg-black/30 px-3.5 py-1.5 text-[12px] font-semibold text-white backdrop-blur-sm"
-        >
-          Gris antracita · RAL 7016
-        </span>
+        <p id="pared-codigo" class="font-display text-3xl font-extrabold tracking-tight text-white md:text-4xl">
+          RAL 7016
+        </p>
+        <div class="mt-1 flex items-center gap-2.5">
+          <span id="pared-nombre" class="text-[14px] font-semibold text-white/85">Gris antracita</span>
+          <span id="pared-carta-ral" class=""><BadgeCarta carta="RAL" /></span>
+          <span id="pared-carta-ncs" class="hidden"><BadgeCarta carta="NCS" /></span>
+        </div>
       </div>
-      <div class="mt-4 flex flex-wrap gap-2.5" role="group" aria-label="Prueba colores de carta RAL y NCS">
+
+      <div class="mt-4 flex flex-wrap gap-2.5" role="group" aria-label="Colores rápidos de carta">
         {
-          coloresTinto.map((c, i) => (
+          chips.map((c) => (
             <button
               type="button"
               class="color-chip h-9 w-9 cursor-pointer rounded-full border-2 border-white/25 transition-transform hover:scale-115 focus-visible:outline-2 focus-visible:outline-rojo"
-              style={`background-color:${c.hex};`}
-              data-hex={c.hex}
-              data-nombre={c.nombre}
-              data-codigo={c.codigo}
-              title={`${c.nombre} · ${c.codigo}`}
-              aria-label={`Ver pared en ${c.nombre} (${c.codigo})`}
-              aria-pressed={i === 0 ? 'true' : 'false'}
+              style={`background-color:${c!.h};`}
+              data-hex={c!.h}
+              data-nombre={c!.n}
+              data-codigo={c!.c}
+              data-carta={c!.carta}
+              title={`${c!.n} · ${c!.c}`}
+              aria-label={`Ver ${c!.n} (${c!.c})`}
             />
           ))
         }
       </div>
       <p class="mt-3 text-[12px] text-papel/50">
-        Colores reales de carta RAL y NCS. En tienda, miles más: RAL, NCS,
-        Eurotrend y las cartas de cada fabricante.
+        Color orientativo en pantalla — la referencia válida es la carta física en tienda.
       </p>
+    </div>
+  </div>
+
+  <!-- Blancos rotos que se llevan -->
+  <div class="container-x mt-16 md:mt-20">
+    <div class="reveal flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p class="kicker-brocha text-rojo" style="font-size:1.8rem;">Tendencia</p>
+        <h3 class="display mt-1 text-2xl text-white md:text-3xl">Blancos rotos que se llevan.</h3>
+      </div>
+      <p class="max-w-sm text-[13px] leading-relaxed text-papel/60">
+        Los blancos con matiz son lo más pedido del mostrador. Pídelos con su
+        código, tal cual.
+      </p>
+    </div>
+    <div class="mt-7 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+      {
+        BLANCOS_ROTOS.map((b) => (
+          <button
+            type="button"
+            class="blanco-item reveal group cursor-pointer overflow-hidden rounded-2xl bg-white/5 text-left transition-transform hover:-translate-y-1"
+            data-hex={b.h}
+            data-nombre={b.n}
+            data-codigo={b.c}
+            data-carta={b.carta}
+            aria-label={`Ver ${b.n} (${b.c}) en el tintómetro`}
+          >
+            <div class="aspect-[5/3] transition-transform group-hover:scale-[1.03]" style={`background-color:${b.h};`} />
+            <div class="px-3.5 py-3">
+              <div class="flex items-center justify-between gap-2">
+                <p class="truncate text-[13px] font-bold text-white">{b.n}</p>
+                <BadgeCarta carta={b.carta} class="scale-90" />
+              </div>
+              <p class="mt-0.5 text-[11.5px] font-semibold text-papel/75">{b.c}</p>
+              <p class="mt-1 text-[11px] leading-relaxed text-papel/50">{b.nota}</p>
+            </div>
+          </button>
+        ))
+      }
     </div>
   </div>
 </section>
 
-<script>
+<script is:inline define:vars={{ TODOS }}>
+  const buscar = document.getElementById('tinto-buscar');
+  const info = document.getElementById('tinto-info');
   const pared = document.getElementById('pared-demo');
-  const nombre = document.getElementById('pared-nombre');
-  const chips = document.querySelectorAll<HTMLButtonElement>('.color-chip');
-  chips.forEach((chip) => {
-    chip.addEventListener('click', () => {
-      if (!pared || !nombre) return;
-      pared.style.backgroundColor = chip.dataset.hex ?? '#383e42';
-      nombre.textContent = `${chip.dataset.nombre ?? ''} · ${chip.dataset.codigo ?? ''}`;
-      chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+  const codigoEl = document.getElementById('pared-codigo');
+  const nombreEl = document.getElementById('pared-nombre');
+  const badgeRal = document.getElementById('pared-carta-ral');
+  const badgeNcs = document.getElementById('pared-carta-ncs');
+
+  const luminancia = (hex) => {
+    const n = parseInt(hex.slice(1), 16);
+    return (0.299 * (n >> 16) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) / 255;
+  };
+
+  const pintar = (color) => {
+    pared.style.backgroundColor = color.h;
+    codigoEl.textContent = color.c;
+    nombreEl.textContent = color.n;
+    const oscuro = luminancia(color.h) > 0.6;
+    codigoEl.style.color = oscuro ? '#171111' : '#ffffff';
+    nombreEl.style.color = oscuro ? 'rgba(23,17,17,0.75)' : 'rgba(255,255,255,0.85)';
+    badgeRal.classList.toggle('hidden', color.carta !== 'RAL');
+    badgeNcs.classList.toggle('hidden', color.carta !== 'NCS');
+  };
+
+  const norm = (s) => s.toUpperCase().replace(/[\s\-]/g, '');
+
+  buscar?.addEventListener('input', () => {
+    const q = norm(buscar.value);
+    if (!q) {
+      info.textContent = '';
+      return;
+    }
+    const hits = TODOS.filter((c) => norm(c.c).includes(q) || c.n.toUpperCase().includes(buscar.value.toUpperCase()));
+    if (hits.length) {
+      pintar(hits[0]);
+      info.textContent =
+        hits.length === 1 ? '¡Encontrado!' : `${hits.length} coincidencias — mostrando ${hits[0].c}`;
+    } else {
+      info.textContent = 'No está en la web: pregúntanos, en tienda hay miles más.';
+    }
+  });
+
+  document.querySelectorAll('.color-chip, .blanco-item').forEach((el) => {
+    el.addEventListener('click', () => {
+      pintar({ h: el.dataset.hex, c: el.dataset.codigo, n: el.dataset.nombre, carta: el.dataset.carta });
+      if (el.classList.contains('blanco-item')) {
+        document.getElementById('color')?.scrollIntoView({ behavior: 'smooth' });
+      }
     });
   });
 </script>
