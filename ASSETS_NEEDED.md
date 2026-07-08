@@ -22,6 +22,16 @@ huecos/texturas de relleno bien señalados.
 - ⚠️ Las fotos de su Instagram/Facebook solo con su permiso explícito.
 - Guardarlas en `public/assets/img/` y enlazarlas en `Nosotros.astro`.
 
+## Para la sección de cartas de colores
+
+- **Carta EUROTREND (IdeColor)**: necesitamos la carta física unos días o el
+  PDF del fabricante para digitalizar los colores con su código. La pestaña
+  ya existe en `/cartas` con aviso de "muy pronto".
+- Confirmar con la jefa la selección de **blancos rotos** de tendencia
+  (hay 10 curados en `src/data/cartas.ts` → `BLANCOS_ROTOS`, se cambian ahí).
+- Los NCS de la web son una SELECCIÓN aproximada (el Index 2050 completo es
+  propietario): si el cliente quiere más códigos concretos, pedirlos y se añaden.
+
 ## Opcional pero recomendado
 
 - Opiniones de Google (enlace a la ficha para pedir reseñas nuevas).

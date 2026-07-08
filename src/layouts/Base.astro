@@ -85,58 +85,78 @@ const {
     </script>
 
     <script>
-      // Salpicadura al clicar/tocar (v4, fina): SIN mancha grande.
-      // Solo gotitas pequeñas y nítidas que se dispersan en arco y caen con
-      // gravedad (Web Animations API), desvaneciéndose enseguida. Discreto.
-      // Respeta prefers-reduced-motion y limita ráfagas simultáneas.
+      // Salpicadura al clicar/tocar (v5): mini-mancha REAL (sprite de
+      // salpicadura auténtica teñida, pequeña y discreta) + gotitas finas que
+      // se dispersan con gravedad (WAAPI). Respeta prefers-reduced-motion.
       const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (!reduce) {
-        const COLORES = ['#d2262b', '#1a4fa8', '#efb700', '#3a7d5d', '#ffffff'];
+        const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
+        const COLORES: Record<string, string> = {
+          rojo: '#d2262b',
+          azul: '#1a4fa8',
+          albero: '#efb700',
+          blanco: '#f5f0e6'
+        };
+        const NOMBRES = Object.keys(COLORES);
         const rnd = (a: number, b: number) => a + Math.random() * (b - a);
         let vivos = 0;
         addEventListener('pointerdown', (e) => {
           if (vivos > 3) return;
           vivos++;
-          const color = COLORES[(Math.random() * COLORES.length) | 0];
+          const nombre = NOMBRES[(Math.random() * NOMBRES.length) | 0];
           const root = document.createElement('div');
-          root.className = 'splash4';
+          root.className = 'splash5';
           root.style.left = e.clientX + 'px';
           root.style.top = e.clientY + 'px';
           document.body.appendChild(root);
 
-          const n = 11 + ((Math.random() * 5) | 0);
+          // mini salpicadura real (silueta auténtica, tamaño discreto)
+          const img = document.createElement('img');
+          img.className = 'splash5__sprite';
+          img.src = `${BASE}/assets/manchas/splat${2 + ((Math.random() * 2) | 0)}-${nombre}.png`;
+          img.alt = '';
+          const s = rnd(34, 54);
+          img.style.width = s.toFixed(0) + 'px';
+          img.style.left = (-s / 2).toFixed(0) + 'px';
+          img.style.top = (-s / 2).toFixed(0) + 'px';
+          root.appendChild(img);
+          img.animate(
+            [
+              { transform: `scale(0.3) rotate(${(Math.random() * 360) | 0}deg)`, opacity: 0.85 },
+              { transform: `scale(1) rotate(${(Math.random() * 360) | 0}deg)`, opacity: 0.7, offset: 0.25 },
+              { transform: 'scale(1.04)', opacity: 0 }
+            ],
+            { duration: 900, easing: 'cubic-bezier(.2,.9,.3,1)', fill: 'forwards' }
+          );
+
+          const n = 7 + ((Math.random() * 4) | 0);
           for (let i = 0; i < n; i++) {
             const g = document.createElement('span');
-            g.className = 'splash4__gota';
-            const sz = rnd(1.6, 4.2);
+            g.className = 'splash5__gota';
+            const sz = rnd(1.6, 4);
             g.style.width = g.style.height = sz.toFixed(1) + 'px';
             g.style.marginLeft = g.style.marginTop = (-sz / 2).toFixed(1) + 'px';
-            g.style.background = color;
+            g.style.background = COLORES[nombre];
             root.appendChild(g);
             const ang = rnd(0, Math.PI * 2);
-            const alcance = rnd(14, 52);
+            const alcance = rnd(16, 54);
             const dx = Math.cos(ang) * alcance;
-            const subida = Math.sin(ang) * alcance * 0.5 - rnd(6, 22);
-            const caida = rnd(16, 44);
+            const subida = Math.sin(ang) * alcance * 0.5 - rnd(6, 20);
+            const caida = rnd(16, 42);
             g.animate(
               [
                 { transform: 'translate(0,0) scale(0.6)', opacity: 0.9 },
                 { transform: `translate(${(dx * 0.62).toFixed(1)}px, ${subida.toFixed(1)}px) scale(1)`, opacity: 0.85, offset: 0.4 },
                 { transform: `translate(${dx.toFixed(1)}px, ${caida.toFixed(1)}px) scale(0.4)`, opacity: 0 }
               ],
-              {
-                duration: rnd(420, 720),
-                delay: rnd(0, 60),
-                easing: 'cubic-bezier(.22,.61,.36,1)',
-                fill: 'forwards'
-              }
+              { duration: rnd(420, 700), delay: rnd(0, 60), easing: 'cubic-bezier(.22,.61,.36,1)', fill: 'forwards' }
             );
           }
 
           setTimeout(() => {
             root.remove();
             vivos--;
-          }, 900);
+          }, 1000);
         });
       }
     </script>

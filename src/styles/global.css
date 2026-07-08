@@ -1,5 +1,18 @@
 @import 'tailwindcss';
 
+/* Handel Gothic BT autohospedada: la fuente real del rótulo (para el logo
+   vectorial). ⚠️ Licenciarla antes de la entrega final (CREDITS-IMAGENES.md).
+   La ruta lleva el `base` (/euronova-web) — cambiarla si cambia el dominio. */
+@font-face {
+  font-family: 'HandelGothic';
+  src:
+    url('/euronova-web/assets/fonts/HandelGothic.woff2') format('woff2'),
+    url('/euronova-web/assets/fonts/HandelGothic.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ===========================================================================
    Pinturas Euronova — dirección "Rojo de marca × negro, como el rótulo".
    Reskin rápido: cambia estos tokens y la web entera se adapta.
@@ -187,18 +200,22 @@ body {
 }
 
 /* ===========================================================================
-   SALPICADURA v4 (efecto al clicar / tocar)
-   Solo gotitas finas que se dispersan con gravedad (WAAPI en Base.astro).
-   Se desactiva con prefers-reduced-motion.
+   SALPICADURA v5 (efecto al clicar / tocar)
+   Mini-salpicadura REAL (sprite de mancha auténtica teñida) + gotitas finas
+   con gravedad (WAAPI en Base.astro). Se desactiva con prefers-reduced-motion.
    =========================================================================== */
-.splash4 {
+.splash5 {
   position: fixed;
   left: 0;
   top: 0;
   pointer-events: none;
   z-index: 55; /* bajo el botón de WhatsApp (z-70) */
 }
-.splash4__gota {
+.splash5__sprite {
+  position: absolute;
+  opacity: 0;
+}
+.splash5__gota {
   position: absolute;
   left: 0;
   top: 0;

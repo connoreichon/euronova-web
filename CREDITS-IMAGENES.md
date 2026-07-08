@@ -22,11 +22,19 @@ trabajos de clientes (ver `ASSETS_NEEDED.md`).
 Oficiales, descargados de bupisa.com y rugoplast.com. Confirmar conformidad
 de las marcas para su uso como distribuidor.
 
-## Logotipo (`public/assets/marca/`)
+## Logotipo (vectorial, `src/components/LogoEuronova.astro`)
 
-- `logo-euronova.png` y `logo-euronova-header.png`: imagen REAL del rótulo de
-  la tienda (facilitada por el propietario del negocio), con el fondo rojo
-  eliminado por croma. Es marca propia del cliente: sin problema de derechos.
-- Ya NO se usa ninguna fuente comercial para el logo (la webfont Handel Gothic
-  se eliminó del proyecto). Fuentes de la web (Archivo, Archivo Black, Inter):
+- Reconstrucción VECTORIAL del rótulo real: E dibujada a mano según el cartel,
+  "uronov@" en **Handel Gothic BT** autohospedada (`public/assets/fonts/`),
+  pincelada azul redibujada con curvas suaves y eslogan.
+- ⚠️ Handel Gothic es una fuente comercial (copia webfont de repositorio
+  público de GitHub): **licenciarla antes de la entrega final** (~35-50 € en
+  MyFonts/Monotype) o confirmar que el rotulista/cliente tiene licencia.
+- Resto de fuentes (Archivo, Archivo Black, Inter, Nanum Brush Script):
   Google Fonts, licencia libre OFL.
+
+## Manchas decorativas (`public/assets/manchas/`)
+
+Siluetas de salpicadura reales de **Pixabay** (licencia Pixabay, uso comercial
+sin atribución), teñidas a los colores de marca con Python/PIL:
+paint-2174689 (splat1), paint-splatter-312092 (splat2), paint-2174687 (splat3).

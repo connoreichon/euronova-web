@@ -1,34 +1,46 @@
 ---
 import { site, coloresTinto } from '../data/site';
 import Mancha from './Mancha.astro';
+import { asset } from '../lib/asset';
 
 const wa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(
   'Hola, Pinturas Euronova. Quería pedir un color a medida.'
 )}`;
 ---
 
-<section id="color" class="relative overflow-hidden bg-rojo py-16 text-white md:py-24">
-  <Mancha color="#171111" forma={2} class="-bottom-12 -right-10 w-64 opacity-[0.16] md:w-80" rotar={12} />
-  <Mancha color="#ffffff" forma={1} class="top-10 -left-14 w-44 opacity-[0.1]" rotar={70} />
+<section id="color" class="relative overflow-hidden bg-negro-600 py-16 text-papel md:py-24">
+  <Mancha color="rojo" forma={3} class="-bottom-14 -right-16 w-72 opacity-[0.15] md:w-96" rotar={12} />
+  <Mancha color="blanco" forma={2} class="top-10 -left-16 w-44 opacity-[0.08]" rotar={70} />
   <div class="container-x grid items-center gap-10 md:grid-cols-2">
     <div class="reveal">
-      <p class="kicker-brocha text-negro">Tintometría en tienda</p>
+      <p class="kicker-brocha text-rojo">Tintometría en tienda</p>
       <h2 class="display mt-2 text-3xl text-white md:text-5xl">
         Cualquier color.<br />Mezclado en minutos.
       </h2>
-      <p class="mt-4 max-w-md text-[15px] leading-relaxed text-white/85">
+      <p class="mt-4 max-w-md text-[15px] leading-relaxed text-papel/75">
         Trae una muestra, una foto de tu pared o solo una idea. Con la máquina
         tintométrica y las bases de nuestras marcas sacamos el tono exacto,
         también en cantidades grandes para obra.
       </p>
-      <a
-        href={wa}
-        target="_blank"
-        rel="noopener"
-        class="mt-7 inline-flex items-center gap-2 rounded-full bg-wasap px-6 py-3.5 text-[14px] font-bold text-white transition-transform hover:scale-[1.04]"
-      >
-        Pide tu color por WhatsApp
-      </a>
+      <div class="mt-7 flex flex-wrap items-center gap-3">
+        <a
+          href={asset('/cartas/')}
+          class="inline-flex items-center gap-2 rounded-full bg-rojo px-6 py-3.5 text-[14px] font-bold text-white transition-transform hover:scale-[1.04]"
+        >
+          Explora las cartas de colores
+          <svg viewBox="0 0 16 16" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </a>
+        <a
+          href={wa}
+          target="_blank"
+          rel="noopener"
+          class="inline-flex items-center gap-2 rounded-full bg-wasap px-6 py-3.5 text-[14px] font-bold text-white transition-transform hover:scale-[1.04]"
+        >
+          Pide tu color por WhatsApp
+        </a>
+      </div>
     </div>
 
     <!-- Panel interactivo: toca un chip y la "pared" cambia de color -->
@@ -50,7 +62,7 @@ const wa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(
           coloresTinto.map((c, i) => (
             <button
               type="button"
-              class="color-chip h-9 w-9 cursor-pointer rounded-full border-2 border-white/25 transition-transform hover:scale-115 focus-visible:outline-2 focus-visible:outline-albero"
+              class="color-chip h-9 w-9 cursor-pointer rounded-full border-2 border-white/25 transition-transform hover:scale-115 focus-visible:outline-2 focus-visible:outline-rojo"
               style={`background-color:${c.hex};`}
               data-hex={c.hex}
               data-nombre={c.nombre}
@@ -62,9 +74,9 @@ const wa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(
           ))
         }
       </div>
-      <p class="mt-3 text-[12px] text-white/60">
-        Colores reales de carta RAL y NCS. En tienda, miles más: RAL, NCS y las
-        cartas de cada fabricante.
+      <p class="mt-3 text-[12px] text-papel/50">
+        Colores reales de carta RAL y NCS. En tienda, miles más: RAL, NCS,
+        Eurotrend y las cartas de cada fabricante.
       </p>
     </div>
   </div>

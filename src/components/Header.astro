@@ -1,13 +1,16 @@
 ---
 import { site } from '../data/site';
 import LogoEuronova from './LogoEuronova.astro';
+import { asset } from '../lib/asset';
 
 const wa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(site.whatsappMensaje)}`;
+// Rutas absolutas con base: funcionan desde la portada y desde /cartas
 const enlaces = [
-  { href: '#productos', txt: 'Productos' },
-  { href: '#color', txt: 'Color a medida' },
-  { href: '#marcas', txt: 'Marcas' },
-  { href: '#tienda', txt: 'Tienda' }
+  { href: asset('/') + '#productos', txt: 'Productos' },
+  { href: asset('/') + '#color', txt: 'Color a medida' },
+  { href: asset('/cartas/'), txt: 'Cartas de colores' },
+  { href: asset('/') + '#marcas', txt: 'Marcas' },
+  { href: asset('/') + '#tienda', txt: 'Tienda' }
 ];
 ---
 
@@ -16,7 +19,7 @@ const enlaces = [
   class="fixed inset-x-0 top-0 z-50 transition-colors duration-300"
 >
   <div class="container-x flex items-center justify-between gap-3 py-3.5">
-    <a href="#top" aria-label={site.nombre} class="block">
+    <a href={asset('/') + '#top'} aria-label={site.nombre} class="block">
       <LogoEuronova variant="compact" class="h-7 w-auto md:h-8" />
     </a>
 
