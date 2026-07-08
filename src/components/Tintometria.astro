@@ -21,8 +21,8 @@ const chips = RAPIDOS.map((c) => TODOS.find((x) => x.c === c)).filter(Boolean);
 ---
 
 <section id="color" class="relative overflow-hidden bg-negro py-16 text-papel md:py-24">
-  <Mancha color="rojo" forma={4} class="-bottom-2 -right-20 w-80 opacity-30 md:w-[26rem]" rotar={0} />
-  <Mancha color="rojo" forma={5} class="top-12 -left-14 w-44 opacity-25" rotar={70} />
+  <Mancha color="rojo" forma={7} class="-bottom-12 -right-16 w-72 opacity-30 md:w-96" rotar={5} />
+  <Mancha color="rojo" forma={6} class="top-8 -left-12 w-44 opacity-25" rotar={-8} />
   <div class="container-x grid items-center gap-10 md:grid-cols-2">
     <div class="reveal">
       <p class="kicker-brocha text-rojo">Tu color exacto</p>
@@ -58,8 +58,8 @@ const chips = RAPIDOS.map((c) => TODOS.find((x) => x.c === c)).filter(Boolean);
     <!-- Tintómetro: busca un código y la pared se pinta de ese color -->
     <div class="reveal">
       <label for="tinto-buscar" class="sr-only">Busca un color por código</label>
-      <div class="flex items-center gap-2.5 rounded-full border border-white/20 bg-white/8 px-5 py-3 transition-colors focus-within:border-rojo">
-        <svg viewBox="0 0 24 24" class="h-4.5 w-4.5 shrink-0 text-papel/60" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <div class="flex items-center gap-2.5 rounded-full bg-white px-5 py-3 shadow-[4px_4px_0_0_#d2262b] transition-shadow focus-within:shadow-[6px_6px_0_0_#d2262b]">
+        <svg viewBox="0 0 24 24" class="h-4.5 w-4.5 shrink-0 text-negro/50" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
           <circle cx="11" cy="11" r="7" />
           <path d="m20 20-3.8-3.8" stroke-linecap="round" />
         </svg>
@@ -68,14 +68,14 @@ const chips = RAPIDOS.map((c) => TODOS.find((x) => x.c === c)).filter(Boolean);
           type="search"
           placeholder="Escribe un código: 7016, 9010, S 0502-Y…"
           autocomplete="off"
-          class="w-full bg-transparent text-[14px] text-white placeholder:text-papel/40 focus:outline-none"
+          class="w-full bg-transparent text-[14px] font-semibold text-negro placeholder:font-normal placeholder:text-negro/40 focus:outline-none"
         />
       </div>
       <p id="tinto-info" class="mt-2 h-4 pl-2 text-[12px] text-papel/50" aria-live="polite"></p>
 
       <div
         id="pared-demo"
-        class="mt-3 flex min-h-64 flex-col justify-end rounded-3xl p-6 transition-colors duration-500 md:min-h-72"
+        class="mt-4 flex min-h-64 flex-col justify-end rounded-3xl border-2 border-white/10 p-6 shadow-[8px_8px_0_0_rgba(210,38,43,0.55)] transition-colors duration-500 md:min-h-72"
         style="background-color:#293133;"
       >
         <p id="pared-codigo" class="font-display text-3xl font-extrabold tracking-tight text-white md:text-4xl">
@@ -128,7 +128,7 @@ const chips = RAPIDOS.map((c) => TODOS.find((x) => x.c === c)).filter(Boolean);
         BLANCOS_ROTOS.map((b) => (
           <button
             type="button"
-            class="blanco-item reveal group cursor-pointer overflow-hidden rounded-2xl bg-white/5 text-left transition-transform hover:-translate-y-1"
+            class="blanco-item reveal group cursor-pointer overflow-hidden rounded-2xl border-2 border-white/10 bg-white/5 text-left transition-all hover:-translate-x-0.5 hover:-translate-y-1 hover:shadow-[6px_6px_0_0_#d2262b]"
             data-hex={b.h}
             data-nombre={b.n}
             data-codigo={b.c}

@@ -26,7 +26,7 @@ const cartas = [
   <Header />
   <main class="pt-16 md:pt-20">
     <section class="relative overflow-hidden bg-negro py-14 text-papel md:py-20">
-      <Mancha color="rojo" forma={5} class="-top-12 -right-16 w-56 opacity-30 md:w-72" rotar={60} />
+      <Mancha color="rojo" forma={6} class="-top-8 -right-12 w-56 opacity-30 md:w-72" rotar={8} />
       <div class="container-x">
         <p class="kicker-brocha text-rojo">Cartas de colores</p>
         <h1 class="display mt-2 max-w-2xl text-3xl text-white md:text-5xl">
@@ -100,7 +100,7 @@ const cartas = [
                 <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
                   {carta.colores.map((color) => (
                     <div
-                      class="color-item overflow-hidden rounded-xl bg-white/5"
+                      class="color-item overflow-hidden rounded-xl border border-white/10 bg-white/5 transition-all hover:-translate-y-1 hover:shadow-[5px_5px_0_0_#d2262b]"
                       data-buscar={`${color.c} ${color.n}`.toLowerCase()}
                     >
                       <div class="aspect-[4/3]" style={`background-color:${color.h};`} />
