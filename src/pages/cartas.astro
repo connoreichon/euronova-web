@@ -5,7 +5,7 @@ import Footer from '../components/Footer.astro';
 import WhatsAppFloat from '../components/WhatsAppFloat.astro';
 import Mancha from '../components/Mancha.astro';
 import { site } from '../data/site';
-import { RAL, NCS, EUROTREND } from '../data/cartas';
+import { RAL, EUROTREND } from '../data/cartas';
 import { asset } from '../lib/asset';
 
 const wa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(
@@ -13,8 +13,8 @@ const wa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(
 )}`;
 
 const cartas = [
-  { id: 'ral', nombre: 'RAL', sub: 'Carta clásica · ' + RAL.length + ' colores', colores: RAL },
-  { id: 'ncs', nombre: 'NCS', sub: 'Selección de los más pedidos', colores: NCS },
+  { id: 'ral', nombre: 'RAL', sub: 'Clásico · ' + RAL.length + ' colores', colores: RAL },
+  { id: 'ncs', nombre: 'NCS', sub: 'Sistema completo · ≈2050 tonos', colores: [] },
   { id: 'eurotrend', nombre: 'EUROTREND', sub: 'Muy pronto en la web', colores: EUROTREND }
 ];
 ---
@@ -26,7 +26,7 @@ const cartas = [
   <Header />
   <main class="pt-16 md:pt-20">
     <section class="relative overflow-hidden bg-negro py-14 text-papel md:py-20">
-      <Mancha color="rojo" forma={6} class="-top-8 -right-12 w-56 opacity-30 md:w-72" rotar={8} />
+      <Mancha color="rojo" forma={8} class="-top-10 -right-14 w-56 opacity-90 md:w-72" rotar={8} />
       <div class="container-x">
         <p class="kicker-brocha text-rojo">Cartas de colores</p>
         <h1 class="display mt-2 max-w-2xl text-3xl text-white md:text-5xl">
@@ -41,8 +41,8 @@ const cartas = [
           La referencia válida es siempre la carta física en tienda.
         </p>
 
-        <!-- Selector de carta -->
-        <div class="mt-8 flex flex-wrap gap-2.5" role="tablist" aria-label="Elige una carta de colores">
+        <!-- Selector de carta, con el distintivo de cada sistema -->
+        <div class="mt-8 flex flex-wrap gap-3" role="tablist" aria-label="Elige una carta de colores">
           {
             cartas.map((carta, i) => (
               <button
@@ -52,12 +52,31 @@ const cartas = [
                 aria-selected={i === 0 ? 'true' : 'false'}
                 aria-controls={`panel-${carta.id}`}
                 data-carta={carta.id}
-                class={`tab-carta cursor-pointer rounded-full px-5 py-2.5 text-[13px] font-bold transition-colors ${
-                  i === 0 ? 'bg-rojo text-white' : 'bg-white/10 text-papel hover:bg-white/20'
+                class={`tab-carta flex cursor-pointer items-center gap-2.5 rounded-2xl border-2 px-4 py-2.5 text-left transition-all ${
+                  i === 0
+                    ? 'border-rojo bg-rojo/15 shadow-[4px_4px_0_0_#d2262b]'
+                    : 'border-white/12 bg-white/6 hover:border-white/30'
                 }`}
               >
-                {carta.nombre}
-                <span class="ml-1.5 hidden text-[11px] font-normal opacity-70 sm:inline">{carta.sub}</span>
+                {carta.id === 'ral' && (
+                  <span class="grid h-9 w-9 shrink-0 place-items-center rounded-md bg-[#c1121c] font-display text-[13px] font-extrabold text-white">
+                    RAL
+                  </span>
+                )}
+                {carta.id === 'ncs' && (
+                  <span class="grid h-9 w-9 shrink-0 place-items-center rounded-md bg-white font-display text-[13px] font-extrabold text-[#111]">
+                    NCS<span class="-mt-2 text-[7px]">®</span>
+                  </span>
+                )}
+                {carta.id === 'eurotrend' && (
+                  <span class="grid h-9 w-14 shrink-0 place-items-center rounded-md bg-white px-1 font-display text-[9px] font-extrabold tracking-tight text-[#1a4fa8] italic">
+                    EUROTREND
+                  </span>
+                )}
+                <span>
+                  <span class="block text-[13px] font-bold text-white">Carta {carta.nombre}</span>
+                  <span class="block text-[11px] text-papel/60">{carta.sub}</span>
+                </span>
               </button>
             ))
           }
@@ -96,7 +115,15 @@ const cartas = [
               data-panel={carta.id}
               class={i === 0 ? '' : 'hidden'}
             >
-              {carta.colores.length ? (
+              {carta.id === 'ncs' ? (
+                <div>
+                  <p class="mb-4 text-[12.5px] text-papel/50">
+                    Sistema NCS completo generado digitalmente (reproducción orientativa
+                    de tono). El Index físico 2050 está en el mostrador.
+                  </p>
+                  <div id="grid-ncs" class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6" />
+                </div>
+              ) : carta.colores.length ? (
                 <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
                   {carta.colores.map((color) => (
                     <div
@@ -164,16 +191,82 @@ const cartas = [
 </Base>
 
 <script>
-  // Pestañas de carta + buscador por código/nombre (sin librerías)
+  // ------- Carta NCS completa, generada digitalmente -------
+  // Recorre el sistema NCS estándar: 40 matices (Y→R→B→G) + escala de neutros,
+  // con las combinaciones negrura/cromatismo del Index. Conversión a RGB
+  // aproximada (anclas perceptuales de los 4 elementales + mezcla lineal).
+  const ANCLAS: [number, number, number][] = [
+    [255, 210, 0], // Y
+    [196, 2, 51], // R
+    [0, 136, 191], // B
+    [0, 158, 96] // G
+  ];
+  const ncsHex = (s: number, c: number, hue: string) => {
+    let base: [number, number, number];
+    if (hue === 'N') base = [128, 128, 128];
+    else {
+      const idx = 'YRBG'.indexOf(hue[0]);
+      const pct = hue.length > 1 ? parseInt(hue.slice(1, 3)) / 100 : 0;
+      const a = ANCLAS[idx];
+      const b = ANCLAS[(idx + 1) % 4];
+      base = [0, 1, 2].map((i) => a[i] + (b[i] - a[i]) * pct) as [number, number, number];
+    }
+    const w = Math.max(0, 100 - s - c);
+    const mix = (i: number) => Math.round((255 * w + base[i] * c + 20 * s) / 100);
+    return (
+      '#' + [mix(0), mix(1), mix(2)].map((v) => Math.min(255, v).toString(16).padStart(2, '0')).join('')
+    );
+  };
+  const HUES: string[] = [];
+  for (const el of ['Y', 'R', 'B', 'G']) {
+    HUES.push(el);
+    for (let p = 10; p <= 90; p += 10) HUES.push(`${el}${p}${'YRBG'['YRBG'.indexOf(el) + 1] ?? 'Y'}`);
+  }
+  const pares: [number, number][] = [];
+  for (const s of [5, 10, 20, 30, 40, 50, 60, 70, 80]) {
+    for (const c of [5, 10, 20, 30, 40, 50, 60, 70]) if (s + c <= 95) pares.push([s, c]);
+  }
+  const blanquecinos: [number, number][] = [5, 10, 15, 20, 25].map((s) => [s, 2]);
+
+  const gridNcs = document.getElementById('grid-ncs');
+  if (gridNcs) {
+    const frag = document.createDocumentFragment();
+    const añadir = (codigo: string, hex: string) => {
+      const el = document.createElement('div');
+      el.className =
+        'color-item overflow-hidden rounded-xl border border-white/10 bg-white/5 transition-all hover:-translate-y-1 hover:shadow-[5px_5px_0_0_#d2262b]';
+      el.dataset.buscar = codigo.toLowerCase();
+      el.innerHTML = `<div class="aspect-[4/3]" style="background-color:${hex};"></div><div class="px-3 py-2.5"><p class="text-[12.5px] font-bold text-white">${codigo}</p></div>`;
+      frag.appendChild(el);
+    };
+    for (const s of [3, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90])
+      añadir(`NCS S ${String(s).padStart(2, '0')}00-N`, ncsHex(s, 0, 'N'));
+    for (const hue of HUES) {
+      for (const [s, c] of blanquecinos)
+        añadir(`NCS S ${String(s).padStart(2, '0')}0${c}-${hue}`, ncsHex(s, c, hue));
+      for (const [s, c] of pares)
+        añadir(
+          `NCS S ${String(s).padStart(2, '0')}${String(c).padStart(2, '0')}-${hue}`,
+          ncsHex(s, c, hue)
+        );
+    }
+    gridNcs.appendChild(frag);
+    const tabNcs = document.querySelector('[data-carta="ncs"] .block.text-\\[11px\\]');
+    if (tabNcs) tabNcs.textContent = `Sistema completo · ${gridNcs.children.length} tonos`;
+  }
+
+  // ------- Pestañas + buscador -------
   const tabs = document.querySelectorAll<HTMLButtonElement>('.tab-carta');
   const paneles = document.querySelectorAll<HTMLElement>('[data-panel]');
   const buscador = document.getElementById('buscador') as HTMLInputElement;
   const info = document.getElementById('resultado-info');
   const sinResultados = document.getElementById('sin-resultados');
   let activa = 'ral';
+  const CL_ON = ['border-rojo', 'bg-rojo/15', 'shadow-[4px_4px_0_0_#d2262b]'];
+  const CL_OFF = ['border-white/12', 'bg-white/6'];
 
   const filtrar = () => {
-    const q = buscador.value.trim().toLowerCase();
+    const q = buscador.value.trim().toLowerCase().replace(/\s+/g, ' ');
     const panel = document.querySelector<HTMLElement>(`[data-panel="${activa}"]`);
     if (!panel) return;
     const items = panel.querySelectorAll<HTMLElement>('.color-item');
@@ -197,10 +290,8 @@ const cartas = [
       tabs.forEach((t) => {
         const sel = t === tab;
         t.setAttribute('aria-selected', String(sel));
-        t.classList.toggle('bg-rojo', sel);
-        t.classList.toggle('text-white', sel);
-        t.classList.toggle('bg-white/10', !sel);
-        t.classList.toggle('text-papel', !sel);
+        CL_ON.forEach((c) => t.classList.toggle(c, sel));
+        CL_OFF.forEach((c) => t.classList.toggle(c, !sel));
       });
       paneles.forEach((p) => p.classList.toggle('hidden', p.dataset.panel !== activa));
       filtrar();

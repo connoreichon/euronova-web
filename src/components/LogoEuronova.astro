@@ -1,10 +1,7 @@
 ---
-// Logotipo DEFINITIVO: arte original del rotulista (archivo del cliente,
-// versión sobre blanco pasada a transparente, borde blanco horneado) con la
-// "e" sustituida por la E del cartel (mayúscula con el corte a la izquierda),
-// dibujada en vectorial y superpuesta en su sitio exacto.
-//  - `full`: pinturas + brochazo + Euronov@ + eslogan (lockup completo).
-//  - `compact`: solo el wordmark (para el header).
+// Logotipo DEFINITIVO: arte del rotulista (versión sobre blanco → transparente,
+// contorno blanco fino horneado) con la E REAL del cartel fotografiada por el
+// cliente, enderezada e integrada con el mismo negro y contorno (sin costura).
 import { asset } from '../lib/asset';
 
 interface Props {
@@ -12,38 +9,27 @@ interface Props {
   class?: string;
 }
 const { variant = 'full', class: className = '' } = Astro.props;
-
-// E del cartel (caja local 0..96 x, 0..104 y): corte diagonal arriba-izquierda
-// y barra central corta.
-const E_PATH =
-  'M92 24 A48 48 0 0 0 40 2 L16 20 A48 48 0 0 0 2 54 A48 48 0 0 0 44 102 ' +
-  'A48 48 0 0 0 92 80 L76 66 A28 28 0 0 1 50 82 A28 28 0 0 1 22 52 ' +
-  'A28 28 0 0 1 50 22 A28 28 0 0 1 76 38 Z';
-const E_BAR =
-  'M24 42 H70 Q75 42 75 47 V57 Q75 62 70 62 H24 Q20 62 20 57 V47 Q20 42 24 42 Z';
 ---
 
 {
   variant === 'compact' ? (
-    <svg viewBox="0 -14 616 100" class={className} role="img" aria-label="Pinturas Euronova">
-      <g fill="#000" stroke="#fff" stroke-linejoin="round" paint-order="stroke" transform="translate(0 -10) scale(0.79)">
-        <path d={E_PATH} stroke-width="5" />
-        <path d={E_BAR} stroke-width="5" />
-      </g>
-      <image href={asset('/assets/marca/word.png')} x="80" y="0" width="528" height="83" />
-    </svg>
-  ) : (
-    <svg
-      viewBox="0 0 872 243"
+    <img
+      src={asset('/assets/marca/word.png')}
+      alt="Pinturas Euronova"
       class={className}
-      role="img"
-      aria-label="Pinturas Euronova — La vida es del color que tú quieras pintarla"
-    >
-      <image href={asset('/assets/marca/lockup.png')} x="0" y="0" width="872" height="243" />
-      <g fill="#000" stroke="#fff" stroke-linejoin="round" paint-order="stroke" transform="translate(14 78) scale(0.79)">
-        <path d={E_PATH} stroke-width="5" />
-        <path d={E_BAR} stroke-width="5" />
-      </g>
-    </svg>
+      width="610"
+      height="104"
+      loading="eager"
+    />
+  ) : (
+    <img
+      src={asset('/assets/marca/lockup.png')}
+      alt="Pinturas Euronova — La vida es del color que tú quieras pintarla"
+      class={className}
+      width="872"
+      height="243"
+      loading="eager"
+      fetchpriority="high"
+    />
   )
 }
