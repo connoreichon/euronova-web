@@ -19,7 +19,7 @@ const RAPIDOS = ['RAL 7016', 'RAL 9010', 'RAL 3020', 'RAL 5010', 'NCS S 0502-Y',
 const chips = RAPIDOS.map((c) => TODOS.find((x) => x.c === c)).filter(Boolean);
 ---
 
-<section id="color" class="bg-negro py-16 text-papel md:py-24">
+<section id="color" class="bg-negro py-20 text-papel md:py-32">
   <div class="container-x grid items-center gap-10 md:grid-cols-2">
     <div class="reveal">
       <p class="kicker-brocha text-rojo">Tu color exacto</p>
@@ -34,7 +34,7 @@ const chips = RAPIDOS.map((c) => TODOS.find((x) => x.c === c)).filter(Boolean);
       <div class="mt-7 flex flex-wrap items-center gap-3">
         <a
           href={asset('/cartas/')}
-          class="inline-flex items-center gap-2 rounded-full bg-rojo px-6 py-3.5 text-[14px] font-bold text-white transition-transform hover:scale-[1.04]"
+          class="inline-flex items-center gap-2 rounded-full bg-rojo px-6 py-3.5 text-[14px] font-bold text-white transition-transform hover:-translate-y-0.5"
         >
           Explora las cartas de colores
           <svg viewBox="0 0 16 16" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -45,7 +45,7 @@ const chips = RAPIDOS.map((c) => TODOS.find((x) => x.c === c)).filter(Boolean);
           href={wa}
           target="_blank"
           rel="noopener"
-          class="inline-flex items-center gap-2 rounded-full bg-wasap px-6 py-3.5 text-[14px] font-bold text-white transition-transform hover:scale-[1.04]"
+          class="inline-flex items-center gap-2 rounded-full bg-wasap px-6 py-3.5 text-[14px] font-bold text-white transition-transform hover:-translate-y-0.5"
         >
           Pide tu color por WhatsApp
         </a>

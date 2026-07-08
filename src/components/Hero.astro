@@ -6,21 +6,21 @@ import LogoEuronova from './LogoEuronova.astro';
 const wa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(site.whatsappMensaje)}`;
 ---
 
-<section id="top" class="relative bg-rojo pt-24 pb-14 text-white md:pt-32 md:pb-16">
+<section id="top" class="relative bg-rojo pt-28 pb-16 text-white md:pt-40 md:pb-24">
   <div class="container-x">
     <div class="max-w-2xl">
       <h1 class="sr-only">{site.nombre} — {site.reclamo}</h1>
       <LogoEuronova class="w-full max-w-2xl" />
-      <p class="mt-5 max-w-md text-[15px] leading-relaxed text-white/85">
+      <p class="mt-6 max-w-md text-[15px] leading-relaxed text-white/80">
         {site.subtituloHero}
       </p>
 
-      <div class="mt-7 flex flex-wrap items-center gap-3">
+      <div class="mt-8 flex flex-wrap items-center gap-3">
         <a
           href={wa}
           target="_blank"
           rel="noopener"
-          class="inline-flex items-center gap-2 rounded-full bg-wasap px-6 py-3.5 text-[14px] font-bold text-white shadow-xl shadow-rojo-900/30 transition-transform hover:scale-[1.04]"
+          class="inline-flex items-center gap-2 rounded-full bg-wasap px-6 py-3.5 text-[14px] font-bold text-white shadow-xl shadow-rojo-900/30 transition-transform hover:-translate-y-0.5"
         >
           <svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor" aria-hidden="true">
             <path
@@ -39,12 +39,12 @@ const wa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(site.whatsa
         </a>
       </div>
 
-      <div class="mt-8 flex flex-wrap gap-2">
+      <div class="mt-10 flex flex-wrap gap-2">
         {
           categorias.slice(0, 4).map((c) => (
             <a
               href="#productos"
-              class="rounded-full bg-white/14 px-3.5 py-1.5 text-[12px] font-medium text-white transition-colors hover:bg-white/25"
+              class="rounded-full bg-white/10 px-3.5 py-1.5 text-[11.5px] font-medium text-white/90 transition-colors hover:bg-white/20 hover:text-white"
             >
               {c.nombre}
             </a>
@@ -52,7 +52,7 @@ const wa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(site.whatsa
         }
         <a
           href="#color"
-          class="rounded-full bg-white px-3.5 py-1.5 text-[12px] font-bold text-rojo transition-transform hover:scale-105"
+          class="rounded-full bg-white px-3.5 py-1.5 text-[12px] font-bold text-rojo transition-transform hover:-translate-y-0.5"
         >
           Color a medida
         </a>
