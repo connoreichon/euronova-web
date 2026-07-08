@@ -1,49 +1,65 @@
 ---
+// Bloque de confianza (Fase 4 del MASTER): editorial, sin tarjetas.
+// Datos de confianza como tipografía con filetes, no como "stats de SaaS".
 import { site } from '../data/site';
 
-const anios = site.anioActual - site.fundadoEn;
+const confianza = [
+  {
+    dato: '+20 años',
+    texto: 'mezclando color y asesorando a clientes de la zona.'
+  },
+  {
+    dato: 'Color a medida',
+    texto: 'trae una muestra o dinos el tono que buscas.'
+  },
+  {
+    dato: 'WhatsApp directo',
+    texto: 'pregunta stock, precio o qué producto usar.'
+  }
+];
 ---
 
 <section id="nosotros" class="bg-negro py-20 text-papel md:py-32">
-  <div class="container-x grid items-center gap-10 md:grid-cols-[1fr_1.15fr]">
-    <!-- Hueco para foto real de la tienda (ver ASSETS_NEEDED.md) -->
-    <div class="reveal">
-      <div
-        class="mat-fachada flex aspect-4/3 items-end overflow-hidden rounded-2xl p-5"
-        role="img"
-        aria-label="Hueco reservado para una foto real de la tienda"
-      >
-        <span class="rounded-full bg-tinta/70 px-3.5 py-1.5 text-[12px] font-medium text-white">
-          Aquí va una foto real de la tienda · pendiente del cliente
-        </span>
+  <div class="container-x">
+    <div class="grid items-start gap-12 md:grid-cols-[1.2fr_1fr]">
+      <div class="reveal">
+        <p class="kicker-brocha text-rojo">La tienda</p>
+        <h2 class="display mt-2 max-w-lg text-3xl text-white md:text-5xl">
+          Más de 20 años ayudando a elegir pintura.
+        </h2>
+        <p class="mt-6 max-w-lg text-[15px] leading-relaxed text-papel/70">
+          En Euronova no solo vendemos botes. Te preguntamos qué vas a pintar,
+          dónde está la superficie y qué acabado buscas para recomendarte una
+          solución realista — a particulares y a pintores profesionales de
+          {site.zona}.
+        </p>
+      </div>
+
+      <!-- TODO: reemplazar por foto real de la tienda (mostrador, estanterías,
+           tintométrica). Ver ASSETS_NEEDED.md — es la pieza que más confianza
+           aportará a toda la web. -->
+      <div class="reveal">
+        <div
+          class="mat-fachada flex aspect-[4/3] items-end overflow-hidden rounded-2xl p-5"
+          role="img"
+          aria-label="Hueco reservado para una foto real de la tienda"
+        >
+          <span class="rounded-full bg-tinta/70 px-3.5 py-1.5 text-[12px] font-medium text-white">
+            Aquí va una foto real de la tienda
+          </span>
+        </div>
       </div>
     </div>
 
-    <div class="reveal">
-      <p class="kicker-brocha text-rojo">La tienda</p>
-      <h2 class="display mt-2 text-3xl text-white md:text-5xl">
-        Más de {anios} años<br />vendiendo pintura aquí.
-      </h2>
-      <p class="mt-4 max-w-lg text-[15px] leading-relaxed text-papel/70">
-        Somos la tienda de pinturas de Las Lagunas. Por el mostrador pasan cada
-        mañana pintores de toda la Costa del Sol y vecinos que vienen con la
-        foto de un salón a medio decidir. A todos les damos lo mismo: producto
-        que funciona, el color exacto y consejo honesto.
-      </p>
-      <ul class="mt-6 space-y-2.5 text-[14px] font-medium text-white">
-        <li class="flex items-center gap-2.5">
-          <span class="h-2 w-2 rounded-full bg-rojo"></span>
-          Trato directo, de tienda de toda la vida
-        </li>
-        <li class="flex items-center gap-2.5">
-          <span class="h-2 w-2 rounded-full bg-rojo"></span>
-          Para particulares y pintores profesionales
-        </li>
-        <li class="flex items-center gap-2.5">
-          <span class="h-2 w-2 rounded-full bg-rojo"></span>
-          {site.zona}
-        </li>
-      </ul>
+    <div class="mt-16 grid gap-8 sm:grid-cols-3 md:mt-20">
+      {
+        confianza.map((c) => (
+          <div class="reveal border-t border-white/15 pt-5">
+            <p class="font-display text-xl font-bold text-white">{c.dato}</p>
+            <p class="mt-1.5 max-w-[26ch] text-[13.5px] leading-relaxed text-papel/60">{c.texto}</p>
+          </div>
+        ))
+      }
     </div>
   </div>
 </section>

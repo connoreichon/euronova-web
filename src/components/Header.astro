@@ -40,6 +40,7 @@ const enlaces = [
       <a
         href={`tel:${site.telefonoLink}`}
         class="hidden rounded-full border border-white/40 px-4 py-2 text-[13px] font-semibold text-white transition-colors hover:border-white sm:block"
+        aria-label={`Llamar al ${site.telefono}`}
       >
         {site.telefono}
       </a>
@@ -58,6 +59,20 @@ const enlaces = [
       </a>
     </div>
   </div>
+
+  <!-- Navegación móvil: fila deslizable compacta (los links de desktop van ocultos) -->
+  <nav
+    aria-label="Secciones (móvil)"
+    class="container-x sin-scrollbar -mt-1 flex gap-5 overflow-x-auto pb-2.5 whitespace-nowrap md:hidden"
+  >
+    {
+      enlaces.map((e) => (
+        <a href={e.href} class="text-[12px] font-medium text-white/80 transition-colors hover:text-white">
+          {e.txt}
+        </a>
+      ))
+    }
+  </nav>
 </header>
 
 <script>

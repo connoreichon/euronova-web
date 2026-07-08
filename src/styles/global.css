@@ -260,6 +260,15 @@ body {
 /* ===========================================================================
    ROTULACIÓN A BROCHA (títulos de apartado) y MANCHAS DE FONDO
    =========================================================================== */
+/* Fila desplazable sin barra de scroll visible (nav móvil) */
+.sin-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.sin-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* Etiqueta de sección escrita "a brocha", grande, legible y RECTA */
 .kicker-brocha {
   font-family: 'Nanum Brush Script', 'Segoe Script', cursive;

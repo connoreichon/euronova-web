@@ -1,18 +1,25 @@
 ---
-import { site, categorias } from '../data/site';
+// Hero (Fase 2 del MASTER): franja de marca roja CONTROLADA — logo
+// proporcionado, propuesta comercial explícita, foto protagonista a la
+// derecha y solo dos CTAs. Nada de masa roja a pantalla completa.
+import { site } from '../data/site';
 import { asset } from '../lib/asset';
 import LogoEuronova from './LogoEuronova.astro';
 
 const wa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(site.whatsappMensaje)}`;
 ---
 
-<section id="top" class="relative bg-rojo pt-28 pb-16 text-white md:pt-40 md:pb-24">
-  <div class="container-x">
-    <div class="max-w-2xl">
+<section id="top" class="relative bg-rojo pt-24 pb-16 text-white md:pt-32 md:pb-20">
+  <div class="container-x grid items-center gap-12 md:grid-cols-[1.15fr_1fr]">
+    <div>
       <h1 class="sr-only">{site.nombre} — {site.reclamo}</h1>
-      <LogoEuronova class="w-full max-w-2xl" />
-      <p class="mt-6 max-w-md text-[15px] leading-relaxed text-white/80">
-        {site.subtituloHero}
+      <LogoEuronova class="w-full max-w-md" />
+      <p class="font-display mt-8 max-w-lg text-xl leading-snug font-bold text-white md:text-2xl">
+        Pinturas, color a medida y asesoramiento en Las Lagunas de Mijas.
+      </p>
+      <p class="mt-3 max-w-md text-[15px] leading-relaxed text-white/80">
+        Dinos qué vas a pintar y te ayudamos a elegir el producto, el acabado
+        y el color adecuado.
       </p>
 
       <div class="mt-8 flex flex-wrap items-center gap-3">
@@ -20,7 +27,7 @@ const wa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(site.whatsa
           href={wa}
           target="_blank"
           rel="noopener"
-          class="inline-flex items-center gap-2 rounded-full bg-wasap px-6 py-3.5 text-[14px] font-bold text-white shadow-xl shadow-rojo-900/30 transition-transform hover:-translate-y-0.5"
+          class="inline-flex items-center gap-2 rounded-full bg-wasap px-6 py-3 text-[14px] font-bold text-white transition-transform hover:-translate-y-0.5"
         >
           <svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor" aria-hidden="true">
             <path
@@ -33,32 +40,30 @@ const wa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(site.whatsa
           href={site.mapsLink}
           target="_blank"
           rel="noopener"
-          class="rounded-full border-[1.5px] border-white/50 px-6 py-3.5 text-[14px] font-semibold text-white transition-colors hover:border-white hover:bg-white/10"
+          class="rounded-full border border-white/50 px-6 py-3 text-[14px] font-semibold text-white transition-colors hover:border-white hover:bg-white/10"
         >
           Cómo llegar
         </a>
       </div>
 
-      <div class="mt-10 flex flex-wrap gap-2">
-        {
-          categorias.slice(0, 4).map((c) => (
-            <a
-              href="#productos"
-              class="rounded-full bg-white/10 px-3.5 py-1.5 text-[11.5px] font-medium text-white/90 transition-colors hover:bg-white/20 hover:text-white"
-            >
-              {c.nombre}
-            </a>
-          ))
-        }
-        <a
-          href="#color"
-          class="rounded-full bg-white px-3.5 py-1.5 text-[12px] font-bold text-rojo transition-transform hover:-translate-y-0.5"
-        >
-          Color a medida
-        </a>
-      </div>
+      <p class="mt-8 text-[12.5px] tracking-wide text-white/65">
+        +20 años · Tienda física en Las Lagunas · Color a medida al momento
+      </p>
     </div>
 
+    <!-- Foto protagonista: resultado real, contrapunto luminoso al rojo -->
+    <div class="reveal hidden md:block">
+      <div class="overflow-hidden rounded-2xl shadow-lg shadow-rojo-900/40">
+        <img
+          src={asset('/assets/img/categorias/fachadas.jpg')}
+          alt="Fachada mediterránea recién pintada en tonos claros con carpintería azul"
+          class="aspect-[4/3] w-full object-cover"
+          width="1280"
+          height="853"
+          loading="eager"
+        />
+      </div>
+    </div>
   </div>
 </section>
 
