@@ -14,7 +14,15 @@ obligatoria). Descargadas 2026-07-07.
 | `suelos.jpg` | tennis-7137976 | Pista de tenis de tierra batida |
 | `imper.jpg` | roof-terrace-354906 | Terraza impermeabilizada con tumbonas |
 | `tienda/botes.jpg` | color-417694 | Estantería de botes de pintura mezclada (provisional para Nosotros) |
+| `simulador/estancia.jpg` | couch-1845270 | Salón de ejemplo del simulador "Imagina tu pared" |
 | `og.jpg` | — | Imagen para compartir, generada con el logo sobre rojo de marca |
+
+## Vídeo (`public/assets/video/`)
+
+- `pigmento.mp4`: pigmento/tinta mezclándose en agua sobre fondo negro
+  (**Pixabay**, id 58193-487176852; licencia Pixabay, uso comercial sin
+  atribución). Fondo del hero de la página de cartas. `pigmento-poster.jpg`
+  es el póster/fallback (generado, degradado oscuro).
 
 Recomendación: sustituirlas poco a poco por fotos reales de la tienda y de
 trabajos de clientes (ver `ASSETS_NEEDED.md`).
