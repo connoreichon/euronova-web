@@ -1,0 +1,104 @@
+---
+// "Imagina tu pared" — MVP de inspiración de color (NO simulador preciso).
+// Se tinta la pared de una estancia de ejemplo con un color de carta, de forma
+// ORIENTATIVA (overlay con mezcla multiply y borde suave). Refuerza que la
+// referencia real es la tienda. Futuro: subir foto propia + segmentación.
+import AvisoColor from './AvisoColor.astro';
+import { asset } from '../lib/asset';
+
+// Tonos curados para pared (RAL/NCS), del claro al intenso.
+const TONOS = [
+  { n: 'Blanco cálido', c: 'NCS S 0502-Y', h: '#f2efe2' },
+  { n: 'Lino', c: 'NCS S 1005-Y', h: '#e9e2ce' },
+  { n: 'Greige', c: 'NCS S 3005-Y20R', h: '#ada290' },
+  { n: 'Verde salvia', c: 'RAL 6021', h: '#89ac76' },
+  { n: 'Azul genciana', c: 'RAL 5010', h: '#0e518d' },
+  { n: 'Terracota', c: 'NCS S 4020-Y30R', h: '#a87f5d' },
+  { n: 'Gris antracita', c: 'RAL 7016', h: '#293133' },
+  { n: 'Rojo Euronova', c: 'RAL 3020', h: '#c1121c' }
+];
+---
+
+<section id="imagina" class="bg-negro py-20 text-papel md:py-28">
+  <div class="container-x">
+    <div class="reveal max-w-2xl">
+      <p class="kicker-brocha text-rojo">Imagina tu pared</p>
+      <h2 class="display mt-2 text-3xl text-white md:text-5xl">
+        Prueba un color<br />antes de decidir.
+      </h2>
+      <p class="mt-4 text-[15px] leading-relaxed text-papel/70">
+        Una idea de cómo respira un tono en una estancia. Es una herramienta de
+        inspiración para imaginar combinaciones — no una medida exacta del color.
+      </p>
+    </div>
+
+    <div class="reveal mt-10 grid gap-6 lg:grid-cols-[1.5fr_1fr] lg:items-start">
+      <!-- Estancia de ejemplo con pared tintada -->
+      <figure class="overflow-hidden rounded-2xl">
+        <div class="sim-estancia relative">
+          <img
+            src={asset('/assets/img/simulador/estancia.jpg')}
+            alt="Salón de ejemplo con una pared lisa para imaginar el color"
+            class="w-full"
+            width="1280"
+            height="853"
+            loading="lazy"
+          />
+          <div id="sim-capa" class="sim-capa" style="background-color:#e9e2ce"></div>
+        </div>
+        <figcaption class="flex items-center justify-between gap-3 bg-white/[0.03] px-4 py-2.5">
+          <span class="text-[12px] text-papel/50">Estancia de ejemplo · resultado orientativo</span>
+          <span id="sim-nombre" class="text-[12.5px] font-semibold text-white">Lino · NCS S 1005-Y</span>
+        </figcaption>
+      </figure>
+
+      <!-- Selector de tono + aviso + CTA -->
+      <div>
+        <p class="text-[11px] font-semibold tracking-[0.16em] text-papel/50 uppercase">Elige un tono</p>
+        <div class="mt-4 grid grid-cols-4 gap-3" role="group" aria-label="Tonos para la pared">
+          {
+            TONOS.map((t, i) => (
+              <button
+                type="button"
+                class="sim-chip group relative aspect-square rounded-xl border-2 border-transparent transition-transform hover:-translate-y-0.5 focus-visible:outline-none"
+                style={`background-color:${t.h}`}
+                data-hex={t.h}
+                data-etq={`${t.n} · ${t.c}`}
+                aria-label={`Ver la pared en ${t.n} (${t.c})`}
+                aria-pressed={i === 1 ? 'true' : 'false'}
+              />
+            ))
+          }
+        </div>
+
+        <AvisoColor variant="full" class="mt-6 rounded-r-lg" />
+
+        <a
+          href="#tienda"
+          class="mt-6 inline-flex items-center gap-2 rounded-full bg-rojo px-6 py-3 text-[14px] font-bold text-white transition-transform hover:-translate-y-0.5"
+        >
+          Ven a verlo en carta física
+          <svg viewBox="0 0 16 16" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </a>
+        <p class="mt-4 text-[12px] text-papel/40">
+          Pronto podrás subir una foto de tu propia estancia.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const capa = document.getElementById('sim-capa');
+  const nombre = document.getElementById('sim-nombre');
+  const chips = document.querySelectorAll<HTMLButtonElement>('.sim-chip');
+  chips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      if (capa) capa.style.backgroundColor = chip.dataset.hex ?? '#e9e2ce';
+      if (nombre) nombre.textContent = chip.dataset.etq ?? '';
+      chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+    });
+  });
+</script>

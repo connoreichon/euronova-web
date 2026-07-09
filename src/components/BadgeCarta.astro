@@ -1,27 +1,20 @@
 ---
-// Distintivo de carta de colores: mini ABANICO de muestras (como las cartas
-// físicas del mostrador) + nombre de la carta. Wordmark recreado con
-// tipografía — no se usan los logos registrados de RAL/NCS.
+// Distintivo de carta: chip tipográfico sobrio (punto de color + sistema).
+// Alineación robusta con leading-none para que quede idéntico en todas las
+// tarjetas, sin depender de la geometría de un icono.
 interface Props {
   carta: 'RAL' | 'NCS';
   class?: string;
 }
 const { carta, class: className = '' } = Astro.props;
-
-// Hojas del abanico: RAL = vivos de su carta; NCS = neutros de su Index.
-const hojas = carta === 'RAL' ? ['#c1121c', '#e5be01', '#0e518d'] : ['#f0efeb', '#c4c3bf', '#5f5e5a'];
+const punto = carta === 'RAL' ? '#d2262b' : '#c9c4b8';
 ---
 
 <span
-  class={`inline-flex h-6 items-center gap-1.5 rounded-full border border-white/15 bg-white/8 py-0.5 pr-2.5 pl-1.5 ${className}`}
+  class={`inline-flex shrink-0 items-center gap-1.5 leading-none ${className}`}
 >
-  <svg viewBox="0 0 20 20" class="h-3.5 w-3.5" aria-hidden="true">
-    <g transform="translate(10 17)">
-      <rect x="-2.6" y="-15" width="5.2" height="14" rx="2" fill={hojas[2]} transform="rotate(-28)" />
-      <rect x="-2.6" y="-15" width="5.2" height="14" rx="2" fill={hojas[1]} transform="rotate(0)" stroke="#171111" stroke-width="0.6" />
-      <rect x="-2.6" y="-15" width="5.2" height="14" rx="2" fill={hojas[0]} transform="rotate(28)" stroke="#171111" stroke-width="0.6" />
-      <circle cx="0" cy="0" r="1.6" fill="#fff" />
-    </g>
-  </svg>
-  <span class="text-[10.5px] font-bold tracking-wide whitespace-nowrap text-white/90">Carta {carta}</span>
+  <span class="h-[7px] w-[7px] shrink-0 rounded-full" style={`background:${punto}`}></span>
+  <span class="text-[10px] font-semibold tracking-[0.14em] whitespace-nowrap text-papel/60 uppercase">
+    {carta}
+  </span>
 </span>

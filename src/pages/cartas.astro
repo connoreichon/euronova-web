@@ -3,13 +3,11 @@ import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import WhatsAppFloat from '../components/WhatsAppFloat.astro';
+import AvisoColor from '../components/AvisoColor.astro';
+import SimuladorPared from '../components/SimuladorPared.astro';
 import { site } from '../data/site';
 import { RAL, EUROTREND } from '../data/cartas';
 import { asset } from '../lib/asset';
-
-const wa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(
-  'Hola, me gustaría hacer una consulta sobre un color: '
-)}`;
 
 const cartas = [
   { id: 'ral', nombre: 'RAL', sub: 'Clásico · ' + RAL.length + ' colores', colores: RAL },
@@ -23,24 +21,44 @@ const cartas = [
   description="Consulta online las cartas de colores RAL, NCS y Eurotrend de Pinturas Euronova en Las Lagunas de Mijas: busca tu color por código y pídelo mezclado a medida en tienda."
 >
   <Header />
-  <main id="main" class="pt-16 md:pt-20">
-    <section class="bg-negro py-14 text-papel md:py-20">
-      <div class="container-x">
-        <p class="kicker-brocha text-rojo">Cartas de colores</p>
-        <h1 class="display mt-2 max-w-2xl text-3xl text-white md:text-5xl">
-          Busca tu color por código,<br />como en el mostrador.
-        </h1>
-        <p class="mt-4 max-w-xl text-[15px] leading-relaxed text-papel/70">
-          Elige la carta, escribe el código o el nombre y encuentra tu color.
-          Lo mezclamos al momento con la tintometría de la tienda.
-        </p>
-        <p class="mt-3 max-w-xl text-[12.5px] text-papel/55">
-          ⚠ El color en pantalla es orientativo: cada monitor lo muestra distinto.
-          La referencia válida es siempre la carta física en tienda.
-        </p>
+  <main id="main">
+    <!-- Hero inmersivo: pigmentos mezclándose en agua (vídeo abstracto) -->
+    <section
+      class="video-hero relative overflow-hidden pt-28 pb-16 text-papel md:pt-40 md:pb-24"
+      style={`background-image:url(${asset('/assets/video/pigmento-poster.jpg')})`}
+    >
+      <video
+        class="video-hero__media pointer-events-none absolute inset-0 h-full w-full object-cover opacity-55"
+        poster={asset('/assets/video/pigmento-poster.jpg')}
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
+        aria-hidden="true"
+      >
+        <source src={asset('/assets/video/pigmento.mp4')} type="video/mp4" />
+      </video>
+      <div class="absolute inset-0 bg-gradient-to-r from-negro via-negro/85 to-negro/40"></div>
+      <div class="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-negro to-transparent"></div>
 
+      <div class="container-x relative">
+        <p class="kicker-brocha text-rojo">Cartas de colores</p>
+        <h1 class="display mt-2 max-w-2xl text-4xl text-white md:text-6xl">
+          El color, con<br />criterio profesional.
+        </h1>
+        <p class="mt-5 max-w-xl text-[15px] leading-relaxed text-papel/75">
+          Explora las cartas RAL y NCS, busca tu tono por código y hazte una idea.
+          Después lo igualamos con precisión en tienda, con carta física y tintometría.
+        </p>
+        <AvisoColor variant="full" class="mt-7 max-w-2xl rounded-r-lg bg-negro/40 backdrop-blur-sm" />
+      </div>
+    </section>
+
+    <section class="bg-negro pt-12 pb-4 text-papel md:pt-16">
+      <div class="container-x">
         <!-- Selector de carta, con el distintivo de cada sistema -->
-        <div class="mt-8 flex flex-wrap gap-3" role="tablist" aria-label="Elige una carta de colores">
+        <div class="flex flex-wrap gap-3" role="tablist" aria-label="Elige una carta de colores">
           {
             cartas.map((carta, i) => (
               <button
@@ -143,15 +161,15 @@ const cartas = [
                   </p>
                   <p class="mx-auto mt-2 max-w-md text-[14px] text-papel/60">
                     La estamos digitalizando. Mientras tanto la tienes completa en el
-                    mostrador de la tienda — o pregúntanos por WhatsApp.
+                    mostrador de la tienda.
                   </p>
                   <a
-                    href={wa}
+                    href={site.mapsLink}
                     target="_blank"
                     rel="noopener"
-                    class="mt-6 inline-flex items-center gap-2 rounded-full bg-wasap px-6 py-3 text-[13px] font-bold text-white transition-transform hover:-translate-y-0.5"
+                    class="mt-6 inline-flex items-center gap-2 rounded-full bg-rojo px-6 py-3 text-[13px] font-bold text-white transition-transform hover:-translate-y-0.5"
                   >
-                    Preguntar por un color Eurotrend
+                    Consúltala en tienda
                   </a>
                 </div>
               )}
@@ -159,11 +177,13 @@ const cartas = [
           ))
         }
         <p id="sin-resultados" class="hidden py-14 text-center text-[14px] text-papel/60">
-          No encontramos ese código en esta carta. Prueba en otra pestaña o
-          <a href={wa} target="_blank" rel="noopener" class="font-bold text-rojo underline-offset-4 hover:underline">pregúntanos por WhatsApp</a> — en tienda hay miles más.
+          No encontramos ese código en esta carta. Prueba en otra pestaña — en
+          tienda tenemos las cartas físicas completas y miles de tonos más.
         </p>
       </div>
     </section>
+
+    <SimuladorPared />
 
     <!-- Enlace a los blancos rotos (viven en la tintometría de la portada) -->
     <section class="bg-negro py-12 md:py-16">

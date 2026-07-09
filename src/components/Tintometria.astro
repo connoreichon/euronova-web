@@ -2,11 +2,8 @@
 import { site } from '../data/site';
 import { RAL, NCS, BLANCOS_ROTOS } from '../data/cartas';
 import BadgeCarta from './BadgeCarta.astro';
+import AvisoColor from './AvisoColor.astro';
 import { asset } from '../lib/asset';
-
-const wa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(
-  'Hola, Pinturas Euronova. Quería pedir un color a medida: '
-)}`;
 
 // Todos los colores buscables en el tintómetro (RAL completa + selección NCS)
 const TODOS = [
@@ -27,8 +24,8 @@ const chips = RAPIDOS.map((c) => TODOS.find((x) => x.c === c)).filter(Boolean);
         Cualquier color.<br />Mezclado en minutos.
       </h2>
       <p class="mt-4 max-w-md text-[15px] leading-relaxed text-papel/75">
-        Trae una muestra, una foto de tu pared o solo una idea. Con la máquina
-        tintométrica y las bases de nuestras marcas sacamos el tono exacto,
+        Trae una muestra real o dinos el tono que buscas. Con la máquina
+        tintométrica y las bases de nuestras marcas igualamos el color exacto,
         también en cantidades grandes para obra.
       </p>
       <div class="mt-7 flex flex-wrap items-center gap-3">
@@ -42,12 +39,12 @@ const chips = RAPIDOS.map((c) => TODOS.find((x) => x.c === c)).filter(Boolean);
           </svg>
         </a>
         <a
-          href={wa}
+          href={site.mapsLink}
           target="_blank"
           rel="noopener"
-          class="inline-flex items-center gap-2 rounded-full bg-wasap px-6 py-3.5 text-[14px] font-bold text-white transition-transform hover:-translate-y-0.5"
+          class="rounded-full border border-white/25 px-6 py-3.5 text-[14px] font-semibold text-white transition-colors hover:border-white/60"
         >
-          Pide tu color por WhatsApp
+          Cómo llegar
         </a>
       </div>
     </div>
@@ -103,9 +100,7 @@ const chips = RAPIDOS.map((c) => TODOS.find((x) => x.c === c)).filter(Boolean);
           ))
         }
       </div>
-      <p class="mt-3 text-[12px] text-papel/60">
-        Color orientativo en pantalla — la referencia válida es la carta física en tienda.
-      </p>
+      <AvisoColor variant="inline" class="mt-4" />
     </div>
   </div>
 

@@ -1,14 +1,10 @@
 ---
-// Escaparate editorial (Fase 3 del MASTER DESIGN SYSTEM): composición bento
-// intencional — una pieza protagonista, dos medianas y tres de apoyo.
-// Sin cajas clonadas, sin adornos: foto protagonista + texto + CTA discreto.
-import { site, categorias, complementosNota } from '../data/site';
+// Escaparate editorial (MASTER): composición bento intencional — una pieza
+// protagonista, dos medianas y tres de apoyo. Tiles editoriales sin CTA
+// repetido: la fotografía manda. El asesoramiento se resuelve en una línea
+// bajo la rejilla, no seis veces.
+import { categorias, complementosNota } from '../data/site';
 import { asset } from '../lib/asset';
-
-const waCat = (cat: string) =>
-  `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(
-    `Hola, Pinturas Euronova. Quería consultar por ${cat.toLowerCase()}.`
-  )}`;
 
 // Ritmo del bento: [protagonista 3x2, mediana 3, mediana 3, apoyo 2, 2, 2]
 const SPAN = [
@@ -37,21 +33,15 @@ const MEDIA = [
         Todo en pintura,<br />del bote a tu pared.
       </h2>
       <p class="mt-4 text-[15px] leading-relaxed text-papel/70">
-        Sin tienda online y sin líos: mira lo que trabajamos, pregunta por
-        WhatsApp y te lo dejamos preparado en el mostrador.
+        Interior, exterior, esmaltes, madera, suelos e impermeabilización.
+        Trabajamos con marcas de confianza y preparamos tu color a medida en tienda.
       </p>
     </div>
 
     <div class="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-6">
       {
         categorias.map((c, i) => (
-          <a
-            href={waCat(c.nombre)}
-            target="_blank"
-            rel="noopener"
-            aria-label={`${c.nombre}: consultar por WhatsApp`}
-            class={`pieza reveal group ${SPAN[i]} ${i === 0 ? 'pieza--sobre relative' : ''}`}
-          >
+          <article class={`pieza reveal group ${SPAN[i]} ${i === 0 ? 'pieza--sobre relative' : ''}`}>
             <div class={`pieza__media ${MEDIA[i]} ${i === 0 ? 'lg:min-h-full' : ''}`}>
               <img
                 src={asset(c.img)}
@@ -67,25 +57,33 @@ const MEDIA = [
                 <p class="text-[11px] font-semibold tracking-[0.16em] text-white/60 uppercase">{c.acabado}</p>
                 <h3 class="font-display mt-1 text-2xl font-bold text-white">{c.nombre}</h3>
                 <p class="mt-1.5 max-w-sm text-[13.5px] leading-relaxed text-white/75">{c.desc}</p>
-                <p class="mt-3 text-[12.5px] font-semibold text-white/80 transition-colors group-hover:text-white">
-                  Consultar por WhatsApp →
-                </p>
               </div>
             ) : (
               <div class="mt-4">
                 <p class="text-[11px] font-semibold tracking-[0.16em] text-papel/55 uppercase">{c.acabado}</p>
                 <h3 class="font-display mt-1 text-lg font-bold text-white">{c.nombre}</h3>
                 <p class="mt-1 text-[13.5px] leading-relaxed text-papel/60">{c.desc}</p>
-                <p class="mt-2 text-[12.5px] font-semibold text-papel/60 transition-colors group-hover:text-white">
-                  Consultar por WhatsApp →
-                </p>
               </div>
             )}
-          </a>
+          </article>
         ))
       }
     </div>
 
-    <p class="reveal mt-10 text-[13px] text-papel/60">{complementosNota}</p>
+    <div class="reveal mt-12 flex flex-col gap-4 border-t border-white/10 pt-8 md:flex-row md:items-center md:justify-between">
+      <p class="max-w-xl text-[14px] leading-relaxed text-papel/70">
+        ¿Dudas con un producto? Te asesoramos en tienda según el soporte, el uso
+        y el acabado que buscas. {complementosNota}
+      </p>
+      <a
+        href="#tienda"
+        class="inline-flex shrink-0 items-center gap-1.5 text-[13px] font-semibold text-white transition-colors hover:text-rojo"
+      >
+        Ven a vernos
+        <svg viewBox="0 0 16 16" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </a>
+    </div>
   </div>
 </section>

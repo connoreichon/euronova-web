@@ -215,6 +215,40 @@ body {
 /* ===========================================================================
    ROTULACIÓN A BROCHA (títulos de apartado) y MANCHAS DE FONDO
    =========================================================================== */
+/* Simulador "Imagina tu pared": capa de color sobre la banda superior (pared),
+   con mezcla multiply para conservar la luz y un borde inferior difuminado. */
+.sim-estancia {
+  position: relative;
+}
+.sim-capa {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 47%;
+  mix-blend-mode: multiply;
+  opacity: 0.92;
+  -webkit-mask-image: linear-gradient(to bottom, #000 66%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 66%, transparent 100%);
+  transition: background-color 0.45s ease;
+  pointer-events: none;
+}
+.sim-chip[aria-pressed='true'] {
+  border-color: #fff;
+  box-shadow: 0 0 0 2px #171111;
+}
+
+/* Hero con vídeo de pigmentos: el póster (inline en el componente) hace de
+   fondo/fallback. Con movimiento reducido se oculta el vídeo y queda el póster. */
+.video-hero {
+  background-color: #171111;
+  background-size: cover;
+  background-position: 42% 52%;
+}
+@media (prefers-reduced-motion: reduce) {
+  .video-hero__media {
+    display: none;
+  }
+}
+
 /* Fila desplazable sin barra de scroll visible (nav móvil) */
 .sin-scrollbar {
   scrollbar-width: none;
