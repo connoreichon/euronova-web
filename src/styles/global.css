@@ -215,19 +215,20 @@ body {
 /* ===========================================================================
    ROTULACIÓN A BROCHA (títulos de apartado) y MANCHAS DE FONDO
    =========================================================================== */
-/* Simulador "Imagina tu pared": capa de color sobre la banda superior (pared),
-   con mezcla multiply para conservar la luz y un borde inferior difuminado. */
+/* "Imagina tu pared": capa de color que se aplica SOLO a la pared mediante una
+   máscara precisa (silueta del sofá), con mezcla multiply para conservar la
+   textura y las sombras del yeso. La máscara va inline (asset con base). */
 .sim-estancia {
   position: relative;
 }
-.sim-capa {
+.sim-capa-mask {
   position: absolute;
-  inset: 0 0 auto 0;
-  height: 47%;
+  inset: 0;
   mix-blend-mode: multiply;
-  opacity: 0.92;
-  -webkit-mask-image: linear-gradient(to bottom, #000 66%, transparent 100%);
-  mask-image: linear-gradient(to bottom, #000 66%, transparent 100%);
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
   transition: background-color 0.45s ease;
   pointer-events: none;
 }

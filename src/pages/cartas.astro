@@ -4,7 +4,6 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import WhatsAppFloat from '../components/WhatsAppFloat.astro';
 import AvisoColor from '../components/AvisoColor.astro';
-import SimuladorPared from '../components/SimuladorPared.astro';
 import { site } from '../data/site';
 import { RAL, EUROTREND } from '../data/cartas';
 import { asset } from '../lib/asset';
@@ -183,20 +182,18 @@ const cartas = [
       </div>
     </section>
 
-    <SimuladorPared />
-
-    <!-- Enlace a los blancos rotos (viven en la tintometría de la portada) -->
+    <!-- Enlace a "Imagina tu pared" (vive en la portada) -->
     <section class="bg-negro py-12 md:py-16">
       <div class="container-x flex flex-wrap items-center justify-between gap-4">
         <p class="max-w-md text-[14px] leading-relaxed text-papel/70">
-          ¿Buscas un blanco roto de moda? Tenemos los favoritos del mostrador
-          seleccionados en la sección de tintometría.
+          ¿Quieres ver un color sobre una pared? Prueba cualquier tono en
+          «Imagina tu pared» y hazte una idea antes de venir a tienda.
         </p>
         <a
           href={asset('/') + '#color'}
           class="inline-flex items-center gap-2 rounded-full bg-rojo px-6 py-3 text-[13px] font-bold text-white transition-transform hover:-translate-y-0.5"
         >
-          Ver blancos rotos
+          Imagina tu pared
           <svg viewBox="0 0 16 16" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
             <path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round" />
           </svg>

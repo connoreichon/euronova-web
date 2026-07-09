@@ -1,42 +1,85 @@
 ---
+// "Imagina tu pared" (sustituye al antiguo bloque de color exacto).
+// Una estancia real cuya PARED se tinta con el color que el cliente busca
+// (por código o nombre de cualquier carta RAL/NCS). Solo se pinta la pared,
+// con su textura, mediante una máscara precisa + mezcla multiply. Orientativo.
 import { site } from '../data/site';
-import { RAL, NCS, BLANCOS_ROTOS } from '../data/cartas';
+import { RAL, BLANCOS_ROTOS } from '../data/cartas';
 import BadgeCarta from './BadgeCarta.astro';
 import AvisoColor from './AvisoColor.astro';
 import { asset } from '../lib/asset';
 
-// Todos los colores buscables en el tintómetro (RAL completa + selección NCS)
-const TODOS = [
-  ...RAL.map((x) => ({ ...x, carta: 'RAL' })),
-  ...NCS.map((x) => ({ ...x, carta: 'NCS' }))
+// Color inicial de la pared y accesos rápidos (curados, del claro al intenso).
+const INICIAL = { h: '#e9e2ce', c: 'NCS S 1005-Y', n: 'Lino' };
+const RAPIDOS = [
+  { n: 'Blanco cálido', c: 'NCS S 0502-Y', h: '#f2efe2' },
+  { n: 'Lino', c: 'NCS S 1005-Y', h: '#e9e2ce' },
+  { n: 'Greige', c: 'NCS S 3005-Y20R', h: '#ada290' },
+  { n: 'Verde salvia', c: 'RAL 6021', h: '#89ac76' },
+  { n: 'Azul genciana', c: 'RAL 5010', h: '#0e518d' },
+  { n: 'Terracota', c: 'NCS S 4020-Y30R', h: '#a87f5d' },
+  { n: 'Gris antracita', c: 'RAL 7016', h: '#293133' },
+  { n: 'Rojo Euronova', c: 'RAL 3020', h: '#c1121c' }
 ];
-
-// Accesos rápidos bajo el panel
-const RAPIDOS = ['RAL 7016', 'RAL 9010', 'RAL 3020', 'RAL 5010', 'NCS S 0502-Y', 'RAL 1015', 'RAL 6021', 'NCS S 1505-Y'];
-const chips = RAPIDOS.map((c) => TODOS.find((x) => x.c === c)).filter(Boolean);
+const maskUrl = asset('/assets/img/simulador/salon-mask.png');
 ---
 
 <section id="color" class="bg-negro py-20 text-papel md:py-32">
-  <div class="container-x grid items-center gap-10 md:grid-cols-2">
+  <div class="container-x grid gap-10 lg:grid-cols-[1fr_1.05fr] lg:items-center">
+    <!-- Texto + buscador -->
     <div class="reveal">
-      <p class="kicker-brocha text-rojo">Tu color exacto</p>
+      <p class="kicker-brocha text-rojo">Imagina tu pared</p>
       <h2 class="display mt-2 text-3xl text-white md:text-5xl">
-        Cualquier color.<br />Mezclado en minutos.
+        Prueba cualquier color<br />en tu pared.
       </h2>
       <p class="mt-4 max-w-md text-[15px] leading-relaxed text-papel/75">
-        Trae una muestra real o dinos el tono que buscas. Con la máquina
-        tintométrica y las bases de nuestras marcas igualamos el color exacto,
-        también en cantidades grandes para obra.
+        Escribe el código o el nombre de un color de las cartas RAL o NCS y míralo
+        sobre una pared real. Es una idea orientativa; en tienda lo igualamos con
+        precisión con carta física y tintometría.
       </p>
+
+      <label for="sim-buscar" class="sr-only">Busca un color por código o nombre</label>
+      <div class="mt-6 flex items-center gap-2.5 rounded-full bg-white px-5 py-3 shadow-lg shadow-black/40">
+        <svg viewBox="0 0 24 24" class="h-4.5 w-4.5 shrink-0 text-negro/50" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" />
+          <path d="m20 20-3.8-3.8" stroke-linecap="round" />
+        </svg>
+        <input
+          id="sim-buscar"
+          type="search"
+          placeholder="Escribe un color: 7016, 5010, S 0502-Y, verde…"
+          autocomplete="off"
+          class="w-full bg-transparent text-[14px] font-semibold text-negro placeholder:font-normal placeholder:text-negro/40 focus:outline-none"
+        />
+      </div>
+      <p id="sim-info" class="mt-2 h-4 pl-2 text-[12px] text-papel/55" aria-live="polite"></p>
+
+      <div class="mt-4 flex flex-wrap gap-2.5" role="group" aria-label="Colores rápidos">
+        {
+          RAPIDOS.map((c, i) => (
+            <button
+              type="button"
+              class="sim-chip h-9 w-9 cursor-pointer rounded-full border-2 border-white/25 transition-transform hover:scale-110 focus-visible:outline-none"
+              style={`background-color:${c.h}`}
+              data-hex={c.h}
+              data-codigo={c.c}
+              data-nombre={c.n}
+              title={`${c.n} · ${c.c}`}
+              aria-label={`Ver la pared en ${c.n} (${c.c})`}
+              aria-pressed={c.c === INICIAL.c ? 'true' : 'false'}
+            />
+          ))
+        }
+      </div>
+
+      <AvisoColor variant="inline" class="mt-6" />
+
       <div class="mt-7 flex flex-wrap items-center gap-3">
         <a
           href={asset('/cartas/')}
-          class="inline-flex items-center gap-2 rounded-full bg-rojo px-6 py-3.5 text-[14px] font-bold text-white transition-transform hover:-translate-y-0.5"
+          class="rounded-full bg-rojo px-6 py-3.5 text-[14px] font-bold text-white transition-transform hover:-translate-y-0.5"
         >
           Explora las cartas de colores
-          <svg viewBox="0 0 16 16" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
         </a>
         <a
           href={site.mapsLink}
@@ -49,71 +92,43 @@ const chips = RAPIDOS.map((c) => TODOS.find((x) => x.c === c)).filter(Boolean);
       </div>
     </div>
 
-    <!-- Tintómetro: busca un código y la pared se pinta de ese color -->
+    <!-- Estancia con la pared tintada -->
     <div class="reveal">
-      <label for="tinto-buscar" class="sr-only">Busca un color por código</label>
-      <div class="flex items-center gap-2.5 rounded-full bg-white px-5 py-3 shadow-lg shadow-black/40">
-        <svg viewBox="0 0 24 24" class="h-4.5 w-4.5 shrink-0 text-negro/50" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
-          <circle cx="11" cy="11" r="7" />
-          <path d="m20 20-3.8-3.8" stroke-linecap="round" />
-        </svg>
-        <input
-          id="tinto-buscar"
-          type="search"
-          placeholder="Escribe un código: 7016, 9010, S 0502-Y…"
-          autocomplete="off"
-          class="w-full bg-transparent text-[14px] font-semibold text-negro placeholder:font-normal placeholder:text-negro/40 focus:outline-none"
-        />
-      </div>
-      <p id="tinto-info" class="mt-2 h-4 pl-2 text-[12px] text-papel/60" aria-live="polite"></p>
-
-      <div
-        id="pared-demo"
-        aria-live="polite"
-        class="mt-6 flex min-h-64 flex-col justify-end rounded-2xl p-6 shadow-lg shadow-black/40 transition-colors duration-500 md:min-h-72"
-        style="background-color:#293133;"
-      >
-        <p id="pared-codigo" class="font-display text-3xl font-extrabold tracking-tight text-white md:text-4xl">
-          RAL 7016
-        </p>
-        <div class="mt-1 flex items-center gap-2.5">
-          <span id="pared-nombre" class="text-[14px] font-semibold text-white/85">Gris antracita</span>
-          <span id="pared-carta-ral" class=""><BadgeCarta carta="RAL" /></span>
-          <span id="pared-carta-ncs" class="hidden"><BadgeCarta carta="NCS" /></span>
+      <figure class="overflow-hidden rounded-2xl shadow-xl shadow-black/40">
+        <div class="sim-estancia relative">
+          <img
+            src={asset('/assets/img/simulador/salon.jpg')}
+            alt="Salón con una pared de textura para imaginar el color"
+            class="block w-full"
+            width="1000"
+            height="1535"
+            loading="lazy"
+          />
+          <div
+            id="sim-capa"
+            class="sim-capa-mask"
+            style={`background-color:${INICIAL.h}; -webkit-mask-image:url(${maskUrl}); mask-image:url(${maskUrl})`}
+          >
+          </div>
         </div>
-      </div>
-
-      <div class="mt-4 flex flex-wrap gap-2.5" role="group" aria-label="Colores rápidos de carta">
-        {
-          chips.map((c) => (
-            <button
-              type="button"
-              class="color-chip h-9 w-9 cursor-pointer rounded-full border-2 border-white/25 transition-transform hover:scale-115 focus-visible:outline-2 focus-visible:outline-rojo"
-              style={`background-color:${c!.h};`}
-              data-hex={c!.h}
-              data-nombre={c!.n}
-              data-codigo={c!.c}
-              data-carta={c!.carta}
-              title={`${c!.n} · ${c!.c}`}
-              aria-label={`Ver ${c!.n} (${c!.c})`}
-            />
-          ))
-        }
-      </div>
-      <AvisoColor variant="inline" class="mt-4" />
+        <figcaption class="flex items-center justify-between gap-3 bg-white/[0.03] px-4 py-3">
+          <span class="text-[12px] text-papel/50">Estancia de ejemplo · resultado orientativo</span>
+          <span id="sim-nombre" class="text-[12.5px] font-semibold text-white">{INICIAL.n} · {INICIAL.c}</span>
+        </figcaption>
+      </figure>
     </div>
   </div>
 
-  <!-- Blancos rotos que se llevan -->
-  <div class="container-x mt-16 md:mt-20">
+  <!-- Blancos rotos que se llevan (al pulsar, pintan la pared) -->
+  <div class="container-x mt-16 md:mt-24">
     <div class="reveal flex flex-wrap items-end justify-between gap-4">
       <div>
         <p class="kicker-brocha text-rojo" style="font-size:1.8rem;">Tendencia</p>
         <h3 class="display mt-1 text-2xl text-white md:text-3xl">Blancos rotos que se llevan.</h3>
       </div>
       <p class="max-w-sm text-[13px] leading-relaxed text-papel/60">
-        Los blancos con matiz son lo más pedido del mostrador. Pídelos con su
-        código, tal cual.
+        Los blancos con matiz son lo más pedido del mostrador. Pulsa uno para verlo
+        en la pared; pídelos con su código.
       </p>
     </div>
     <div class="mt-7 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
@@ -125,14 +140,13 @@ const chips = RAPIDOS.map((c) => TODOS.find((x) => x.c === c)).filter(Boolean);
             data-hex={b.h}
             data-nombre={b.n}
             data-codigo={b.c}
-            data-carta={b.carta}
-            aria-label={`Ver ${b.n} (${b.c}) en el tintómetro`}
+            aria-label={`Ver ${b.n} (${b.c}) en la pared`}
           >
-            <div class="aspect-[5/3] rounded-t-2xl" style={`background-color:${b.h};`} />
+            <div class="aspect-[5/3] rounded-t-xl" style={`background-color:${b.h};`} />
             <div class="px-3.5 py-3">
               <div class="flex items-center justify-between gap-2">
                 <p class="truncate text-[13px] font-bold text-white">{b.n}</p>
-                <BadgeCarta carta={b.carta} class="scale-90" />
+                <BadgeCarta carta={b.carta} />
               </div>
               <p class="mt-0.5 text-[11.5px] font-semibold text-papel/75">{b.c}</p>
               <p class="mt-1 text-[11px] leading-relaxed text-papel/60">{b.nota}</p>
@@ -144,55 +158,80 @@ const chips = RAPIDOS.map((c) => TODOS.find((x) => x.c === c)).filter(Boolean);
   </div>
 </section>
 
-<script is:inline define:vars={{ TODOS }}>
-  const buscar = document.getElementById('tinto-buscar');
-  const info = document.getElementById('tinto-info');
-  const pared = document.getElementById('pared-demo');
-  const codigoEl = document.getElementById('pared-codigo');
-  const nombreEl = document.getElementById('pared-nombre');
-  const badgeRal = document.getElementById('pared-carta-ral');
-  const badgeNcs = document.getElementById('pared-carta-ncs');
+<script is:inline define:vars={{ RAL_JS: RAL }}>
+  // --- Índice de colores buscables: RAL completa + NCS completa (generada) ---
+  const norm = (s) => s.toUpperCase().replace(/[\s\-]/g, '');
+  const TODOS = RAL_JS.map((x) => ({ c: x.c, n: x.n, h: x.h }));
 
-  const luminancia = (hex) => {
-    const n = parseInt(hex.slice(1), 16);
-    return (0.299 * (n >> 16) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) / 255;
+  // NCS completo (mismo algoritmo que la página de cartas): permite buscar
+  // cualquier código NCS y tintar la pared de forma orientativa.
+  const ANCLAS = [
+    [255, 210, 0],
+    [196, 2, 51],
+    [0, 136, 191],
+    [0, 158, 96]
+  ];
+  const ncsHex = (s, c, hue) => {
+    let base;
+    if (hue === 'N') base = [128, 128, 128];
+    else {
+      const idx = 'YRBG'.indexOf(hue[0]);
+      const pct = hue.length > 1 ? parseInt(hue.slice(1, 3)) / 100 : 0;
+      const a = ANCLAS[idx];
+      const b = ANCLAS[(idx + 1) % 4];
+      base = [0, 1, 2].map((i) => a[i] + (b[i] - a[i]) * pct);
+    }
+    const w = Math.max(0, 100 - s - c);
+    const mix = (i) => Math.round((255 * w + base[i] * c + 20 * s) / 100);
+    return '#' + [mix(0), mix(1), mix(2)].map((v) => Math.min(255, v).toString(16).padStart(2, '0')).join('');
   };
+  const HUES = [];
+  for (const el of ['Y', 'R', 'B', 'G']) {
+    HUES.push(el);
+    for (let p = 10; p <= 90; p += 10) HUES.push(`${el}${p}${'YRBG'['YRBG'.indexOf(el) + 1] ?? 'Y'}`);
+  }
+  const pares = [];
+  for (const s of [5, 10, 20, 30, 40, 50, 60, 70, 80])
+    for (const c of [5, 10, 20, 30, 40, 50, 60, 70]) if (s + c <= 95) pares.push([s, c]);
+  const p2 = String;
+  for (const s of [3, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90])
+    TODOS.push({ c: `NCS S ${p2(s).padStart(2, '0')}00-N`, n: 'NCS neutro', h: ncsHex(s, 0, 'N') });
+  for (const hue of HUES)
+    for (const [s, c] of pares)
+      TODOS.push({ c: `NCS S ${p2(s).padStart(2, '0')}${p2(c).padStart(2, '0')}-${hue}`, n: 'NCS', h: ncsHex(s, c, hue) });
+
+  // --- Pintar la pared ---
+  const capa = document.getElementById('sim-capa');
+  const nombre = document.getElementById('sim-nombre');
+  const info = document.getElementById('sim-info');
+  const buscar = document.getElementById('sim-buscar');
+  const chips = document.querySelectorAll('.sim-chip');
 
   const pintar = (color) => {
-    pared.style.backgroundColor = color.h;
-    codigoEl.textContent = color.c;
-    nombreEl.textContent = color.n;
-    const oscuro = luminancia(color.h) > 0.6;
-    codigoEl.style.color = oscuro ? '#171111' : '#ffffff';
-    nombreEl.style.color = oscuro ? 'rgba(23,17,17,0.75)' : 'rgba(255,255,255,0.85)';
-    badgeRal.classList.toggle('hidden', color.carta !== 'RAL');
-    badgeNcs.classList.toggle('hidden', color.carta !== 'NCS');
+    if (capa) capa.style.backgroundColor = color.h;
+    if (nombre) nombre.textContent = color.n && color.n !== 'NCS' && color.n !== 'NCS neutro'
+      ? `${color.n} · ${color.c}`
+      : color.c;
+    chips.forEach((ch) => ch.setAttribute('aria-pressed', String(ch.dataset.codigo === color.c)));
   };
-
-  const norm = (s) => s.toUpperCase().replace(/[\s\-]/g, '');
 
   buscar?.addEventListener('input', () => {
     const q = norm(buscar.value);
-    if (!q) {
-      info.textContent = '';
-      return;
-    }
-    const hits = TODOS.filter((c) => norm(c.c).includes(q) || c.n.toUpperCase().includes(buscar.value.toUpperCase()));
+    if (!q) { if (info) info.textContent = ''; return; }
+    const porCodigo = TODOS.filter((c) => norm(c.c).includes(q));
+    const porNombre = TODOS.filter((c) => c.n.toUpperCase().includes(buscar.value.trim().toUpperCase()));
+    const hits = porCodigo.length ? porCodigo : porNombre;
     if (hits.length) {
       pintar(hits[0]);
-      info.textContent =
-        hits.length === 1 ? '¡Encontrado!' : `${hits.length} coincidencias — mostrando ${hits[0].c}`;
-    } else {
-      info.textContent = 'No está en la web: pregúntanos, en tienda hay miles más.';
+      if (info) info.textContent = hits.length === 1 ? '¡Encontrado!' : `${hits.length} coincidencias — mostrando ${hits[0].c}`;
+    } else if (info) {
+      info.textContent = 'No está en la web. En tienda tenemos las cartas completas.';
     }
   });
 
-  document.querySelectorAll('.color-chip, .blanco-item').forEach((el) => {
-    el.addEventListener('click', () => {
-      pintar({ h: el.dataset.hex, c: el.dataset.codigo, n: el.dataset.nombre, carta: el.dataset.carta });
-      if (el.classList.contains('blanco-item')) {
-        document.getElementById('color')?.scrollIntoView({ behavior: 'smooth' });
-      }
-    });
+  document.querySelectorAll('.sim-chip, .blanco-item').forEach((el) => {
+    el.addEventListener('click', () =>
+      pintar({ h: el.dataset.hex, c: el.dataset.codigo, n: el.dataset.nombre })
+    );
   });
 </script>
