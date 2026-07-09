@@ -134,8 +134,12 @@ const {
         const NOMBRES = Object.keys(COLORES);
         const rnd = (a: number, b: number) => a + Math.random() * (b - a);
         let vivos = 0;
-        addEventListener('pointerdown', (e) => {
-          if (vivos > 3) return;
+        // En táctil, el scroll ARRANCA con 'pointerdown' pero un gesto de scroll
+        // NO genera 'click': usar 'click' evita que salpique al desplazar el dedo.
+        // e.detail===0 = activación por teclado (Enter); la ignoramos para no
+        // salpicar en (0,0).
+        addEventListener('click', (e) => {
+          if (!e.detail || vivos > 3) return;
           vivos++;
           const nombre = NOMBRES[(Math.random() * NOMBRES.length) | 0];
           const root = document.createElement('div');
