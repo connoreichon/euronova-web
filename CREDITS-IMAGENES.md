@@ -13,6 +13,8 @@ obligatoria). Descargadas 2026-07-07.
 | `madera.jpg` | furniture-998265 | Salón con muebles de madera barnizada |
 | `suelos.jpg` | tennis-7137976 | Pista de tenis de tierra batida |
 | `imper.jpg` | roof-terrace-354906 | Terraza impermeabilizada con tumbonas |
+| `tienda/botes.jpg` | color-417694 | Estantería de botes de pintura mezclada (provisional para Nosotros) |
+| `og.jpg` | — | Imagen para compartir, generada con el logo sobre rojo de marca |
 
 Recomendación: sustituirlas poco a poco por fotos reales de la tienda y de
 trabajos de clientes (ver `ASSETS_NEEDED.md`).
@@ -22,16 +24,14 @@ trabajos de clientes (ver `ASSETS_NEEDED.md`).
 Oficiales, descargados de bupisa.com y rugoplast.com. Confirmar conformidad
 de las marcas para su uso como distribuidor.
 
-## Logotipo (vectorial, `src/components/LogoEuronova.astro`)
+## Logotipo (`public/assets/marca/`)
 
-- Reconstrucción VECTORIAL del rótulo real: E dibujada a mano según el cartel,
-  "uronov@" en **Handel Gothic BT** autohospedada (`public/assets/fonts/`),
-  pincelada azul redibujada con curvas suaves y eslogan.
-- ⚠️ Handel Gothic es una fuente comercial (copia webfont de repositorio
-  público de GitHub): **licenciarla antes de la entrega final** (~35-50 € en
-  MyFonts/Monotype) o confirmar que el rotulista/cliente tiene licencia.
-- Resto de fuentes (Archivo, Archivo Black, Inter, Nanum Brush Script):
-  Google Fonts, licencia libre OFL.
+- `lockup.png` / `word.png`: imagen REAL del rótulo de la tienda (facilitada por
+  el propietario y por el rotulista), con la E del cartel integrada. Marca
+  propia del cliente: sin problema de derechos ni fuentes que licenciar.
+- `favicon.png` y `apple-touch-icon.png`: la E del rótulo sobre el rojo de marca.
+- Tipografías de la web (Archivo, Inter, Nanum Brush Script): Google Fonts,
+  licencia libre OFL.
 
 ## Manchas decorativas (`public/assets/manchas/`)
 

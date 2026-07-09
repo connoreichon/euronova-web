@@ -2,6 +2,7 @@
 // Bloque de confianza (Fase 4 del MASTER): editorial, sin tarjetas.
 // Datos de confianza como tipografía con filetes, no como "stats de SaaS".
 import { site } from '../data/site';
+import { asset } from '../lib/asset';
 
 const confianza = [
   {
@@ -30,24 +31,26 @@ const confianza = [
         <p class="mt-6 max-w-lg text-[15px] leading-relaxed text-papel/70">
           En Euronova no solo vendemos botes. Te preguntamos qué vas a pintar,
           dónde está la superficie y qué acabado buscas para recomendarte una
-          solución realista — a particulares y a pintores profesionales de
-          {site.zona}.
+          solución realista — a particulares y a pintores profesionales de la
+          zona: {site.zona}.
         </p>
       </div>
 
-      <!-- TODO: reemplazar por foto real de la tienda (mostrador, estanterías,
-           tintométrica). Ver ASSETS_NEEDED.md — es la pieza que más confianza
-           aportará a toda la web. -->
+      <!-- Foto provisional (estantería de botes de pintura mezclada, licencia
+           Pixabay). TODO: sustituir por una foto REAL de la tienda de Euronova
+           — mostrador, estanterías o la tintométrica. Ver ASSETS_NEEDED.md. -->
       <div class="reveal">
-        <div
-          class="mat-fachada flex aspect-[4/3] items-end overflow-hidden rounded-2xl p-5"
-          role="img"
-          aria-label="Hueco reservado para una foto real de la tienda"
-        >
-          <span class="rounded-full bg-tinta/70 px-3.5 py-1.5 text-[12px] font-medium text-white">
-            Aquí va una foto real de la tienda
-          </span>
+        <div class="overflow-hidden rounded-2xl">
+          <img
+            src={asset('/assets/img/tienda/botes.jpg')}
+            alt="Estantería con botes de pintura de distintos colores mezclados"
+            class="aspect-[4/3] w-full object-cover"
+            width="1137"
+            height="853"
+            loading="lazy"
+          />
         </div>
+        <p class="mt-2 text-[11px] text-papel/40">Foto de muestra · pendiente de la foto real de la tienda</p>
       </div>
     </div>
 

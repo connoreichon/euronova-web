@@ -20,6 +20,7 @@ const {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href={asset('/assets/favicon.png')} />
+    <link rel="apple-touch-icon" href={asset('/assets/apple-touch-icon.png')} />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -49,10 +50,16 @@ const {
       type="application/ld+json"
       set:html={JSON.stringify({
         '@context': 'https://schema.org',
-        '@type': 'HomeAndConstructionBusiness',
+        '@type': 'HardwareStore',
         name: site.nombre,
+        legalName: site.razonSocial,
         description,
+        image: new URL(asset('/assets/og.jpg'), Astro.site).href,
+        url: Astro.site?.href,
         telephone: site.telefonoLink,
+        email: site.email,
+        priceRange: '€€',
+        currenciesAccepted: 'EUR',
         address: {
           '@type': 'PostalAddress',
           streetAddress: site.direccion,
@@ -61,8 +68,23 @@ const {
           addressRegion: 'Málaga',
           addressCountry: 'ES'
         },
-        areaServed: 'Mijas, Fuengirola, Costa del Sol',
-        openingHours: 'Mo-Fr 07:30-13:30,16:00-19:30'
+        areaServed: ['Mijas', 'Fuengirola', 'Costa del Sol'],
+        sameAs: [site.redes.instagram, site.redes.facebook],
+        openingHoursSpecification: {
+          '@type': 'OpeningHoursSpecification',
+          dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+          opens: '07:30',
+          closes: '19:30'
+        },
+        makesOffer: [
+          'Pintura para interior',
+          'Pintura para fachadas',
+          'Esmaltes',
+          'Barnices y protección de madera',
+          'Pintura para suelos',
+          'Impermeabilización',
+          'Color a medida (tintometría)'
+        ]
       })}
     />
   </head>

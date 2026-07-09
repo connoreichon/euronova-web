@@ -9,8 +9,8 @@ web entera se actualiza. No hace falta tocar componentes.
 | --- | --- | --- |
 | **WhatsApp** | `site.whatsapp` | 🟢 Real: `34686057191` (confirmado 2026-07-07). |
 | Mensaje prerelleno | `site.whatsappMensaje` | 🟢 "Hola, me gustaría hacer una consulta." |
-| **Dirección del local** | `site.direccion` | 🟡 Street View apunta a **Camino de Coín esquina C/ Yedra**; el registro dice C/ Río Corbones 8 (parece solo administrativa). Confirmar antes de fijar el mapa. |
-| Mapa embebido | `site.mapsEmbed` | 🟡 Vacío a propósito. Cuando se confirme la dirección: Google Maps → Compartir → Insertar mapa → copiar la URL del `src` del iframe. |
+| **Dirección del local** | `site.direccion` | 🟡 Street View apunta a **Camino de Coín esquina C/ Yedra**; el registro dice C/ Río Corbones 8 (parece solo administrativa). Confirmar y ajustar el texto. |
+| Mapa embebido | `site.mapsEmbed` | 🟢 Activo apuntando a la **ficha de Google del negocio** (búsqueda por nombre). Cuando se confirme la dirección exacta se puede sustituir por el embed oficial de esa ubicación (Google Maps → Compartir → Insertar mapa → copiar el `src`). |
 | Sábados | `site.horario` | 🟡 "Consultar por teléfono" hasta que el cliente confirme. |
 | Email | `site.email` | 🟡 `info@euronova.es` — el dominio euronova.es está caído: comprobar que el buzón sigue vivo. |
 | Reparto local | `servicios` (04) | 🟡 Confirmar si reparte y en qué zona; si no, borrar el servicio 04. |

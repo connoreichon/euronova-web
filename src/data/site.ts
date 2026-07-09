@@ -33,8 +33,11 @@ export const site = {
   zona: 'Mijas Costa · Fuengirola · Costa del Sol',
   mapsLink:
     'https://www.google.com/maps/search/?api=1&query=Pinturas+Euronova+Las+Lagunas+de+Mijas',
-  // URL de embed del mapa: rellenar cuando el cliente confirme la dirección.
-  mapsEmbed: '',
+  // Mapa embebido apuntando a la FICHA de Google del negocio (búsqueda por
+  // nombre, sin API key). Cuando el cliente confirme la dirección exacta,
+  // se puede cambiar por el embed oficial de esa ubicación (ver CAMBIAR_DATOS).
+  mapsEmbed:
+    'https://maps.google.com/maps?q=Pinturas%20Euronova%20Las%20Lagunas%20de%20Mijas&z=16&output=embed',
 
   // --- Horario --------------------------------------------------------------
   horario: [

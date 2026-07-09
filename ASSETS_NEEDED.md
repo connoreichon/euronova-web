@@ -13,7 +13,12 @@ huecos/texturas de relleno bien señalados.
 3. **Dirección exacta** del local (¿Camino de Coín esquina C/ Yedra?) para
    activar el mapa.
 
-## Fotos de la tienda (hueco en la sección "La tienda")
+## Fotos de la tienda (sección "La tienda" / Nosotros)
+
+> Ahora mismo hay una **foto de muestra** (estantería de botes, licencia
+> Pixabay) marcada como provisional. Sustituirla es lo que MÁS va a subir la
+> confianza de toda la web.
+
 
 - Fachada completa con el toldo rojo.
 - Interior: mostrador, estanterías con botes, la máquina tintométrica.
