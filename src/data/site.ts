@@ -150,7 +150,7 @@ export const servicios = [
   {
     num: '01',
     nombre: 'Color a medida',
-    desc: 'Tintometría en tienda: trae una muestra, una foto o una idea y salimos con tu color mezclado en minutos.'
+    desc: 'Tintometría en tienda: trae una muestra o dinos el tono que buscas y salimos con tu color mezclado en minutos.'
   },
   {
     num: '02',
