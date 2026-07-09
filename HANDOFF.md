@@ -76,7 +76,7 @@ También en memoria global: `feedback_direccion_arte.md` y `feedback_web_design_
 
 ### Páginas (`src/pages/`)
 - **`index.astro`** — portada. Orden de secciones: `Hero → Categorias → Tintometria(#color = "Imagina tu pared") → Servicios → Nosotros → Ubicacion(#tienda) → Marcas → CTAFinal → Footer → WhatsAppFloat`. `<main id="main">`.
-- **`cartas.astro`** (`/cartas/`) — explorador de cartas. Hero inmersivo con VÍDEO de pigmentos; tabs RAL/NCS/Eurotrend con distintivo de cada sistema; buscador por código/nombre; rejilla RAL (213) + NCS COMPLETO generado en cliente (2259 tonos) + Eurotrend vacía con aviso. Enlace final a "Imagina tu pared".
+- **`cartas.astro`** (`/cartas/`) — explorador de cartas. **VÍDEO de pigmentos en agua como FONDO FIJO de todo el apartado** (commit `3407921`), en bucle y a cámara lenta (`playbackRate 0.6`); las secciones de contenido son translúcidas (`bg-negro/55–75` + `backdrop-blur`) para que el vídeo se vea de fondo sin restar legibilidad a los swatches (opacos). Respeta `prefers-reduced-motion` (`.video-hero__media` se oculta). Tabs RAL/NCS/Eurotrend con distintivo de cada sistema; buscador por código/nombre; rejilla RAL (213) + NCS COMPLETO generado en cliente (2259 tonos) + Eurotrend vacía con aviso. Enlace final a "Imagina tu pared".
 - **`404.astro`** — 404 de marca ("Este tono no está en nuestra carta"). GitHub Pages sirve `dist/404.html` automáticamente.
 
 ### Componentes (`src/components/`)
@@ -105,10 +105,12 @@ También en memoria global: `feedback_direccion_arte.md` y `feedback_web_design_
 
 Sustituye al antiguo "Color exacto" en la portada (sección `#color`, archivo `Tintometria.astro`). **Estado: implementado y verificado en desktop, tablet y móvil (375/768/1038px).** Pulido móvil en commit `7549be8`: chips de acceso rápido en rejilla 4×4 equilibrada (antes 7+1 huérfano) con toque de 40px, pie de la estancia apilado y legible en móvil, y nombres de blancos rotos que ya no se truncan (fluyen a 2 líneas). Buscador + tap en muestras verificados tintando la pared en móvil.
 
+**REDISEÑO (commit `b640af0`):** el buscador iba en una columna aparte de la foto (quedaba mal integrado). Ahora es un **panel inmersivo en una sola columna centrada** (`mx-auto max-w-3xl`): el buscador FLOTA sobre la foto (pastilla glassy arriba), el nombre del color aplicado va abajo con velo, y chips/aviso/CTAs debajo. Orden correcto en móvil (título → panel → controles). **El salón + la máscara se recortaron de vertical (1000×1535) a apaisado 4:3 (1000×750)** para integrarse mejor: la pared (lo que se tiñe) manda y el sofá da contexto. Verificado por muestreo que el borde de la máscara coincide con el inicio del sofá → **solo la pared se tiñe** (el sofá queda gris con cualquier color).
+
 **Qué hace:** muestra una estancia real (`salon.jpg`) y **tinta SOLO la pared** con el color que el cliente busca (por código o nombre de cualquier carta RAL/NCS), conservando la textura del yeso. Orientativo.
 
 **Cómo funciona técnicamente:**
-- La estancia es `public/assets/img/simulador/salon.jpg` (1000×1535).
+- La estancia es `public/assets/img/simulador/salon.jpg` (1000×750 tras el recorte apaisado; el original vertical 1000×1535 sigue en el histórico git). La máscara `salon-mask.png` se recortó con la MISMA caja `(0,300,1000,1050)` para que siga alineada.
 - La pared está recortada por una **máscara PNG precisa**: `public/assets/img/simulador/salon-mask.png` (blanco = pared, siguiendo la silueta del sofá).
 - El overlay `#sim-capa` (clase `.sim-capa-mask` en global.css): `mix-blend-mode: multiply`, `mask-image:url(salon-mask.png)` (inline con `asset()` para evitar warning de Vite), `mask-size:100% 100%`. JS sólo cambia `background-color`.
 - **Truco de realismo:** la base de la pared en `salon.jpg` se ACLARÓ (screen-lift 0.62) solo en la zona de la máscara, para que el `multiply` reproduzca fiel también los tonos CLAROS (si no, sobre gris quedan apagados). Los oscuros/saturados ya salían perfectos.
