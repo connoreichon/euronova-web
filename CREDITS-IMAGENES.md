@@ -16,6 +16,7 @@ obligatoria). Descargadas 2026-07-07.
 | `tienda/botes.jpg` | color-417694 | Estantería de botes de pintura mezclada (provisional para Nosotros) |
 | `simulador/interior.jpg` | living-room-2155376 | Salón nórdico luminoso (superficie Interior del simulador "Imagina tu pared"); máscara propia |
 | `simulador/fachada.jpg` | door-2096367 | Fachada mediterránea (superficie Exterior); placa/cartel clonado fuera; máscara propia |
+| `simulador/metal.jpg` | yard-gate-2638653 | Verja de forja de jardín (superficie Esmalte/metal); máscara propia (umbral claro+neutro) |
 | `og.jpg` | — | Imagen para compartir, generada con el logo sobre rojo de marca |
 
 ## Vídeo (`public/assets/video/`)

@@ -40,6 +40,14 @@ const SUPERFICIES = [
     img: '/assets/img/simulador/fachada.jpg',
     mask: '/assets/img/simulador/fachada-mask.png',
     alt: 'Fachada mediterránea para imaginar el color de exterior'
+  },
+  {
+    id: 'esmalte',
+    label: 'Esmalte',
+    sub: 'metal',
+    img: '/assets/img/simulador/metal.jpg',
+    mask: '/assets/img/simulador/metal-mask.png',
+    alt: 'Verja de forja para imaginar el color del esmalte sobre metal'
   }
 ];
 const ACABADOS = [
@@ -84,10 +92,6 @@ const ACABADOS = [
           </button>
         ))
       }
-      <span class="inline-flex items-center gap-1.5 rounded-xl border border-white/10 px-3 py-2 text-[11.5px] text-papel/45 sm:ml-auto">
-        Esmalte · metal
-        <span class="rounded-full bg-white/10 px-2 py-0.5 text-[10px] font-semibold tracking-wide uppercase">pronto</span>
-      </span>
     </div>
 
     <!-- Escenario: una foto por superficie (solo la activa visible) con el
