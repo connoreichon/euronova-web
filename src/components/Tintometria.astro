@@ -54,12 +54,12 @@ const maskUrl = asset('/assets/img/simulador/salon-mask.png');
       </div>
       <p id="sim-info" class="mt-2 h-4 pl-2 text-[12px] text-papel/55" aria-live="polite"></p>
 
-      <div class="mt-4 flex flex-wrap gap-2.5" role="group" aria-label="Colores rápidos">
+      <div class="mt-4 grid grid-cols-4 justify-items-center gap-3 sm:flex sm:flex-wrap sm:justify-start sm:gap-2.5" role="group" aria-label="Colores rápidos">
         {
           RAPIDOS.map((c, i) => (
             <button
               type="button"
-              class="sim-chip h-9 w-9 cursor-pointer rounded-full border-2 border-white/25 transition-transform hover:scale-110 focus-visible:outline-none"
+              class="sim-chip h-10 w-10 cursor-pointer rounded-full border-2 border-white/25 transition-transform hover:scale-110 focus-visible:outline-none"
               style={`background-color:${c.h}`}
               data-hex={c.h}
               data-codigo={c.c}
@@ -111,7 +111,7 @@ const maskUrl = asset('/assets/img/simulador/salon-mask.png');
           >
           </div>
         </div>
-        <figcaption class="flex items-center justify-between gap-3 bg-white/[0.03] px-4 py-3">
+        <figcaption class="flex flex-col items-start gap-1 bg-white/[0.03] px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
           <span class="text-[12px] text-papel/50">Estancia de ejemplo · resultado orientativo</span>
           <span id="sim-nombre" class="text-[12.5px] font-semibold text-white">{INICIAL.n} · {INICIAL.c}</span>
         </figcaption>
@@ -144,9 +144,9 @@ const maskUrl = asset('/assets/img/simulador/salon-mask.png');
           >
             <div class="aspect-[5/3] rounded-t-xl" style={`background-color:${b.h};`} />
             <div class="px-3.5 py-3">
-              <div class="flex items-center justify-between gap-2">
-                <p class="truncate text-[13px] font-bold text-white">{b.n}</p>
-                <BadgeCarta carta={b.carta} />
+              <div class="flex items-start justify-between gap-2">
+                <p class="min-w-0 text-[13px] font-bold text-white">{b.n}</p>
+                <BadgeCarta carta={b.carta} class="mt-0.5" />
               </div>
               <p class="mt-0.5 text-[11.5px] font-semibold text-papel/75">{b.c}</p>
               <p class="mt-1 text-[11px] leading-relaxed text-papel/60">{b.nota}</p>
