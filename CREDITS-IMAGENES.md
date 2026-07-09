@@ -11,7 +11,7 @@ obligatoria). Descargadas 2026-07-07.
 | `fachadas.jpg` | architecture-2608240 | Fachada mediterránea pastel |
 | `esmaltes.jpg` | metal-2437487 | Reja de forja esmaltada azul y oro |
 | `madera.jpg` | furniture-998265 | Salón con muebles de madera barnizada |
-| `suelos.jpg` | tennis-7137976 | Pista de tenis de tierra batida |
+| `suelos.jpg` | parking-219767 | Suelo de garaje pintado con flecha y líneas de aparcamiento |
 | `imper.jpg` | roof-terrace-354906 | Terraza impermeabilizada con tumbonas |
 | `tienda/botes.jpg` | color-417694 | Estantería de botes de pintura mezclada (provisional para Nosotros) |
 | `simulador/estancia.jpg` | couch-1845270 | Salón de ejemplo del simulador "Imagina tu pared" |
