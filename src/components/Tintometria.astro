@@ -1,15 +1,16 @@
 ---
-// "Imagina tu pared" (sustituye al antiguo bloque de color exacto).
-// Una estancia real cuya PARED se tinta con el color que el cliente busca
-// (por código o nombre de cualquier carta RAL/NCS). Solo se pinta la pared,
-// con su textura, mediante una máscara precisa + mezcla multiply. Orientativo.
+// "Imagina tu pared": simulador de color sobre superficies reales.
+// El cliente elige SUPERFICIE (interior/exterior), COLOR (cualquier RAL/NCS) y
+// ACABADO (mate/satinado/brillo). Solo se pinta la superficie que corresponde
+// (máscara por silueta) con mezcla multiply para conservar la textura; el
+// acabado añade reflejo (capa "screen"). Todo orientativo.
 import { site } from '../data/site';
 import { RAL, BLANCOS_ROTOS } from '../data/cartas';
 import BadgeCarta from './BadgeCarta.astro';
 import AvisoColor from './AvisoColor.astro';
 import { asset } from '../lib/asset';
 
-// Color inicial de la pared y accesos rápidos (curados, del claro al intenso).
+// Color inicial y accesos rápidos (curados, del claro al intenso).
 const INICIAL = { h: '#e9e2ce', c: 'NCS S 1005-Y', n: 'Lino' };
 const RAPIDOS = [
   { n: 'Blanco cálido', c: 'NCS S 0502-Y', h: '#f2efe2' },
@@ -21,7 +22,31 @@ const RAPIDOS = [
   { n: 'Gris antracita', c: 'RAL 7016', h: '#293133' },
   { n: 'Rojo Euronova', c: 'RAL 3020', h: '#c1121c' }
 ];
-const maskUrl = asset('/assets/img/simulador/salon-mask.png');
+
+// Superficies: cada una es una foto real + una máscara (blanco = lo que se pinta).
+const SUPERFICIES = [
+  {
+    id: 'interior',
+    label: 'Interior',
+    sub: 'pared de salón',
+    img: '/assets/img/simulador/interior.jpg',
+    mask: '/assets/img/simulador/interior-mask.png',
+    alt: 'Salón con una gran pared para imaginar el color de interior'
+  },
+  {
+    id: 'exterior',
+    label: 'Exterior',
+    sub: 'fachada',
+    img: '/assets/img/simulador/fachada.jpg',
+    mask: '/assets/img/simulador/fachada-mask.png',
+    alt: 'Fachada mediterránea para imaginar el color de exterior'
+  }
+];
+const ACABADOS = [
+  { id: 'mate', label: 'Mate' },
+  { id: 'satinado', label: 'Satinado' },
+  { id: 'brillo', label: 'Brillo' }
+];
 ---
 
 <section id="color" class="bg-negro py-20 text-papel md:py-32">
@@ -30,37 +55,71 @@ const maskUrl = asset('/assets/img/simulador/salon-mask.png');
     <div class="reveal mx-auto max-w-3xl">
       <p class="kicker-brocha text-rojo">Imagina tu pared</p>
       <h2 class="display mt-2 text-3xl text-white md:text-5xl">
-        Prueba cualquier color en tu pared.
+        Pruébalo antes de pintar.
       </h2>
       <p class="mt-4 max-w-xl text-[15px] leading-relaxed text-papel/75">
-        Escribe el código o el nombre de un color de las cartas RAL o NCS y la
-        pared se tiñe al instante. Es orientativo; en tienda lo igualamos con
-        precisión con carta física y tintometría.
+        Elige la superficie, escribe un color de las cartas RAL o NCS y el
+        acabado: se pinta al instante y solo lo que toca. Es orientativo; en
+        tienda lo igualamos con precisión con carta física y tintometría.
       </p>
     </div>
 
-    <!-- Panel inmersivo: estancia real con el buscador SOBRE la foto.
-         Solo la pared se tiñe (máscara con la silueta del sofá). -->
-    <figure class="reveal relative mx-auto mt-8 max-w-3xl overflow-hidden rounded-2xl shadow-xl shadow-black/50">
-      <div class="sim-estancia relative">
-        <img
-          src={asset('/assets/img/simulador/salon.jpg')}
-          alt="Pared de textura con un sofá delante para imaginar el color"
-          class="block w-full"
-          width="1000"
-          height="750"
-          loading="lazy"
-        />
-        <div
-          id="sim-capa"
-          class="sim-capa-mask"
-          style={`background-color:${INICIAL.h}; -webkit-mask-image:url(${maskUrl}); mask-image:url(${maskUrl})`}
-        >
-        </div>
-      </div>
+    <!-- Selector de superficie -->
+    <div
+      class="reveal mx-auto mt-7 flex max-w-3xl flex-wrap items-center gap-2"
+      role="tablist"
+      aria-label="Tipo de superficie"
+    >
+      {
+        SUPERFICIES.map((s, i) => (
+          <button
+            type="button"
+            role="tab"
+            data-surface={s.id}
+            aria-selected={i === 0 ? 'true' : 'false'}
+            class="sim-surface-tab cursor-pointer rounded-xl border px-3.5 py-2 transition-colors"
+          >
+            <span class="text-[13px] font-bold">{s.label}</span>
+            <span class="text-[11.5px] opacity-70"> · {s.sub}</span>
+          </button>
+        ))
+      }
+      <span class="inline-flex items-center gap-1.5 rounded-xl border border-white/10 px-3 py-2 text-[11.5px] text-papel/45 sm:ml-auto">
+        Esmalte · metal
+        <span class="rounded-full bg-white/10 px-2 py-0.5 text-[10px] font-semibold tracking-wide uppercase">pronto</span>
+      </span>
+    </div>
 
-      <!-- Buscador flotante sobre la foto -->
-      <div class="absolute inset-x-0 top-0 flex flex-col gap-2 p-3 sm:p-4">
+    <!-- Escenario: una foto por superficie (solo la activa visible) con el
+         buscador flotando encima. Solo se pinta la superficie de su máscara. -->
+    <div class="reveal sim-stage relative mx-auto mt-4 max-w-3xl overflow-hidden rounded-2xl shadow-xl shadow-black/50">
+      {
+        SUPERFICIES.map((s, i) => (
+          <div class={`sim-panel ${i === 0 ? '' : 'hidden'}`} data-panel={s.id}>
+            <div class="sim-estancia relative">
+              <img
+                src={asset(s.img)}
+                alt={s.alt}
+                class="block w-full"
+                width="1000"
+                height="750"
+                loading="lazy"
+              />
+              <div
+                class="sim-color sim-mask"
+                style={`background-color:${INICIAL.h}; -webkit-mask-image:url(${asset(s.mask)}); mask-image:url(${asset(s.mask)})`}
+              />
+              <div
+                class="sim-sheen sim-mask"
+                style={`-webkit-mask-image:url(${asset(s.mask)}); mask-image:url(${asset(s.mask)})`}
+              />
+            </div>
+          </div>
+        ))
+      }
+
+      <!-- Buscador flotante (único, sobre la superficie activa) -->
+      <div class="absolute inset-x-0 top-0 z-10 flex flex-col gap-2 p-3 sm:p-4">
         <label for="sim-buscar" class="sr-only">Busca un color por código o nombre</label>
         <div class="flex items-center gap-2.5 rounded-full bg-white/95 px-4 py-3 shadow-lg shadow-black/30 backdrop-blur-sm">
           <svg viewBox="0 0 24 24" class="h-4.5 w-4.5 shrink-0 text-negro/50" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
@@ -78,33 +137,53 @@ const maskUrl = asset('/assets/img/simulador/salon-mask.png');
         <p id="sim-info" class="ml-3 h-4 text-[12px] font-semibold text-white [text-shadow:0_1px_4px_rgba(0,0,0,0.85)]" aria-live="polite"></p>
       </div>
 
-      <!-- Nombre del color aplicado, abajo, con velo para legibilidad -->
-      <figcaption class="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 bg-gradient-to-t from-black/70 via-black/20 to-transparent px-4 pt-12 pb-3">
+      <!-- Color + acabado aplicados, abajo, con velo para legibilidad -->
+      <figcaption class="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-3 bg-gradient-to-t from-black/70 via-black/20 to-transparent px-4 pt-12 pb-3">
         <span class="text-[11.5px] text-white/70">Resultado orientativo</span>
         <span id="sim-nombre" class="text-right text-[13px] font-semibold text-white [text-shadow:0_1px_4px_rgba(0,0,0,0.6)]">{INICIAL.n} · {INICIAL.c}</span>
       </figcaption>
-    </figure>
+    </div>
 
-    <!-- Colores rápidos + aviso + CTAs -->
-    <div class="reveal mx-auto mt-6 max-w-3xl">
-      <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
-        <p class="shrink-0 text-[12px] font-semibold tracking-wide text-papel/55 uppercase">O prueba estos</p>
-        <div class="grid grid-cols-4 justify-items-center gap-3 sm:flex sm:flex-wrap sm:justify-start sm:gap-2.5" role="group" aria-label="Colores rápidos">
-          {
-            RAPIDOS.map((c, i) => (
-              <button
-                type="button"
-                class="sim-chip h-10 w-10 cursor-pointer rounded-full border-2 border-white/25 transition-transform hover:scale-110 focus-visible:outline-none"
-                style={`background-color:${c.h}`}
-                data-hex={c.h}
-                data-codigo={c.c}
-                data-nombre={c.n}
-                title={`${c.n} · ${c.c}`}
-                aria-label={`Ver la pared en ${c.n} (${c.c})`}
-                aria-pressed={c.c === INICIAL.c ? 'true' : 'false'}
-              />
-            ))
-          }
+    <!-- Acabado + colores rápidos -->
+    <div class="reveal mx-auto mt-5 max-w-3xl">
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <p class="mb-2 text-[12px] font-semibold tracking-wide text-papel/55 uppercase">Acabado</p>
+          <div class="inline-flex rounded-full border border-white/15 p-1" role="group" aria-label="Acabado">
+            {
+              ACABADOS.map((a, i) => (
+                <button
+                  type="button"
+                  data-finish={a.id}
+                  aria-pressed={i === 0 ? 'true' : 'false'}
+                  class="sim-finish cursor-pointer rounded-full px-4 py-1.5 text-[13px] font-semibold transition-colors"
+                >
+                  {a.label}
+                </button>
+              ))
+            }
+          </div>
+        </div>
+
+        <div>
+          <p class="mb-2 text-[12px] font-semibold tracking-wide text-papel/55 uppercase">O prueba estos</p>
+          <div class="grid grid-cols-4 gap-3 sm:flex sm:flex-wrap sm:gap-2.5" role="group" aria-label="Colores rápidos">
+            {
+              RAPIDOS.map((c, i) => (
+                <button
+                  type="button"
+                  class="sim-chip h-10 w-10 cursor-pointer rounded-full border-2 border-white/25 transition-transform hover:scale-110 focus-visible:outline-none"
+                  style={`background-color:${c.h}`}
+                  data-hex={c.h}
+                  data-codigo={c.c}
+                  data-nombre={c.n}
+                  title={`${c.n} · ${c.c}`}
+                  aria-label={`Ver la superficie en ${c.n} (${c.c})`}
+                  aria-pressed={c.c === INICIAL.c ? 'true' : 'false'}
+                />
+              ))
+            }
+          </div>
         </div>
       </div>
 
@@ -129,7 +208,7 @@ const maskUrl = asset('/assets/img/simulador/salon-mask.png');
     </div>
   </div>
 
-  <!-- Blancos rotos que se llevan (al pulsar, pintan la pared) -->
+  <!-- Blancos rotos que se llevan (al pulsar, pintan la superficie activa) -->
   <div class="container-x mt-16 md:mt-24">
     <div class="reveal flex flex-wrap items-end justify-between gap-4">
       <div>
@@ -168,13 +247,11 @@ const maskUrl = asset('/assets/img/simulador/salon-mask.png');
   </div>
 </section>
 
-<script is:inline define:vars={{ RAL_JS: RAL }}>
+<script is:inline define:vars={{ RAL_JS: RAL, ACABADOS_JS: ACABADOS }}>
   // --- Índice de colores buscables: RAL completa + NCS completa (generada) ---
   const norm = (s) => s.toUpperCase().replace(/[\s\-]/g, '');
   const TODOS = RAL_JS.map((x) => ({ c: x.c, n: x.n, h: x.h }));
 
-  // NCS completo (mismo algoritmo que la página de cartas): permite buscar
-  // cualquier código NCS y tintar la pared de forma orientativa.
   const ANCLAS = [
     [255, 210, 0],
     [196, 2, 51],
@@ -210,20 +287,51 @@ const maskUrl = asset('/assets/img/simulador/salon-mask.png');
     for (const [s, c] of pares)
       TODOS.push({ c: `NCS S ${p2(s).padStart(2, '0')}${p2(c).padStart(2, '0')}-${hue}`, n: 'NCS', h: ncsHex(s, c, hue) });
 
-  // --- Pintar la pared ---
-  const capa = document.getElementById('sim-capa');
+  // --- Estado: superficie activa, color y acabado ---
+  const colorLayers = document.querySelectorAll('.sim-color');
+  const sheenLayers = document.querySelectorAll('.sim-sheen');
+  const paneles = document.querySelectorAll('[data-panel]');
+  const surfaceTabs = document.querySelectorAll('[data-surface]');
+  const finishBtns = document.querySelectorAll('[data-finish]');
   const nombre = document.getElementById('sim-nombre');
   const info = document.getElementById('sim-info');
   const buscar = document.getElementById('sim-buscar');
   const chips = document.querySelectorAll('.sim-chip');
 
+  // Intensidad del reflejo por acabado (opacidad de la capa "screen").
+  const SHEEN = { mate: 0, satinado: 0.18, brillo: 0.46 };
+  let acabado = 'mate';
+  let colorActual = { h: '#e9e2ce', c: 'NCS S 1005-Y', n: 'Lino' };
+
+  const nombreColor = (color) =>
+    color.n && color.n !== 'NCS' && color.n !== 'NCS neutro' ? `${color.n} · ${color.c}` : color.c;
+
+  const refrescarNombre = () => {
+    const acab = (ACABADOS_JS.find((a) => a.id === acabado) || {}).label || '';
+    if (nombre) nombre.textContent = `${nombreColor(colorActual)} · ${acab}`;
+  };
+
   const pintar = (color) => {
-    if (capa) capa.style.backgroundColor = color.h;
-    if (nombre) nombre.textContent = color.n && color.n !== 'NCS' && color.n !== 'NCS neutro'
-      ? `${color.n} · ${color.c}`
-      : color.c;
+    colorActual = color;
+    colorLayers.forEach((c) => (c.style.backgroundColor = color.h));
+    refrescarNombre();
     chips.forEach((ch) => ch.setAttribute('aria-pressed', String(ch.dataset.codigo === color.c)));
   };
+
+  const setAcabado = (id) => {
+    acabado = id;
+    sheenLayers.forEach((s) => (s.style.opacity = String(SHEEN[id] ?? 0)));
+    finishBtns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.finish === id)));
+    refrescarNombre();
+  };
+
+  const setSuperficie = (id) => {
+    paneles.forEach((p) => p.classList.toggle('hidden', p.dataset.panel !== id));
+    surfaceTabs.forEach((t) => t.setAttribute('aria-selected', String(t.dataset.surface === id)));
+  };
+
+  surfaceTabs.forEach((t) => t.addEventListener('click', () => setSuperficie(t.dataset.surface)));
+  finishBtns.forEach((b) => b.addEventListener('click', () => setAcabado(b.dataset.finish)));
 
   buscar?.addEventListener('input', () => {
     const q = norm(buscar.value);
@@ -244,4 +352,6 @@ const maskUrl = asset('/assets/img/simulador/salon-mask.png');
       pintar({ h: el.dataset.hex, c: el.dataset.codigo, n: el.dataset.nombre })
     );
   });
+
+  refrescarNombre();
 </script>

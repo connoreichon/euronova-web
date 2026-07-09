@@ -221,20 +221,63 @@ body {
 .sim-estancia {
   position: relative;
 }
-.sim-capa-mask {
+/* Capas que se recortan a la superficie pintable (blanco de la máscara). */
+.sim-mask {
   position: absolute;
   inset: 0;
-  mix-blend-mode: multiply;
   -webkit-mask-size: 100% 100%;
   mask-size: 100% 100%;
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
-  transition: background-color 0.45s ease;
   pointer-events: none;
+}
+/* Capa de COLOR: multiply para conservar textura y sombras del material. */
+.sim-color {
+  mix-blend-mode: multiply;
+  transition: background-color 0.45s ease;
+}
+/* Capa de ACABADO: reflejo que aparece con satinado/brillo (screen). La
+   opacidad la fija el JS según el acabado (mate = 0). */
+.sim-sheen {
+  mix-blend-mode: screen;
+  opacity: 0;
+  background: linear-gradient(
+    122deg,
+    transparent 12%,
+    rgba(255, 255, 255, 0.62) 46%,
+    rgba(255, 255, 255, 0.3) 60%,
+    transparent 88%
+  );
+  transition: opacity 0.4s ease;
 }
 .sim-chip[aria-pressed='true'] {
   border-color: #fff;
   box-shadow: 0 0 0 2px #171111;
+}
+/* Selector de superficie (tabs) */
+.sim-surface-tab {
+  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(250, 247, 242, 0.72);
+}
+.sim-surface-tab[aria-selected='true'] {
+  border-color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+/* Selector de acabado (segmentado) */
+.sim-finish {
+  color: rgba(250, 247, 242, 0.65);
+}
+.sim-finish[aria-pressed='true'] {
+  background: #fff;
+  color: #171111;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sim-color,
+  .sim-sheen {
+    transition: none;
+  }
 }
 
 /* Hero con vídeo de pigmentos: el póster (inline en el componente) hace de
