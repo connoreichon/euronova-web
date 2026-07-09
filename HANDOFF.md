@@ -107,13 +107,18 @@ Sustituye al antiguo "Color exacto" en la portada (sección `#color`, archivo `T
 
 **REDISEÑO (commit `b640af0`):** el buscador iba en una columna aparte de la foto (quedaba mal integrado). Ahora es un **panel inmersivo en una sola columna centrada** (`mx-auto max-w-3xl`): el buscador FLOTA sobre la foto (pastilla glassy arriba), el nombre del color aplicado va abajo con velo, y chips/aviso/CTAs debajo. Orden correcto en móvil (título → panel → controles). **El salón + la máscara se recortaron de vertical (1000×1535) a apaisado 4:3 (1000×750)** para integrarse mejor: la pared (lo que se tiñe) manda y el sofá da contexto. Verificado por muestreo que el borde de la máscara coincide con el inicio del sofá → **solo la pared se tiñe** (el sofá queda gris con cualquier color).
 
-**Qué hace:** muestra una estancia real (`salon.jpg`) y **tinta SOLO la pared** con el color que el cliente busca (por código o nombre de cualquier carta RAL/NCS), conservando la textura del yeso. Orientativo.
+**SUPERFICIES + ACABADOS (commit `86a049f` — estado actual):** ya NO es solo una pared. El cliente elige:
+- **SUPERFICIE** (tabs `[data-surface]`): **Interior** (`interior.jpg` + `interior-mask.png`, salón con gran pared) o **Exterior** (`fachada.jpg` + `fachada-mask.png`, fachada mediterránea). **Esmalte/metal** aparece como tab deshabilitado "pronto" (⚠ PENDIENTE: no encontré foto de metal limpia y clara enmascarable — radiador/rejas fallaron; hace falta un metal FRONTAL, CLARO y de silueta simple).
+- **COLOR**: cualquier RAL/NCS (buscador + chips), igual que antes.
+- **ACABADO** (segmentado `[data-finish]`): Mate / Satinado / Brillo. Es visual: capa `.sim-sheen` (mix-blend `screen`, gradiente de reflejo diagonal) cuya opacidad fija el JS (`SHEEN = {mate:0, satinado:0.18, brillo:0.46}`). El nombre muestra `color · acabado`.
+- Cada superficie es un `.sim-panel` (solo el activo sin `hidden`) dentro de `.sim-stage`; el buscador flotante y el pie son ÚNICOS (superpuestos, `z-10`). `pintar()` aplica el color a TODAS las capas `.sim-color`; `setAcabado()` a todas las `.sim-sheen`; cambiar de superficie solo alterna `hidden`.
+
+**Qué hace:** **tinta SOLO la superficie** de su máscara (blanco = pintable) con `multiply` (conserva textura); el acabado añade reflejo. En interior se pinta la pared (sofá, cuadro, lienzo, lámpara intactos); en exterior la fachada (puerta, ventana y trim azul intactos). Verificado con verde/azul + muestreo de máscara. Orientativo.
 
 **Cómo funciona técnicamente:**
-- La estancia es `public/assets/img/simulador/salon.jpg` (1000×750 tras el recorte apaisado; el original vertical 1000×1535 sigue en el histórico git). La máscara `salon-mask.png` se recortó con la MISMA caja `(0,300,1000,1050)` para que siga alineada.
-- La pared está recortada por una **máscara PNG precisa**: `public/assets/img/simulador/salon-mask.png` (blanco = pared, siguiendo la silueta del sofá).
-- El overlay `#sim-capa` (clase `.sim-capa-mask` en global.css): `mix-blend-mode: multiply`, `mask-image:url(salon-mask.png)` (inline con `asset()` para evitar warning de Vite), `mask-size:100% 100%`. JS sólo cambia `background-color`.
-- **Truco de realismo:** la base de la pared en `salon.jpg` se ACLARÓ (screen-lift 0.62) solo en la zona de la máscara, para que el `multiply` reproduzca fiel también los tonos CLAROS (si no, sobre gris quedan apagados). Los oscuros/saturados ya salían perfectos.
+- Cada superficie: foto (1000×750) + máscara PNG (1000×750). Capas por panel: `.sim-color` (multiply) + `.sim-sheen` (screen), ambas `.sim-mask` con la máscara inline (`asset()` para evitar warning de Vite), `mask-size:100% 100%`.
+- **Máscaras (cómo se generaron, `Python+PIL+numpy`, hay grid helper):** interior/fachada = polígono a mano (huecos rect para cuadro/puerta/ventana) + `GaussianBlur(1.5)`. El RADIADOR se intentó por **umbral de luminancia** (metal claro vs fondo oscuro) recortado a una envolvente — no cuajó por las caras en sombra; ese enfoque de umbral sirve para metales bien iluminados.
+- **Truco de realismo:** la zona pintable de cada foto se ACLARA (`lift = 255-(255-base)*k`, k≈0.6–0.9 según lo clara que sea) para que el `multiply` reproduzca fiel también los tonos CLAROS.
 - Buscador `#sim-buscar`: normaliza (quita espacios/guiones), busca en `TODOS` = RAL completa (pasada por `define:vars`) + NCS completo (generado en cliente). Chips rápidos y tarjetas de blancos rotos también llaman a `pintar()`.
 
 **Cómo se generó la máscara (por si hay que rehacerla o cambiar la foto):**
