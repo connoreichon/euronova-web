@@ -4,6 +4,7 @@ import LogoEuronova from './LogoEuronova.astro';
 import { asset } from '../lib/asset';
 
 const wa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(site.whatsappMensaje)}`;
+const enCartas = Astro.url.pathname.includes('/cartas');
 // Rutas absolutas con base: funcionan desde la portada y desde /cartas
 const enlaces = [
   { href: asset('/') + '#productos', txt: 'Productos' },
@@ -25,14 +26,20 @@ const enlaces = [
 
     <nav aria-label="Secciones" class="hidden items-center gap-6 md:flex">
       {
-        enlaces.map((e) => (
-          <a
-            href={e.href}
-            class="text-[13px] font-medium text-white/85 transition-colors hover:text-white"
-          >
-            {e.txt}
-          </a>
-        ))
+        enlaces.map((e) => {
+          const activo = enCartas && e.txt === 'Cartas de colores';
+          return (
+            <a
+              href={e.href}
+              aria-current={activo ? 'page' : undefined}
+              class={`text-[13px] transition-colors hover:text-white ${
+                activo ? 'font-bold text-white underline underline-offset-8' : 'font-medium text-white/85'
+              }`}
+            >
+              {e.txt}
+            </a>
+          );
+        })
       }
     </nav>
 

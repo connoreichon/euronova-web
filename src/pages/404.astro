@@ -1,0 +1,45 @@
+---
+// 404 con voz de tienda de pinturas (GitHub Pages sirve dist/404.html).
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import WhatsAppFloat from '../components/WhatsAppFloat.astro';
+import { site } from '../data/site';
+import { asset } from '../lib/asset';
+
+const wa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(site.whatsappMensaje)}`;
+---
+
+<Base title={`Página no encontrada · ${site.nombre}`} description="Esta página no existe. Vuelve a la portada de Pinturas Euronova o escríbenos por WhatsApp.">
+  <Header />
+  <main id="main" class="flex min-h-[70vh] items-center bg-negro pt-20 text-papel">
+    <div class="container-x py-20">
+      <p class="kicker-brocha text-rojo">Error 404</p>
+      <h1 class="display mt-2 max-w-xl text-3xl text-white md:text-5xl">
+        Este tono no está<br />en nuestra carta.
+      </h1>
+      <p class="mt-4 max-w-md text-[15px] leading-relaxed text-papel/70">
+        La página que buscas no existe o ha cambiado de sitio. Pero el color
+        que buscas, ese sí lo tenemos.
+      </p>
+      <div class="mt-8 flex flex-wrap items-center gap-3">
+        <a
+          href={asset('/')}
+          class="rounded-full bg-rojo px-6 py-3 text-[14px] font-bold text-white transition-transform hover:-translate-y-0.5"
+        >
+          Volver a la portada
+        </a>
+        <a
+          href={wa}
+          target="_blank"
+          rel="noopener"
+          class="rounded-full border border-white/40 px-6 py-3 text-[14px] font-semibold text-white transition-colors hover:border-white hover:bg-white/10"
+        >
+          Escríbenos por WhatsApp
+        </a>
+      </div>
+    </div>
+  </main>
+  <Footer />
+  <WhatsAppFloat />
+</Base>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://connoreichon.github.io/euronova-web/sitemap-index.xml
