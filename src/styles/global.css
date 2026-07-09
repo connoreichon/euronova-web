@@ -239,16 +239,15 @@ body {
 /* Capa de ACABADO: reflejo que aparece con satinado/brillo (screen). La
    opacidad la fija el JS según el acabado (mate = 0). */
 .sim-sheen {
-  mix-blend-mode: screen;
+  mix-blend-mode: soft-light;
   opacity: 0;
   background: linear-gradient(
-    122deg,
-    transparent 12%,
-    rgba(255, 255, 255, 0.62) 46%,
-    rgba(255, 255, 255, 0.3) 60%,
-    transparent 88%
+    178deg,
+    rgba(255, 255, 255, 0.55) 0%,
+    rgba(255, 255, 255, 0.12) 26%,
+    transparent 52%
   );
-  transition: opacity 0.4s ease;
+  transition: opacity 0.45s ease;
 }
 .sim-chip[aria-pressed='true'] {
   border-color: #fff;
