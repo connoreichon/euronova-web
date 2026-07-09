@@ -25,51 +25,87 @@ const maskUrl = asset('/assets/img/simulador/salon-mask.png');
 ---
 
 <section id="color" class="bg-negro py-20 text-papel md:py-32">
-  <div class="container-x grid gap-10 lg:grid-cols-[1fr_1.05fr] lg:items-center">
-    <!-- Texto + buscador -->
-    <div class="reveal">
+  <div class="container-x">
+    <!-- Encabezado -->
+    <div class="reveal mx-auto max-w-3xl">
       <p class="kicker-brocha text-rojo">Imagina tu pared</p>
       <h2 class="display mt-2 text-3xl text-white md:text-5xl">
-        Prueba cualquier color<br />en tu pared.
+        Prueba cualquier color en tu pared.
       </h2>
-      <p class="mt-4 max-w-md text-[15px] leading-relaxed text-papel/75">
-        Escribe el código o el nombre de un color de las cartas RAL o NCS y míralo
-        sobre una pared real. Es una idea orientativa; en tienda lo igualamos con
+      <p class="mt-4 max-w-xl text-[15px] leading-relaxed text-papel/75">
+        Escribe el código o el nombre de un color de las cartas RAL o NCS y la
+        pared se tiñe al instante. Es orientativo; en tienda lo igualamos con
         precisión con carta física y tintometría.
       </p>
+    </div>
 
-      <label for="sim-buscar" class="sr-only">Busca un color por código o nombre</label>
-      <div class="mt-6 flex items-center gap-2.5 rounded-full bg-white px-5 py-3 shadow-lg shadow-black/40">
-        <svg viewBox="0 0 24 24" class="h-4.5 w-4.5 shrink-0 text-negro/50" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
-          <circle cx="11" cy="11" r="7" />
-          <path d="m20 20-3.8-3.8" stroke-linecap="round" />
-        </svg>
-        <input
-          id="sim-buscar"
-          type="search"
-          placeholder="Escribe un color: 7016, 5010, S 0502-Y, verde…"
-          autocomplete="off"
-          class="w-full bg-transparent text-[14px] font-semibold text-negro placeholder:font-normal placeholder:text-negro/40 focus:outline-none"
+    <!-- Panel inmersivo: estancia real con el buscador SOBRE la foto.
+         Solo la pared se tiñe (máscara con la silueta del sofá). -->
+    <figure class="reveal relative mx-auto mt-8 max-w-3xl overflow-hidden rounded-2xl shadow-xl shadow-black/50">
+      <div class="sim-estancia relative">
+        <img
+          src={asset('/assets/img/simulador/salon.jpg')}
+          alt="Pared de textura con un sofá delante para imaginar el color"
+          class="block w-full"
+          width="1000"
+          height="750"
+          loading="lazy"
         />
+        <div
+          id="sim-capa"
+          class="sim-capa-mask"
+          style={`background-color:${INICIAL.h}; -webkit-mask-image:url(${maskUrl}); mask-image:url(${maskUrl})`}
+        >
+        </div>
       </div>
-      <p id="sim-info" class="mt-2 h-4 pl-2 text-[12px] text-papel/55" aria-live="polite"></p>
 
-      <div class="mt-4 grid grid-cols-4 justify-items-center gap-3 sm:flex sm:flex-wrap sm:justify-start sm:gap-2.5" role="group" aria-label="Colores rápidos">
-        {
-          RAPIDOS.map((c, i) => (
-            <button
-              type="button"
-              class="sim-chip h-10 w-10 cursor-pointer rounded-full border-2 border-white/25 transition-transform hover:scale-110 focus-visible:outline-none"
-              style={`background-color:${c.h}`}
-              data-hex={c.h}
-              data-codigo={c.c}
-              data-nombre={c.n}
-              title={`${c.n} · ${c.c}`}
-              aria-label={`Ver la pared en ${c.n} (${c.c})`}
-              aria-pressed={c.c === INICIAL.c ? 'true' : 'false'}
-            />
-          ))
-        }
+      <!-- Buscador flotante sobre la foto -->
+      <div class="absolute inset-x-0 top-0 flex flex-col gap-2 p-3 sm:p-4">
+        <label for="sim-buscar" class="sr-only">Busca un color por código o nombre</label>
+        <div class="flex items-center gap-2.5 rounded-full bg-white/95 px-4 py-3 shadow-lg shadow-black/30 backdrop-blur-sm">
+          <svg viewBox="0 0 24 24" class="h-4.5 w-4.5 shrink-0 text-negro/50" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+            <circle cx="11" cy="11" r="7" />
+            <path d="m20 20-3.8-3.8" stroke-linecap="round" />
+          </svg>
+          <input
+            id="sim-buscar"
+            type="search"
+            placeholder="Escribe un color: 7016, 5010, verde…"
+            autocomplete="off"
+            class="w-full bg-transparent text-[14px] font-semibold text-negro placeholder:font-normal placeholder:text-negro/45 focus:outline-none"
+          />
+        </div>
+        <p id="sim-info" class="ml-3 h-4 text-[12px] font-semibold text-white [text-shadow:0_1px_4px_rgba(0,0,0,0.85)]" aria-live="polite"></p>
+      </div>
+
+      <!-- Nombre del color aplicado, abajo, con velo para legibilidad -->
+      <figcaption class="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 bg-gradient-to-t from-black/70 via-black/20 to-transparent px-4 pt-12 pb-3">
+        <span class="text-[11.5px] text-white/70">Resultado orientativo</span>
+        <span id="sim-nombre" class="text-right text-[13px] font-semibold text-white [text-shadow:0_1px_4px_rgba(0,0,0,0.6)]">{INICIAL.n} · {INICIAL.c}</span>
+      </figcaption>
+    </figure>
+
+    <!-- Colores rápidos + aviso + CTAs -->
+    <div class="reveal mx-auto mt-6 max-w-3xl">
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+        <p class="shrink-0 text-[12px] font-semibold tracking-wide text-papel/55 uppercase">O prueba estos</p>
+        <div class="grid grid-cols-4 justify-items-center gap-3 sm:flex sm:flex-wrap sm:justify-start sm:gap-2.5" role="group" aria-label="Colores rápidos">
+          {
+            RAPIDOS.map((c, i) => (
+              <button
+                type="button"
+                class="sim-chip h-10 w-10 cursor-pointer rounded-full border-2 border-white/25 transition-transform hover:scale-110 focus-visible:outline-none"
+                style={`background-color:${c.h}`}
+                data-hex={c.h}
+                data-codigo={c.c}
+                data-nombre={c.n}
+                title={`${c.n} · ${c.c}`}
+                aria-label={`Ver la pared en ${c.n} (${c.c})`}
+                aria-pressed={c.c === INICIAL.c ? 'true' : 'false'}
+              />
+            ))
+          }
+        </div>
       </div>
 
       <AvisoColor variant="inline" class="mt-6" />
@@ -90,32 +126,6 @@ const maskUrl = asset('/assets/img/simulador/salon-mask.png');
           Cómo llegar
         </a>
       </div>
-    </div>
-
-    <!-- Estancia con la pared tintada -->
-    <div class="reveal">
-      <figure class="overflow-hidden rounded-2xl shadow-xl shadow-black/40">
-        <div class="sim-estancia relative">
-          <img
-            src={asset('/assets/img/simulador/salon.jpg')}
-            alt="Salón con una pared de textura para imaginar el color"
-            class="block w-full"
-            width="1000"
-            height="1535"
-            loading="lazy"
-          />
-          <div
-            id="sim-capa"
-            class="sim-capa-mask"
-            style={`background-color:${INICIAL.h}; -webkit-mask-image:url(${maskUrl}); mask-image:url(${maskUrl})`}
-          >
-          </div>
-        </div>
-        <figcaption class="flex flex-col items-start gap-1 bg-white/[0.03] px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
-          <span class="text-[12px] text-papel/50">Estancia de ejemplo · resultado orientativo</span>
-          <span id="sim-nombre" class="text-[12.5px] font-semibold text-white">{INICIAL.n} · {INICIAL.c}</span>
-        </figcaption>
-      </figure>
     </div>
   </div>
 
