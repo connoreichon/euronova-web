@@ -68,10 +68,11 @@ const chips = RAPIDOS.map((c) => TODOS.find((x) => x.c === c)).filter(Boolean);
           class="w-full bg-transparent text-[14px] font-semibold text-negro placeholder:font-normal placeholder:text-negro/40 focus:outline-none"
         />
       </div>
-      <p id="tinto-info" class="mt-2 h-4 pl-2 text-[12px] text-papel/50" aria-live="polite"></p>
+      <p id="tinto-info" class="mt-2 h-4 pl-2 text-[12px] text-papel/60" aria-live="polite"></p>
 
       <div
         id="pared-demo"
+        aria-live="polite"
         class="mt-6 flex min-h-64 flex-col justify-end rounded-2xl p-6 shadow-lg shadow-black/40 transition-colors duration-500 md:min-h-72"
         style="background-color:#293133;"
       >
@@ -102,7 +103,7 @@ const chips = RAPIDOS.map((c) => TODOS.find((x) => x.c === c)).filter(Boolean);
           ))
         }
       </div>
-      <p class="mt-3 text-[12px] text-papel/50">
+      <p class="mt-3 text-[12px] text-papel/60">
         Color orientativo en pantalla — la referencia válida es la carta física en tienda.
       </p>
     </div>
@@ -139,7 +140,7 @@ const chips = RAPIDOS.map((c) => TODOS.find((x) => x.c === c)).filter(Boolean);
                 <BadgeCarta carta={b.carta} class="scale-90" />
               </div>
               <p class="mt-0.5 text-[11.5px] font-semibold text-papel/75">{b.c}</p>
-              <p class="mt-1 text-[11px] leading-relaxed text-papel/50">{b.nota}</p>
+              <p class="mt-1 text-[11px] leading-relaxed text-papel/60">{b.nota}</p>
             </div>
           </button>
         ))

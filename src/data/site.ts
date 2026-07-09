@@ -115,7 +115,7 @@ export const categorias = [
     acabado: 'Pulido y epoxi',
     desc: 'Pinturas y sistemas para garajes, pavimentos y zonas de paso.',
     img: '/assets/img/categorias/suelos.jpg',
-    alt: 'Pista de tenis de tierra batida con raqueta y pelotas'
+    alt: 'Pavimento deportivo de tierra batida con línea blanca pintada'
   },
   {
     nombre: 'Impermeabilización',
