@@ -103,7 +103,7 @@ También en memoria global: `feedback_direccion_arte.md` y `feedback_web_design_
 
 ## 5. "IMAGINA TU PARED" (lo último que se hizo — clave)
 
-Sustituye al antiguo "Color exacto" en la portada (sección `#color`, archivo `Tintometria.astro`). **Estado: implementado, verificado en desktop, subido en commit `edd1189`.** Falta verificar a fondo en móvil.
+Sustituye al antiguo "Color exacto" en la portada (sección `#color`, archivo `Tintometria.astro`). **Estado: implementado y verificado en desktop, tablet y móvil (375/768/1038px).** Pulido móvil en commit `7549be8`: chips de acceso rápido en rejilla 4×4 equilibrada (antes 7+1 huérfano) con toque de 40px, pie de la estancia apilado y legible en móvil, y nombres de blancos rotos que ya no se truncan (fluyen a 2 líneas). Buscador + tap en muestras verificados tintando la pared en móvil.
 
 **Qué hace:** muestra una estancia real (`salon.jpg`) y **tinta SOLO la pared** con el color que el cliente busca (por código o nombre de cualquier carta RAL/NCS), conservando la textura del yeso. Orientativo.
 
@@ -168,8 +168,9 @@ Costó MUCHAS iteraciones. Estado final CORRECTO:
 - Confirmar conformidad de Bupisa/Rugoplast por sus logos.
 
 ### Diseño / mejora (no bloquean):
-- **Verificar "Imagina tu pared" en MÓVIL a fondo** (layout, que la pared se tinte bien, que el buscador/chips funcionen en 375px). Se probó en desktop; el móvil quedó a medias cuando se escribió este informe.
+- ✅ (hecho, commit `7549be8`) "Imagina tu pared" verificado y pulido en MÓVIL — ver §5.
 - La E del logo (aparcada, ver §6).
+- **Header en tablet (~768px):** el nav reparte los enlaces y el teléfono a 2 líneas y queda algo apretado. Detectado al revisar el simulador; no tocado (fuera de alcance de esa tarea). Candidato a pulir en `Header.astro`.
 - Simulador FASE 2 (futuro, NO implementar sin backend seguro): subir foto propia + segmentación. La web es estática en GitHub Pages → **NO poner claves de OpenAI/API en el frontend**. Si se quiere IA real, requiere backend; explicarlo, no exponer secretos.
 - Autocrítica pendiente del máster: la foto de "Suelos" es tierra batida (abstracta pero de tenis); el placeholder de Nosotros; posibles microajustes de ritmo.
 
@@ -183,6 +184,7 @@ Costó MUCHAS iteraciones. Estado final CORRECTO:
 - **Fotos Pixabay**: scrape `pixabay.com/images/search/<query>/` con UA navegador, grep `cdn.pixabay.com/photo/..._640.jpg`; curar viéndolas con Read; descargar `_1280` para calidad; recomprimir con PIL (q78-84, progressive). Pexels/Unsplash BLOQUEAN el scrape ahora.
 - **Windows/Git Bash**: hay Python 3.12 (Pillow, numpy), NO hay ffmpeg. Avisos LF→CRLF en cada commit son normales.
 - Al enseñar la web: `?v=N` para saltar caché.
+- **Astro 7 usa un DAEMON único de dev-server.** Un segundo `astro dev` no arranca: detecta el que ya corre (p. ej. en 4321) y delega en él (`Dev server already running… SKIP_FORMAT`). Si otra sesión/chat tiene el `preview` en 4321, NO se puede levantar otro `dev`; para conducir el preview con las herramientas `preview_*` en paralelo, arranca un `astro preview --port 4331` sobre el `dist/` (sin daemon) — reconstruye (`npm run build`) tras cada cambio y recarga. El harness lee el `launch.json` del **directorio de trabajo primario** (no el de este repo); hay un `.claude/launch.json` local en euronova-web (server `euronova`, 4321) por si se abre como primario.
 
 ---
 
