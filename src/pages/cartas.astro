@@ -21,12 +21,12 @@ const cartas = [
 >
   <Header />
   <main id="main" class="relative isolate">
-    <!-- Fondo de vídeo del apartado: pigmentos / chorros de pintura mezclándose
-         en agua, en bucle y a cámara lenta. Fijo, detrás de todo el contenido. -->
+    <!-- Fondo de vídeo del apartado: chorros de pintura mezclándose en agua.
+         Ocupa TODO el fondo, en bucle, a velocidad normal. Sin paneles oscuros. -->
     <div class="pointer-events-none fixed inset-0 -z-10 bg-negro" aria-hidden="true">
       <video
         id="cartas-bg"
-        class="video-hero__media h-full w-full object-cover opacity-60"
+        class="video-hero__media h-full w-full object-cover"
         poster={asset('/assets/video/pigmento-poster.jpg')}
         autoplay
         muted
@@ -40,9 +40,9 @@ const cartas = [
     </div>
 
     <!-- Hero inmersivo sobre el fondo de vídeo -->
-    <section class="relative overflow-hidden pt-28 pb-16 text-papel md:pt-40 md:pb-24">
-      <div class="absolute inset-0 bg-gradient-to-r from-negro/90 via-negro/55 to-transparent"></div>
-      <div class="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-negro to-transparent"></div>
+    <section class="relative pt-28 pb-16 text-papel md:pt-40 md:pb-24">
+      <!-- velo mínimo solo tras el titular, para que se lea sin tapar el fondo -->
+      <div class="absolute inset-y-0 left-0 w-full bg-gradient-to-r from-negro/75 via-negro/25 to-transparent md:w-2/3"></div>
 
       <div class="container-x relative">
         <p class="kicker-brocha text-rojo">Cartas de colores</p>
@@ -57,7 +57,7 @@ const cartas = [
       </div>
     </section>
 
-    <section class="bg-negro/55 pt-12 pb-4 text-papel backdrop-blur-sm md:pt-16">
+    <section class="pt-12 pb-4 text-papel md:pt-16">
       <div class="container-x">
         <!-- Selector de carta, con el distintivo de cada sistema -->
         <div class="flex flex-wrap gap-3" role="tablist" aria-label="Elige una carta de colores">
@@ -122,7 +122,7 @@ const cartas = [
     </section>
 
     <!-- Rejillas de colores -->
-    <section class="bg-negro/75 py-10 backdrop-blur-sm md:py-14">
+    <section class="py-10 md:py-14">
       <div class="container-x">
         {
           cartas.map((carta, i) => (
@@ -186,7 +186,7 @@ const cartas = [
     </section>
 
     <!-- Enlace a "Imagina tu pared" (vive en la portada) -->
-    <section class="bg-negro/55 py-12 backdrop-blur-sm md:py-16">
+    <section class="py-12 md:py-16">
       <div class="container-x flex flex-wrap items-center justify-between gap-4">
         <p class="max-w-md text-[14px] leading-relaxed text-papel/70">
           ¿Quieres ver un color sobre una pared? Prueba cualquier tono en
@@ -209,9 +209,9 @@ const cartas = [
 </Base>
 
 <script>
-  // ------- Fondo de vídeo a cámara lenta -------
+  // ------- Fondo de vídeo (velocidad normal) -------
   const bgVideo = document.getElementById('cartas-bg') as HTMLVideoElement | null;
-  if (bgVideo) bgVideo.playbackRate = 0.85;
+  if (bgVideo) bgVideo.playbackRate = 1;
 
   // ------- Carta NCS completa, generada digitalmente -------
   // Recorre el sistema NCS estándar: 40 matices (Y→R→B→G) + escala de neutros,
