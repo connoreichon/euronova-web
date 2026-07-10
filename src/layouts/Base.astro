@@ -146,7 +146,7 @@ const {
       // trazo se "pinta" con un barrido a lo largo (clip-path) y luego se
       // disuelve solo. Respeta prefers-reduced-motion.
       if (!reduceMov) {
-        const N_TRAZOS = 5;
+        const N_TRAZOS = 2;
         let vivas = 0;
         addEventListener('click', (e) => {
           if (!e.detail || vivas > 2) return; // e.detail===0 = teclado → se ignora
@@ -188,8 +188,8 @@ const {
         img.alt = '';
         cont.appendChild(img);
         document.body.appendChild(cont);
-        const TIPX = 0.1,
-          TIPY = 0.04; // fracción de la punta (cerdas) dentro de la imagen
+        const TIPX = 0.15,
+          TIPY = 0.05; // fracción de la punta (cerdas) dentro de la imagen
         let mx = -200,
           my = -200,
           raf = 0,

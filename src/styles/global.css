@@ -370,9 +370,9 @@ body {
 }
 .brocha-cursor__img {
   display: block;
-  width: 46px;
+  width: 40px;
   filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.3));
-  transform-origin: 10% 5%; /* punta roja de las cerdas */
+  transform-origin: 15% 5%; /* punta roja de las cerdas */
   transition: transform 0.12s cubic-bezier(0.34, 1.4, 0.64, 1);
 }
 .brocha-cursor.pressing .brocha-cursor__img {
