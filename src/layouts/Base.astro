@@ -213,9 +213,8 @@ const {
           img.style.left = e.clientX + 'px';
           img.style.top = e.clientY + 'px';
           img.style.width = ancho.toFixed(0) + 'px';
-          // Horizontales, con una variación mínima para que no queden robóticos.
-          const ang = -3 + Math.random() * 6; // ~ -3° a +3°
-          const base = `translate(-50%,-50%) rotate(${ang.toFixed(1)}deg)`;
+          // Todos horizontales, mismo sentido (carga izquierda → punta seca derecha).
+          const base = 'translate(-50%,-50%)';
           img.style.transform = base + ' scale(1)';
           document.body.appendChild(img);
           // Se "pinta" de la carga (izq) a la punta seca (der) con una presión
