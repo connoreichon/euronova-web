@@ -239,6 +239,11 @@ const cartas = [
           { once: true }
         );
         alTramoEstable();
+        // Red de seguridad: si el 'seeked' no llega, reproducir igualmente
+        // (el guard de timeupdate recolocará la posición en el tramo estable).
+        setTimeout(() => {
+          if (bgVideo.paused) reproducir();
+        }, 1500);
       } else {
         reproducir();
       }
