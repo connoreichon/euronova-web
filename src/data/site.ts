@@ -25,10 +25,10 @@ export const site = {
   email: 'info@euronova.es',
 
   // --- Ubicación ------------------------------------------------------------
-  // PENDIENTE: confirmar dirección exacta del local con el cliente.
-  // Street View sitúa la tienda en la esquina Camino de Coín / Calle Yedra.
-  // La dirección del registro mercantil (C/ Río Corbones 8) parece solo administrativa.
-  direccion: 'Camino de Coín, esquina C/ Yedra',
+  // Dirección CONFIRMADA por el cliente (coincide con la ficha de Google Maps,
+  // la de las reseñas). El mapa (mapsEmbed) resuelve por nombre de negocio, así
+  // que ya cae en el pin correcto con las reseñas; no hace falta tocarlo.
+  direccion: 'C/ Río Almanzora, 2',
   ciudad: '29651 Las Lagunas de Mijas, Málaga',
   zona: 'Mijas Costa · Fuengirola · Costa del Sol',
   mapsLink:
