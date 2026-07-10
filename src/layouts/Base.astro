@@ -213,7 +213,9 @@ const {
           img.style.left = e.clientX + 'px';
           img.style.top = e.clientY + 'px';
           img.style.width = ancho.toFixed(0) + 'px';
-          const base = `translate(-50%,-50%) rotate(${(Math.random() * 360) | 0}deg)`;
+          // Todos en la misma diagonal (gesto de marca) con una variación mínima.
+          const ang = -18 + (Math.random() * 14 - 7); // ~ -25° a -11°
+          const base = `translate(-50%,-50%) rotate(${ang.toFixed(1)}deg)`;
           img.style.transform = base + ' scale(1)';
           document.body.appendChild(img);
           // Se "pinta" de la carga (izq) a la punta seca (der) con una presión
