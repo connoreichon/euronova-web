@@ -57,9 +57,8 @@ clic se retiró; ver `pincel/`).
   con Python/PIL** (no es foto): mango rojo de marca, anillo/virola plateado,
   pelos negros con la punta roja (mojada en pintura), con línea de dibujo y filo
   claro para verse en cualquier fondo. Diagonal (punta arriba-izquierda = hotspot).
-- `trazo1.png`…`trazo5.png`: **brochazos de acrílico REALES** (foto de
-  **Pixabay** `brush-strokes-3438149`, licencia comercial): una lámina de trazos
-  aislados sobre papel; se recortaron 5 (formas variadas), se quitó el papel por
-  distancia de color y se **recolorearon a rojo de marca** conservando la textura
-  real de cerdas/deshilachado. Las usa la animación de "pincelada al clicar" en
-  `Base.astro`.
+- `trazo1.png`, `trazo2.png`: **brochazos cartoon GENERADOS con Python/PIL/numpy**
+  (no son fotos): cuerpo sólido + cerdas individuales, carga a la izquierda y
+  cola seca deshilachada, en rojo de marca. Dos casi iguales (al clicar sale casi
+  siempre el mismo). Los usa la animación de "pincelada al clicar" en `Base.astro`
+  (se pinta con barrido `clip-path` + presión y se disuelve).

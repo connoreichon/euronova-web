@@ -209,25 +209,28 @@ const {
           img.className = 'mancha-click';
           img.src = `${BASE_URL}/assets/pincel/trazo${1 + ((Math.random() * N_TRAZOS) | 0)}.png`;
           img.alt = '';
-          const ancho = 52 + Math.random() * 48; // 52–100 px (a la par del click)
+          const ancho = 68 + Math.random() * 60; // 68–128 px
           img.style.left = e.clientX + 'px';
           img.style.top = e.clientY + 'px';
           img.style.width = ancho.toFixed(0) + 'px';
-          img.style.transform = `translate(-50%,-50%) rotate(${(Math.random() * 360) | 0}deg)`;
-          const clip0 = Math.random() < 0.5 ? 'inset(0 0 0 100%)' : 'inset(0 100% 0 0)';
+          const base = `translate(-50%,-50%) rotate(${(Math.random() * 360) | 0}deg)`;
+          img.style.transform = base + ' scale(1)';
           document.body.appendChild(img);
+          // Se "pinta" de la carga (izq) a la punta seca (der) con una presión
+          // que rebota un pelín, y se disuelve de forma orgánica.
           img.animate(
             [
-              { clipPath: clip0, opacity: 0.3 },
-              { clipPath: 'inset(0 0 0 0)', opacity: 1, offset: 0.35 },
-              { clipPath: 'inset(0 0 0 0)', opacity: 0 }
+              { clipPath: 'inset(0 100% 0 0)', transform: base + ' scale(0.9)', opacity: 0.5, offset: 0 },
+              { clipPath: 'inset(0 0 0 0)', transform: base + ' scale(1.03)', opacity: 1, offset: 0.32 },
+              { clipPath: 'inset(0 0 0 0)', transform: base + ' scale(1)', opacity: 1, offset: 0.52 },
+              { clipPath: 'inset(0 0 0 0)', transform: base + ' scale(1)', opacity: 0, offset: 1 }
             ],
-            { duration: 520, easing: 'cubic-bezier(.3,.75,.35,1)', fill: 'forwards' }
+            { duration: 640, easing: 'cubic-bezier(.2,.7,.3,1)', fill: 'forwards' }
           );
           setTimeout(() => {
             img.remove();
             vivas--;
-          }, 540);
+          }, 660);
         });
       }
 
