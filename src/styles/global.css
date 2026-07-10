@@ -149,6 +149,7 @@ body::after {
   font-weight: 800;
   letter-spacing: -0.02em;
   line-height: 1.02;
+  text-wrap: balance; /* equilibra líneas, evita viudas sin <br> frágiles */
 }
 
 /* --- Aparición al hacer scroll -------------------------------------------- */
@@ -457,7 +458,12 @@ body::after {
   inset-inline: 0;
   bottom: 0;
   padding: 24px;
-  background: linear-gradient(180deg, rgba(16, 11, 11, 0) 0%, rgba(16, 11, 11, 0.78) 78%);
+  background: linear-gradient(
+    180deg,
+    rgba(16, 11, 11, 0) 0%,
+    rgba(16, 11, 11, 0.55) 45%,
+    rgba(16, 11, 11, 0.92) 90%
+  );
 }
 /* Paneles del ESCAPARATE de productos: cabecera = muestra de la pintura
    (color `--sw`) con brillo tipo esmalte y un acento rojo al pasar. */
@@ -576,6 +582,10 @@ body::after {
 .sim-finish[aria-pressed='true'] {
   background: #fff;
   color: #171111;
+}
+/* Lista de resultados del buscador: opción resaltada (teclado/hover). */
+.sim-opt[aria-selected='true'] {
+  background: rgba(0, 0, 0, 0.06);
 }
 @media (prefers-reduced-motion: reduce) {
   .sim-color,

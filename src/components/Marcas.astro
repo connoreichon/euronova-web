@@ -13,7 +13,7 @@ import { asset } from '../lib/asset';
     </div>
 
     <!-- Banda partida: cada logo sobre el fondo que le corresponde por marca -->
-    <div class="reveal mt-10 grid overflow-hidden rounded-3xl md:grid-cols-2">
+    <div class="reveal mt-10 grid overflow-hidden rounded-panel ring-1 ring-white/10 md:grid-cols-2">
       <a
         href={marcas[0].web}
         target="_blank"
@@ -36,7 +36,7 @@ import { asset } from '../lib/asset';
         href={marcas[1].web}
         target="_blank"
         rel="noopener"
-        class="group flex flex-col items-center justify-center gap-5 bg-negro-600 px-8 py-14 transition-colors hover:bg-tinta-600 md:border-l md:border-white/10"
+        class="group flex flex-col items-center justify-center gap-5 border-t border-white/12 bg-[linear-gradient(155deg,#2c2020,#1b1414)] px-8 py-14 transition-colors hover:bg-tinta-600 md:border-t-0 md:border-l md:border-white/15"
       >
         <img
           src={asset(marcas[1].logo)}

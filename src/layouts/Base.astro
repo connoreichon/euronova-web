@@ -208,7 +208,7 @@ const {
           if (!e.detail || vivas > 2) return; // e.detail===0 = teclado → se ignora
           // Nunca sobre controles/UI: la pincelada es un gesto sobre el contenido.
           const t = e.target as HTMLElement;
-          if (t.closest('a,button,input,textarea,select,label,[role="tab"]')) return;
+          if (t.closest('a,button,input,textarea,select,label,[role="tab"],[role="option"]')) return;
           vivas++;
           const img = document.createElement('img');
           img.className = 'mancha-click';
