@@ -160,10 +160,8 @@ const cartas = [
                           aria-label={`Guardar ${color.c} en tus colores`}
                         >
                           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                            <path
-                              d="M12 20.3s-6.9-4.2-9.2-8.6C1.3 8.9 2.7 5.9 5.7 5.9c1.9 0 3.2 1.1 4.4 2.8l1.9 2.6 1.9-2.6c1.2-1.7 2.5-2.8 4.4-2.8 3 0 4.4 3 2.9 5.8-2.3 4.4-9.2 8.6-9.2 8.6z"
-                              stroke-linejoin="round"
-                            />
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" stroke-linejoin="round" />
+                            <path class="fav-drip" stroke="none" d="M12 21.5c-.7.9-1.05 1.55-1.05 2.1a1.05 1.05 0 0 0 2.1 0c0-.55-.35-1.2-1.05-2.1z" />
                           </svg>
                         </button>
                       </div>
@@ -248,7 +246,8 @@ const cartas = [
         class="fav-bar btn-pintura pointer-events-auto inline-flex items-center gap-2 rounded-full bg-rojo px-5 py-3 text-[13px] font-bold text-white shadow-lg shadow-black/50 transition-transform hover:-translate-y-0.5 sm:gap-2.5"
       >
         <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4" aria-hidden="true">
-          <path d="M12 20.3s-6.9-4.2-9.2-8.6C1.3 8.9 2.7 5.9 5.7 5.9c1.9 0 3.2 1.1 4.4 2.8l1.9 2.6 1.9-2.6c1.2-1.7 2.5-2.8 4.4-2.8 3 0 4.4 3 2.9 5.8-2.3 4.4-9.2 8.6-9.2 8.6z" />
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+          <path d="M12 21.5c-.7.9-1.05 1.55-1.05 2.1a1.05 1.05 0 0 0 2.1 0c0-.55-.35-1.2-1.05-2.1z" />
         </svg>
         <span id="fav-bar-txt">0 colores guardados</span>
         <span class="hidden opacity-85 sm:inline">· Pruébalos en la pared →</span>
@@ -355,7 +354,7 @@ const cartas = [
 
   // Constructor de muestra reutilizable (con corazón de favorito), para las
   // cartas generadas (NCS y RAL Design).
-  const HEART = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 20.3s-6.9-4.2-9.2-8.6C1.3 8.9 2.7 5.9 5.7 5.9c1.9 0 3.2 1.1 4.4 2.8l1.9 2.6 1.9-2.6c1.2-1.7 2.5-2.8 4.4-2.8 3 0 4.4 3 2.9 5.8-2.3 4.4-9.2 8.6-9.2 8.6z" stroke-linejoin="round"/></svg>`;
+  const HEART = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" stroke-linejoin="round"/><path class="fav-drip" stroke="none" d="M12 21.5c-.7.9-1.05 1.55-1.05 2.1a1.05 1.05 0 0 0 2.1 0c0-.55-.35-1.2-1.05-2.1z"/></svg>`;
   const crearItemColor = (codigo: string, hex: string) => {
     const el = document.createElement('div');
     el.className = 'color-item panel panel-i overflow-hidden';

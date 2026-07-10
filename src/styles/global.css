@@ -323,14 +323,10 @@ body::after {
   }
 }
 
-/* Muestra de color con acabado "esmalte": luz de estudio + canto inferior.
-   El color base lo pone el inline style (background-color). */
+/* Muestra de color PLANA: el color íntegro tal cual, sin brillos ni degradados
+   (para que el tono se vea fiel). El color lo pone el inline style. */
 .swatch {
   position: relative;
-  background-image:
-    radial-gradient(120% 100% at 24% 8%, rgba(255, 255, 255, 0.28), transparent 52%),
-    linear-gradient(160deg, rgba(255, 255, 255, 0.06), rgba(0, 0, 0, 0.16));
-  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.2);
 }
 
 /* Halo rojo de marca detrás de una pieza destacada (luz ambiental de estudio). */
@@ -535,30 +531,11 @@ body::after {
   mask-repeat: no-repeat;
   pointer-events: none;
 }
-/* Capa de COLOR: multiply para conservar textura y sombras del material. El JS
-   le aplica un `filter` según el acabado (mate = más apagado/plano, brillo =
-   más saturado y contrastado, como refleja el color real de cada acabado). */
+/* Capa de COLOR: multiply para conservar la textura y las sombras del material,
+   mostrando el color íntegro (sin filtros de acabado). */
 .sim-color {
   mix-blend-mode: multiply;
-  transition:
-    background-color 0.45s ease,
-    filter 0.45s ease;
-}
-/* Capa de ACABADO (reflejo especular): un brillo direccional que imita la luz
-   reflejada por la pintura. Mate ≈ 0 (reflexión difusa, sin brillo); satinado =
-   brillo suave (25-35%); brillo = reflejo marcado (70-85%). Blend `screen` para
-   que sume luz como un reflejo real. La opacidad la fija el JS. Enmascarado a la
-   superficie, así solo "brilla" lo pintado. */
-.sim-sheen {
-  mix-blend-mode: screen;
-  opacity: 0;
-  background: radial-gradient(
-    135% 115% at 24% 12%,
-    rgba(255, 255, 255, 0.55) 0%,
-    rgba(255, 255, 255, 0.14) 34%,
-    transparent 60%
-  );
-  transition: opacity 0.45s ease;
+  transition: background-color 0.45s ease;
 }
 .sim-chip[aria-pressed='true'] {
   border-color: #fff;
@@ -575,21 +552,12 @@ body::after {
   background: rgba(255, 255, 255, 0.12);
   color: #fff;
 }
-/* Selector de acabado (segmentado) */
-.sim-finish {
-  color: rgba(250, 247, 242, 0.65);
-}
-.sim-finish[aria-pressed='true'] {
-  background: #fff;
-  color: #171111;
-}
 /* Lista de resultados del buscador: opción resaltada (teclado/hover). */
 .sim-opt[aria-selected='true'] {
   background: rgba(0, 0, 0, 0.06);
 }
 @media (prefers-reduced-motion: reduce) {
-  .sim-color,
-  .sim-sheen {
+  .sim-color {
     transition: none;
   }
 }
@@ -783,6 +751,16 @@ body::after {
 }
 .fav-btn[aria-pressed='true'] svg {
   fill: currentColor;
+}
+/* Gota de pintura del corazón: aparece solo al GUARDAR (queda "goteando" el
+   color de marca) — guiño a la tienda de pintura, sin ensuciar el estado normal. */
+.fav-drip {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.fav-btn[aria-pressed='true'] .fav-drip,
+.sim-guardar[aria-pressed='true'] .fav-drip {
+  opacity: 1;
 }
 
 /* Cartas de colores: hay miles de muestras (RAL Design + NCS generadas).

@@ -204,6 +204,24 @@ const {
       if (!reduceMov && window.matchMedia('(pointer: fine)').matches) {
         const N_TRAZOS = 2;
         let vivas = 0;
+        // Contraste del trazo con el fondo: el PNG es ROJO. Sobre fondo oscuro se
+        // deja rojo (marca); sobre fondo claro/rojo se tiñe de negro (brightness 0).
+        const lin = (v: number) => {
+          v /= 255;
+          return v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+        };
+        const luminancia = (r: number, g: number, b: number) =>
+          0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
+        const fondoDe = (el: HTMLElement | null): [number, number, number] => {
+          while (el && el !== document.documentElement) {
+            const c = getComputedStyle(el).backgroundColor;
+            const m = c.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/);
+            if (m && (m[4] === undefined || parseFloat(m[4]) > 0.3))
+              return [+m[1], +m[2], +m[3]];
+            el = el.parentElement;
+          }
+          return [23, 17, 17]; // negro de marca por defecto
+        };
         addEventListener('click', (e) => {
           if (!e.detail || vivas > 2) return; // e.detail===0 = teclado → se ignora
           // Nunca sobre controles/UI: la pincelada es un gesto sobre el contenido.
@@ -214,6 +232,9 @@ const {
           img.className = 'mancha-click';
           img.src = `${BASE_URL}/assets/pincel/trazo${1 + ((Math.random() * N_TRAZOS) | 0)}.png`;
           img.alt = '';
+          // Fondo claro/rojo → trazo NEGRO; fondo oscuro → trazo ROJO (contraste).
+          const [fr, fg, fb] = fondoDe(t);
+          img.style.filter = luminancia(fr, fg, fb) >= 0.12 ? 'brightness(0)' : 'none';
           const ancho = 68 + Math.random() * 60; // 68–128 px
           img.style.left = e.clientX + 'px';
           img.style.top = e.clientY + 'px';

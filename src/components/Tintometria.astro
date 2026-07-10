@@ -35,11 +35,6 @@ const SUPERFICIES = [
     alt: 'Fachada mediterránea para imaginar el color de exterior'
   }
 ];
-const ACABADOS = [
-  { id: 'mate', label: 'Mate' },
-  { id: 'satinado', label: 'Satinado' },
-  { id: 'brillo', label: 'Brillo' }
-];
 ---
 
 <section id="color" class="costura sec-alt py-20 text-papel md:py-32">
@@ -51,9 +46,9 @@ const ACABADOS = [
         Pruébalo antes de pintar.
       </h2>
       <p class="mt-4 max-w-xl text-[15px] leading-relaxed text-papel/75">
-        Elige la superficie, escribe un color de las cartas RAL o NCS y el
-        acabado: se pinta al instante y solo lo que toca. Es orientativo; en
-        tienda lo igualamos con precisión con carta física y tintometría.
+        Elige la superficie y escribe un color de las cartas RAL o NCS: se pinta
+        al instante y solo lo que toca. Es orientativo; en tienda lo igualamos
+        con precisión con carta física y tintometría.
       </p>
     </div>
 
@@ -106,10 +101,6 @@ const ACABADOS = [
                 class="sim-color sim-mask"
                 style={`background-color:${INICIAL.h}; -webkit-mask-image:url(${asset(s.mask)}); mask-image:url(${asset(s.mask)})`}
               />
-              <div
-                class="sim-sheen sim-mask"
-                style={`-webkit-mask-image:url(${asset(s.mask)}); mask-image:url(${asset(s.mask)})`}
-              />
             </div>
           </div>
         ))
@@ -155,36 +146,17 @@ const ACABADOS = [
 
     <!-- Panel de control (dock premium bajo el escenario) -->
     <div class="reveal panel mx-auto mt-5 max-w-3xl p-5 md:p-6">
-      <!-- Estado en vivo + acabado -->
-      <div class="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-        <div class="flex items-center gap-3">
-          <span
-            id="sim-swatch"
-            class="swatch h-12 w-12 shrink-0 rounded-xl ring-1 ring-white/15"
-            style={`background-color:${INICIAL.h}`}
-            aria-hidden="true"
-          ></span>
-          <div class="leading-tight">
-            <p id="sim-estado-nombre" class="text-[14px] font-bold text-white">{INICIAL.n}</p>
-            <p id="sim-estado-cod" class="mt-0.5 text-[12px] font-semibold text-papel/65">{INICIAL.c} · Mate</p>
-          </div>
-        </div>
-        <div>
-          <p class="kicker-xs mb-2 text-papel/70">Acabado</p>
-          <div class="inline-flex rounded-full border border-white/15 p-1" role="group" aria-label="Acabado">
-            {
-              ACABADOS.map((a, i) => (
-                <button
-                  type="button"
-                  data-finish={a.id}
-                  aria-pressed={i === 0 ? 'true' : 'false'}
-                  class="sim-finish cursor-pointer rounded-full px-4 py-1.5 text-[13px] font-semibold transition-colors"
-                >
-                  {a.label}
-                </button>
-              ))
-            }
-          </div>
+      <!-- Estado en vivo del color aplicado -->
+      <div class="flex items-center gap-3">
+        <span
+          id="sim-swatch"
+          class="swatch h-12 w-12 shrink-0 rounded-xl ring-1 ring-white/15"
+          style={`background-color:${INICIAL.h}`}
+          aria-hidden="true"
+        ></span>
+        <div class="leading-tight">
+          <p id="sim-estado-nombre" class="text-[14px] font-bold text-white">{INICIAL.n}</p>
+          <p id="sim-estado-cod" class="mt-0.5 text-[12px] font-semibold text-papel/65">{INICIAL.c}</p>
         </div>
       </div>
 
@@ -201,18 +173,17 @@ const ACABADOS = [
             class="sim-guardar inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-white/25 px-4 py-2 text-[13px] font-semibold text-white transition-colors hover:border-white/60"
           >
             <svg id="sim-guardar-ico" viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-              <path
-                d="M12 20.3s-6.9-4.2-9.2-8.6C1.3 8.9 2.7 5.9 5.7 5.9c1.9 0 3.2 1.1 4.4 2.8l1.9 2.6 1.9-2.6c1.2-1.7 2.5-2.8 4.4-2.8 3 0 4.4 3 2.9 5.8-2.3 4.4-9.2 8.6-9.2 8.6z"
-                stroke-linejoin="round"
-              />
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" stroke-linejoin="round" />
+              <path class="fav-drip" d="M12 21.5c-.7.9-1.05 1.55-1.05 2.1a1.05 1.05 0 0 0 2.1 0c0-.55-.35-1.2-1.05-2.1z" stroke="none" fill="currentColor" />
             </svg>
             <span id="sim-guardar-txt">Guardar color</span>
           </button>
         </div>
         <div id="sim-favs" class="mt-3 flex flex-wrap items-center gap-2.5" role="group" aria-label="Tus colores guardados" />
         <p id="sim-favs-vacio" class="mt-2 max-w-md text-[12.5px] leading-relaxed text-papel/60">
-          Guarda aquí tus colores para probarlos en la pared. También puedes marcar
-          favoritos con el corazón en las <a href={asset('/cartas/')} class="font-semibold text-papel/80 underline underline-offset-2 hover:text-white">cartas de colores</a>.
+          Ideas para empezar — pincha cualquiera para verla en la pared. Guarda las
+          que te gusten con el corazón (o desde las <a href={asset('/cartas/')} class="font-semibold text-papel/80 underline underline-offset-2 hover:text-white">cartas de colores</a>)
+          y se quedarán aquí.
         </p>
       </div>
 
@@ -277,7 +248,7 @@ const ACABADOS = [
   </div>
 </section>
 
-<script is:inline define:vars={{ RAL_JS: RAL, ACABADOS_JS: ACABADOS }}>
+<script is:inline define:vars={{ RAL_JS: RAL }}>
   // --- Índice de colores buscables: RAL completa + NCS completa (generada) ---
   const norm = (s) => s.toUpperCase().replace(/[\s\-]/g, '');
   const TODOS = RAL_JS.map((x) => ({ c: x.c, n: x.n, h: x.h }));
@@ -317,12 +288,10 @@ const ACABADOS = [
     for (const [s, c] of pares)
       TODOS.push({ c: `NCS S ${p2(s).padStart(2, '0')}${p2(c).padStart(2, '0')}-${hue}`, n: 'NCS', h: ncsHex(s, c, hue) });
 
-  // --- Estado: superficie activa, color y acabado ---
+  // --- Estado: superficie activa y color ---
   const colorLayers = document.querySelectorAll('.sim-color');
-  const sheenLayers = document.querySelectorAll('.sim-sheen');
   const paneles = document.querySelectorAll('[data-panel]');
   const surfaceTabs = document.querySelectorAll('[data-surface]');
-  const finishBtns = document.querySelectorAll('[data-finish]');
   const nombre = document.getElementById('sim-nombre');
   const info = document.getElementById('sim-info');
   const buscar = document.getElementById('sim-buscar');
@@ -330,16 +299,6 @@ const ACABADOS = [
   const estadoNombre = document.getElementById('sim-estado-nombre');
   const estadoCod = document.getElementById('sim-estado-cod');
 
-  // Acabado real: cada uno tiene su reflejo (opacidad de la capa "screen") y su
-  // filtro de color. Mate absorbe la luz (plano, algo más apagado); satinado da
-  // un brillo suave; brillo refleja como espejo y hace el color más profundo y
-  // contrastado (claros más luminosos, oscuros más ricos).
-  const FINISH = {
-    mate: { sheen: 0, filter: 'saturate(0.9) contrast(0.94)' },
-    satinado: { sheen: 0.34, filter: 'none' },
-    brillo: { sheen: 0.78, filter: 'saturate(1.14) contrast(1.16) brightness(1.03)' }
-  };
-  let acabado = 'mate';
   let colorActual = { h: '#e9e2ce', c: 'NCS S 1005-Y', n: 'Lino' };
 
   const nombreColor = (color) =>
@@ -348,12 +307,11 @@ const ACABADOS = [
   const soloNombre = (color) =>
     color.n && color.n !== 'NCS' && color.n !== 'NCS neutro' ? color.n : color.c;
   const refrescarNombre = () => {
-    const acab = (ACABADOS_JS.find((a) => a.id === acabado) || {}).label || '';
-    if (nombre) nombre.textContent = `${nombreColor(colorActual)} · ${acab}`;
+    if (nombre) nombre.textContent = nombreColor(colorActual);
     // Píldora de estado en vivo del panel de control (dato canónico, legible).
     if (swatchEl) swatchEl.style.backgroundColor = colorActual.h;
     if (estadoNombre) estadoNombre.textContent = soloNombre(colorActual);
-    if (estadoCod) estadoCod.textContent = `${colorActual.c} · ${acab}`;
+    if (estadoCod) estadoCod.textContent = colorActual.c;
   };
 
   // --- Micro-animaciones de pintura ---
@@ -371,15 +329,6 @@ const ACABADOS = [
     refrescarNombre();
     marcarFavActivo();
     actualizarBotonGuardar();
-  };
-
-  const setAcabado = (id) => {
-    acabado = id;
-    const f = FINISH[id] || FINISH.mate;
-    sheenLayers.forEach((s) => (s.style.opacity = String(f.sheen)));
-    colorLayers.forEach((c) => (c.style.filter = f.filter));
-    finishBtns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.finish === id)));
-    refrescarNombre();
   };
 
   const setSuperficie = (id) => {
@@ -422,9 +371,61 @@ const ACABADOS = [
       .querySelectorAll('.sim-fav-apply')
       .forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.codigo === colorActual.c)));
   };
+
+  // Sugerencias: si el cliente aún no ha guardado ningún color, mostramos 6
+  // muestras bonitas AL AZAR (aplicables con un clic). En cuanto guarda 1, se
+  // reemplazan por sus colores guardados.
+  const SUGERENCIAS_POOL = [
+    { h: '#8f9779', c: 'NCS S 4020-G50Y', n: 'Verde salvia' },
+    { h: '#2b3a4a', c: 'RAL 5008', n: 'Azul noche' },
+    { h: '#b0623b', c: 'RAL 8004', n: 'Terracota' },
+    { h: '#d9d2c5', c: 'NCS S 2005-Y20R', n: 'Gris perla' },
+    { h: '#c9a227', c: 'RAL 1027', n: 'Mostaza' },
+    { h: '#d8b4a0', c: 'NCS S 2020-Y70R', n: 'Rosa palo' },
+    { h: '#6b6f4b', c: 'RAL 6013', n: 'Verde oliva' },
+    { h: '#2f5f6b', c: 'NCS S 5030-B10G', n: 'Azul petróleo' },
+    { h: '#e6dcc3', c: 'RAL 1015', n: 'Arena' },
+    { h: '#6d2c34', c: 'RAL 3005', n: 'Burdeos' },
+    { h: '#efe9dd', c: 'NCS S 0603-Y20R', n: 'Blanco roto' },
+    { h: '#383e42', c: 'RAL 7016', n: 'Gris antracita' },
+    { h: '#a8c3cf', c: 'NCS S 1515-B', n: 'Celeste' },
+    { h: '#2e4a3a', c: 'RAL 6005', n: 'Verde bosque' },
+    { h: '#d97b62', c: 'NCS S 1050-Y80R', n: 'Coral' },
+    { h: '#9a8c7a', c: 'NCS S 4010-Y30R', n: 'Topo' }
+  ];
+  const elegirAlAzar = (arr, n) => {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a.slice(0, n);
+  };
+  const sugerencias = elegirAlAzar(SUGERENCIAS_POOL, 6);
+
   const renderFavs = (nuevo) => {
     if (!favsEl) return;
     favsEl.textContent = '';
+    // Sin colores guardados → sugerencias al azar (aplicables, sin botón de quitar).
+    if (favs.length === 0) {
+      sugerencias.forEach((f) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className =
+          'sim-chip sim-fav-apply h-10 w-10 cursor-pointer rounded-full border-2 border-white/20 transition-transform hover:scale-110';
+        b.style.backgroundColor = f.h;
+        b.title = nombreColor(f);
+        b.setAttribute('aria-label', 'Probar ' + nombreColor(f));
+        b.setAttribute('aria-pressed', String(f.c === colorActual.c));
+        b.dataset.hex = f.h;
+        b.dataset.codigo = f.c;
+        b.dataset.nombre = f.n;
+        favsEl.appendChild(b);
+      });
+      if (favsVacio) favsVacio.classList.remove('hidden');
+      actualizarBotonGuardar();
+      return;
+    }
     favs.forEach((f) => {
       const wrap = document.createElement('div');
       wrap.className = 'sim-fav group relative';
@@ -488,7 +489,6 @@ const ACABADOS = [
   });
 
   surfaceTabs.forEach((t) => t.addEventListener('click', () => setSuperficie(t.dataset.surface)));
-  finishBtns.forEach((b) => b.addEventListener('click', () => setAcabado(b.dataset.finish)));
 
   // --- Buscador con LISTA de resultados elegibles (no pinta uno al azar) ---
   const resultados = document.getElementById('sim-resultados');
