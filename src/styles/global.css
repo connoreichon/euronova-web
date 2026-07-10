@@ -291,30 +291,6 @@ body {
    Sobrias y con la misma lengua visual que la salpicadura al clicar. Todas se
    desactivan con prefers-reduced-motion.
    =========================================================================== */
-/* Barrido "húmedo" al aplicar color: un destello diagonal cruza la superficie
-   pintada una vez, como pintura recién dada. Va enmascarado a la superficie y
-   el brillo se mueve en un hijo para no arrastrar la máscara. */
-.sim-wet {
-  mix-blend-mode: screen;
-  opacity: 0;
-  overflow: hidden;
-}
-.sim-wet__band {
-  position: absolute;
-  top: -20%;
-  left: 0;
-  height: 140%;
-  width: 55%;
-  background: linear-gradient(
-    105deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.5) 50%,
-    transparent 100%
-  );
-  transform: translateX(-170%);
-  will-change: transform;
-}
-
 /* Muestra que entra/sale de "Guarda tus colores" */
 @keyframes fav-pop-in {
   0% {

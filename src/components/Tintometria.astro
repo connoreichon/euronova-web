@@ -99,12 +99,6 @@ const ACABADOS = [
                 class="sim-sheen sim-mask"
                 style={`-webkit-mask-image:url(${asset(s.mask)}); mask-image:url(${asset(s.mask)})`}
               />
-              <div
-                class="sim-wet sim-mask"
-                style={`-webkit-mask-image:url(${asset(s.mask)}); mask-image:url(${asset(s.mask)})`}
-              >
-                <div class="sim-wet__band" />
-              </div>
             </div>
           </div>
         ))
@@ -322,37 +316,13 @@ const ACABADOS = [
     void el.offsetWidth; // reinicia la animación
     el.classList.add('late');
   };
-  // Barrido "húmedo": un destello cruza la superficie recién pintada una vez.
-  const barrerHumedo = () => {
-    if (reduce) return;
-    const panel = document.querySelector('.sim-panel:not(.hidden)');
-    const wet = panel && panel.querySelector('.sim-wet');
-    const band = panel && panel.querySelector('.sim-wet__band');
-    if (!wet || !band) return;
-    wet.animate(
-      [{ opacity: 0 }, { opacity: 0.85, offset: 0.16 }, { opacity: 0.85, offset: 0.6 }, { opacity: 0 }],
-      { duration: 720, easing: 'ease-out' }
-    );
-    band.animate([{ transform: 'translateX(-170%)' }, { transform: 'translateX(320%)' }], {
-      duration: 720,
-      easing: 'cubic-bezier(.4,0,.2,1)'
-    });
-  };
-  let barridoT;
-  const programarBarrido = () => {
-    if (reduce) return;
-    clearTimeout(barridoT);
-    barridoT = setTimeout(barrerHumedo, 200); // coalesce al teclear en el buscador
-  };
 
   const pintar = (color) => {
-    const cambia = !colorActual || colorActual.h !== color.h;
     colorActual = color;
     colorLayers.forEach((c) => (c.style.backgroundColor = color.h));
     refrescarNombre();
     marcarFavActivo();
     actualizarBotonGuardar();
-    if (cambia) programarBarrido();
   };
 
   const setAcabado = (id) => {
