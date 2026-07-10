@@ -48,4 +48,15 @@ Siluetas de salpicadura reales de **Pixabay** (licencia Pixabay, uso comercial
 sin atribución), teñidas a los colores de marca con Python/PIL:
 paint-2174689 (splat1), paint-splatter-312092 (splat2), paint-2174687 (splat3),
 ink-5949451 (splat4/5), paint-2209578 (splat6 con goteo y splat7 masa),
-ink-303244 (splat8 pictórica densa).
+ink-303244 (splat8 pictórica densa). **Actualmente SIN USO** (la salpicadura al
+clic se retiró; ver `pincel/`).
+
+## Pincel: cursor y pinceladas (`public/assets/pincel/`)
+
+- `brocha-cursor.png`: cursor con forma de brocha. Foto real de **Pixabay**
+  (`isolated-3354956`, licencia Pixabay, uso comercial) recortada con
+  Python/PIL (fondo a transparente, componente mayor, reescalada a ~150px).
+- `trazo1.png`…`trazo5.png`: pinceladas de trazo con textura de cerdas seca,
+  **generadas con Python/PIL/numpy** (no son fotos: cerdas + curva + afinado +
+  extremos deshilachados, en rojo de marca `#c81e20`). Las usa la animación de
+  "pincelada al clicar" en `Base.astro`.

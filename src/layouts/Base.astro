@@ -138,43 +138,83 @@ const {
     </script>
 
     <script>
-      // ---- Mancha de pintura al clicar ----
-      // Una silueta de salpicadura REAL (PNG) aparece donde pinchas, florece y
-      // se disuelve sola de forma orgánica. Respeta prefers-reduced-motion.
+      // ---- Pincelada al clicar + cursor brocha ----
       const reduceMov = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const BASE_URL = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+      // Al clicar, se PINTA un trazo de brocha (textura real) donde pinchas: el
+      // trazo se "pinta" con un barrido a lo largo (clip-path) y luego se
+      // disuelve solo. Respeta prefers-reduced-motion.
       if (!reduceMov) {
-        let manchasVivas = 0;
-        // 'click' (no 'pointerdown') para no manchar al arrastrar el dedo/scroll;
-        // e.detail===0 = activación por teclado → se ignora.
+        const N_TRAZOS = 5;
+        let vivas = 0;
         addEventListener('click', (e) => {
-          if (!e.detail || manchasVivas > 2) return;
-          manchasVivas++;
+          if (!e.detail || vivas > 2) return; // e.detail===0 = teclado → se ignora
+          vivas++;
           const img = document.createElement('img');
           img.className = 'mancha-click';
-          const variante = 2 + ((Math.random() * 2) | 0); // splat2 / splat3
-          img.src = `${BASE_URL}/assets/manchas/splat${variante}-rojo.png`;
+          img.src = `${BASE_URL}/assets/pincel/trazo${1 + ((Math.random() * N_TRAZOS) | 0)}.png`;
           img.alt = '';
-          const tam = 74 + Math.random() * 66; // 74–140 px
+          const ancho = 150 + Math.random() * 140; // 150–290 px
           img.style.left = e.clientX + 'px';
           img.style.top = e.clientY + 'px';
-          img.style.width = tam.toFixed(0) + 'px';
+          img.style.width = ancho.toFixed(0) + 'px';
+          img.style.transform = `translate(-50%,-50%) rotate(${(Math.random() * 360) | 0}deg)`;
+          const clip0 = Math.random() < 0.5 ? 'inset(0 0 0 100%)' : 'inset(0 100% 0 0)';
           document.body.appendChild(img);
-          const rot = (Math.random() * 360) | 0;
-          const t = (s: number) => `translate(-50%,-50%) scale(${s}) rotate(${rot}deg)`;
           img.animate(
             [
-              { transform: t(0.35), opacity: 0 },
-              { transform: t(1.04), opacity: 0.94, offset: 0.16 },
-              { transform: t(1), opacity: 0.9, offset: 0.42 },
-              { transform: t(1.09), opacity: 0 }
+              { clipPath: clip0, opacity: 0.25 },
+              { clipPath: 'inset(0 0 0 0)', opacity: 0.98, offset: 0.24 },
+              { clipPath: 'inset(0 0 0 0)', opacity: 0.95, offset: 0.5 },
+              { clipPath: 'inset(0 0 0 0)', opacity: 0 }
             ],
-            { duration: 920, easing: 'cubic-bezier(.2,.7,.3,1)', fill: 'forwards' }
+            { duration: 840, easing: 'cubic-bezier(.3,.7,.3,1)', fill: 'forwards' }
           );
           setTimeout(() => {
             img.remove();
-            manchasVivas--;
-          }, 980);
+            vivas--;
+          }, 860);
+        });
+      }
+
+      // Cursor brocha (solo con puntero fino = ratón; en táctil no hay cursor).
+      if (window.matchMedia('(pointer: fine)').matches) {
+        document.documentElement.classList.add('js-brush', 'pointer-fino');
+        const cont = document.createElement('div');
+        cont.className = 'brocha-cursor';
+        const img = document.createElement('img');
+        img.className = 'brocha-cursor__img';
+        img.src = `${BASE_URL}/assets/pincel/brocha-cursor.png`;
+        img.alt = '';
+        cont.appendChild(img);
+        document.body.appendChild(cont);
+        const TIPX = 0.07,
+          TIPY = 0.06; // fracción de la punta dentro de la imagen
+        let mx = -200,
+          my = -200,
+          raf = 0,
+          visible = false;
+        const pintar = () => {
+          raf = 0;
+          const w = img.offsetWidth || 62;
+          const h = img.offsetHeight || 38;
+          cont.style.transform = `translate(${(mx - w * TIPX).toFixed(1)}px, ${(my - h * TIPY).toFixed(1)}px)`;
+        };
+        window.addEventListener('mousemove', (e) => {
+          mx = e.clientX;
+          my = e.clientY;
+          if (!visible) {
+            cont.classList.add('visible');
+            visible = true;
+          }
+          if (!raf) raf = requestAnimationFrame(pintar);
+        });
+        window.addEventListener('mousedown', () => cont.classList.add('pressing'));
+        window.addEventListener('mouseup', () => cont.classList.remove('pressing'));
+        document.addEventListener('mouseleave', () => cont.classList.remove('visible'));
+        document.addEventListener('mouseenter', () => {
+          if (mx > -100) cont.classList.add('visible');
         });
       }
     </script>
