@@ -231,21 +231,28 @@ body {
   mask-repeat: no-repeat;
   pointer-events: none;
 }
-/* Capa de COLOR: multiply para conservar textura y sombras del material. */
+/* Capa de COLOR: multiply para conservar textura y sombras del material. El JS
+   le aplica un `filter` según el acabado (mate = más apagado/plano, brillo =
+   más saturado y contrastado, como refleja el color real de cada acabado). */
 .sim-color {
   mix-blend-mode: multiply;
-  transition: background-color 0.45s ease;
+  transition:
+    background-color 0.45s ease,
+    filter 0.45s ease;
 }
-/* Capa de ACABADO: reflejo que aparece con satinado/brillo (screen). La
-   opacidad la fija el JS según el acabado (mate = 0). */
+/* Capa de ACABADO (reflejo especular): un brillo direccional que imita la luz
+   reflejada por la pintura. Mate ≈ 0 (reflexión difusa, sin brillo); satinado =
+   brillo suave (25-35%); brillo = reflejo marcado (70-85%). Blend `screen` para
+   que sume luz como un reflejo real. La opacidad la fija el JS. Enmascarado a la
+   superficie, así solo "brilla" lo pintado. */
 .sim-sheen {
-  mix-blend-mode: soft-light;
+  mix-blend-mode: screen;
   opacity: 0;
-  background: linear-gradient(
-    178deg,
+  background: radial-gradient(
+    135% 115% at 24% 12%,
     rgba(255, 255, 255, 0.55) 0%,
-    rgba(255, 255, 255, 0.12) 26%,
-    transparent 52%
+    rgba(255, 255, 255, 0.14) 34%,
+    transparent 60%
   );
   transition: opacity 0.45s ease;
 }

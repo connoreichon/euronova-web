@@ -14,8 +14,8 @@ obligatoria). Descargadas 2026-07-07.
 | `suelos.jpg` | parking-219767 | Suelo de garaje pintado con flecha y líneas de aparcamiento |
 | `imper.jpg` | roof-terrace-354906 | Terraza impermeabilizada con tumbonas |
 | `tienda/botes.jpg` | color-417694 | Estantería de botes de pintura mezclada (provisional para Nosotros) |
-| `simulador/interior.jpg` | wall-751342 | Pared lisa de interior con suelo abajo (superficie Interior del simulador); solo se pinta la pared, no el rodapié/suelo; base neutralizada para color fiel; máscara propia |
-| `simulador/fachada.jpg` | door-2096367 | Fachada mediterránea (superficie Exterior); placa/cartel clonado fuera; máscara propia |
+| `simulador/interior.jpg` | wall-751342 | Pared lisa de interior con suelo abajo (superficie Interior del simulador); solo se pinta la pared, no el rodapié/suelo; suelo cambiado a tarima gris clara; la pintura llega hasta el suelo sin hueco blanco; base neutralizada para color fiel; máscara propia |
+| `simulador/fachada.jpg` | door-2096367 | Fachada mediterránea (superficie Exterior); placa/cartel y farol de encima de la puerta clonados/eliminados por inpaint; máscara propia (regenerada tras limpiar el farol) |
 | `og.jpg` | — | Imagen para compartir, generada con el logo sobre rojo de marca |
 
 ## Vídeo (`public/assets/video/`)

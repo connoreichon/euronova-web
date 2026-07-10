@@ -294,8 +294,15 @@ const ACABADOS = [
   const buscar = document.getElementById('sim-buscar');
   const chips = document.querySelectorAll('.sim-chip');
 
-  // Intensidad del reflejo por acabado (opacidad de la capa "screen").
-  const SHEEN = { mate: 0, satinado: 0.45, brillo: 0.9 };
+  // Acabado real: cada uno tiene su reflejo (opacidad de la capa "screen") y su
+  // filtro de color. Mate absorbe la luz (plano, algo más apagado); satinado da
+  // un brillo suave; brillo refleja como espejo y hace el color más profundo y
+  // contrastado (claros más luminosos, oscuros más ricos).
+  const FINISH = {
+    mate: { sheen: 0, filter: 'saturate(0.9) contrast(0.94)' },
+    satinado: { sheen: 0.34, filter: 'none' },
+    brillo: { sheen: 0.78, filter: 'saturate(1.14) contrast(1.16) brightness(1.03)' }
+  };
   let acabado = 'mate';
   let colorActual = { h: '#e9e2ce', c: 'NCS S 1005-Y', n: 'Lino' };
 
@@ -316,7 +323,9 @@ const ACABADOS = [
 
   const setAcabado = (id) => {
     acabado = id;
-    sheenLayers.forEach((s) => (s.style.opacity = String(SHEEN[id] ?? 0)));
+    const f = FINISH[id] || FINISH.mate;
+    sheenLayers.forEach((s) => (s.style.opacity = String(f.sheen)));
+    colorLayers.forEach((c) => (c.style.filter = f.filter));
     finishBtns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.finish === id)));
     refrescarNombre();
   };
