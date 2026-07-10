@@ -2,7 +2,7 @@
 import { servicios } from '../data/site';
 ---
 
-<section id="servicios" class="bg-negro py-20 text-papel md:py-32">
+<section id="servicios" class="py-20 text-papel md:py-32">
   <div class="container-x">
     <div class="reveal max-w-xl">
       <p class="kicker-brocha text-rojo">Por qué Euronova</p>
@@ -14,12 +14,12 @@ import { servicios } from '../data/site';
     <div class="mt-12 grid gap-x-10 gap-y-10 sm:grid-cols-2">
       {
         servicios.map((s) => (
-          <div class="reveal border-t border-white/15 pt-5">
-            <div class="flex items-baseline gap-4">
-              <span class="font-display text-[15px] font-bold text-rojo">{s.num}</span>
+          <div class="reveal grid grid-cols-[auto_1fr] items-start gap-x-5 border-t border-white/15 pt-5">
+            <span class="font-display text-4xl leading-none font-bold text-rojo/35 md:text-5xl">{s.num}</span>
+            <div>
               <h3 class="font-display text-xl font-bold text-white">{s.nombre}</h3>
+              <p class="mt-2 text-[14px] leading-relaxed text-papel/72">{s.desc}</p>
             </div>
-            <p class="mt-2.5 pl-10 text-[14px] leading-relaxed text-papel/70">{s.desc}</p>
           </div>
         ))
       }

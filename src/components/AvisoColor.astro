@@ -12,13 +12,13 @@ const { variant = 'full', class: className = '' } = Astro.props;
 {
   variant === 'inline' ? (
     <p class={`border-l-2 border-rojo pl-3 text-[12.5px] leading-relaxed text-papel/70 ${className}`}>
-      <span class="font-semibold text-rojo">El color en pantalla es orientativo.</span>{' '}
+      <span class="font-semibold text-rojo-400">El color en pantalla es orientativo.</span>{' '}
       Para acertar, ven con una muestra real o consulta la carta física en tienda.
     </p>
   ) : (
-    <div class={`flex gap-3.5 border-l-2 border-rojo bg-white/[0.03] py-4 pr-5 pl-4 ${className}`}>
-      <p class="text-[13px] leading-relaxed text-papel/80">
-        <span class="font-semibold tracking-wide text-rojo">Importante.</span>{' '}
+    <div class={`flex gap-3.5 rounded-r-xl border-l-2 border-rojo bg-white/[0.03] py-4 pr-5 pl-4 ${className}`}>
+      <p class="text-[13px] leading-relaxed text-papel/85">
+        <span class="font-semibold tracking-wide text-rojo-400">Importante.</span>{' '}
         El color que ves en pantalla es orientativo: cada dispositivo, brillo y
         luz alteran el tono real. Para igualar un color con precisión, la
         referencia válida es la carta física o una muestra real vista en tienda.

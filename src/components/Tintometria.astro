@@ -13,6 +13,9 @@ import { asset } from '../lib/asset';
 // Color inicial de la pared del simulador.
 const INICIAL = { h: '#e9e2ce', c: 'NCS S 1005-Y', n: 'Lino' };
 
+// WhatsApp contextual: "quiero un color a medida".
+const waColor = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent('Hola, quiero un color a medida. ¿Me lo podéis preparar?')}`;
+
 // Superficies: cada una es una foto real + una máscara (blanco = lo que se pinta).
 const SUPERFICIES = [
   {
@@ -39,10 +42,10 @@ const ACABADOS = [
 ];
 ---
 
-<section id="color" class="bg-negro py-20 text-papel md:py-32">
+<section id="color" class="costura sec-alt py-20 text-papel md:py-32">
   <div class="container-x">
     <!-- Encabezado -->
-    <div class="reveal mx-auto max-w-3xl">
+    <div class="reveal halo-rojo halo-rojo--tenue mx-auto max-w-3xl">
       <p class="kicker-brocha text-rojo">Imagina tu pared</p>
       <h2 class="display mt-2 text-3xl text-white md:text-5xl">
         Pruébalo antes de pintar.
@@ -65,6 +68,8 @@ const ACABADOS = [
           <button
             type="button"
             role="tab"
+            id={`surf-tab-${s.id}`}
+            aria-controls={`surf-panel-${s.id}`}
             data-surface={s.id}
             aria-selected={i === 0 ? 'true' : 'false'}
             class="sim-surface-tab cursor-pointer rounded-xl border px-3.5 py-2 transition-colors"
@@ -78,10 +83,16 @@ const ACABADOS = [
 
     <!-- Escenario: una foto por superficie (solo la activa visible) con el
          buscador flotando encima. Solo se pinta la superficie de su máscara. -->
-    <div class="reveal sim-stage relative mx-auto mt-4 max-w-3xl overflow-hidden rounded-2xl shadow-xl shadow-black/50">
+    <figure class="reveal sim-stage relative mx-auto mt-4 max-w-3xl overflow-hidden rounded-panel ring-1 ring-white/10 shadow-[0_26px_60px_-26px_rgba(0,0,0,0.8),0_0_90px_-28px_rgba(210,38,43,0.42)]">
       {
         SUPERFICIES.map((s, i) => (
-          <div class={`sim-panel ${i === 0 ? '' : 'hidden'}`} data-panel={s.id}>
+          <div
+            class={`sim-panel ${i === 0 ? '' : 'hidden'}`}
+            data-panel={s.id}
+            role="tabpanel"
+            id={`surf-panel-${s.id}`}
+            aria-labelledby={`surf-tab-${s.id}`}
+          >
             <div class="sim-estancia relative">
               <img
                 src={asset(s.img)}
@@ -107,7 +118,7 @@ const ACABADOS = [
       <!-- Buscador flotante (único, sobre la superficie activa) -->
       <div class="absolute inset-x-0 top-0 z-10 flex flex-col gap-2 p-3 sm:p-4">
         <label for="sim-buscar" class="sr-only">Busca un color por código o nombre</label>
-        <div class="flex items-center gap-2.5 rounded-full bg-white/95 px-4 py-3 shadow-lg shadow-black/30 backdrop-blur-sm">
+        <div class="flex items-center gap-2.5 rounded-full bg-white/95 px-4 py-3 shadow-lg shadow-black/30 backdrop-blur-sm transition-shadow focus-within:ring-2 focus-within:ring-rojo focus-within:ring-offset-2 focus-within:ring-offset-negro">
           <svg viewBox="0 0 24 24" class="h-4.5 w-4.5 shrink-0 text-negro/50" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
             <circle cx="11" cy="11" r="7" />
             <path d="m20 20-3.8-3.8" stroke-linecap="round" />
@@ -117,10 +128,10 @@ const ACABADOS = [
             type="search"
             placeholder="Escribe un color: 7016, 5010, verde…"
             autocomplete="off"
-            class="w-full bg-transparent text-[14px] font-semibold text-negro placeholder:font-normal placeholder:text-negro/45 focus:outline-none"
+            class="w-full bg-transparent text-[14px] font-semibold text-negro placeholder:font-normal placeholder:text-negro/60 focus:outline-none"
           />
         </div>
-        <p id="sim-info" class="ml-3 h-4 text-[12px] font-semibold text-white [text-shadow:0_1px_4px_rgba(0,0,0,0.85)]" aria-live="polite"></p>
+        <p id="sim-info" class="ml-3 min-h-[1.15rem] text-[12px] font-semibold text-white [text-shadow:0_1px_4px_rgba(0,0,0,0.85)]" aria-live="polite"></p>
       </div>
 
       <!-- Color + acabado aplicados, abajo, con velo para legibilidad -->
@@ -128,33 +139,49 @@ const ACABADOS = [
         <span class="text-[11.5px] text-white/70">Resultado orientativo</span>
         <span id="sim-nombre" class="text-right text-[13px] font-semibold text-white [text-shadow:0_1px_4px_rgba(0,0,0,0.6)]">{INICIAL.n} · {INICIAL.c}</span>
       </figcaption>
-    </div>
+    </figure>
 
-    <!-- Acabado + colores rápidos -->
-    <div class="reveal mx-auto mt-5 max-w-3xl">
-      <!-- Acabado -->
-      <div>
-        <p class="mb-2 text-[12px] font-semibold tracking-wide text-papel/55 uppercase">Acabado</p>
-        <div class="inline-flex rounded-full border border-white/15 p-1" role="group" aria-label="Acabado">
-          {
-            ACABADOS.map((a, i) => (
-              <button
-                type="button"
-                data-finish={a.id}
-                aria-pressed={i === 0 ? 'true' : 'false'}
-                class="sim-finish cursor-pointer rounded-full px-4 py-1.5 text-[13px] font-semibold transition-colors"
-              >
-                {a.label}
-              </button>
-            ))
-          }
+    <!-- Panel de control (dock premium bajo el escenario) -->
+    <div class="reveal panel mx-auto mt-5 max-w-3xl p-5 md:p-6">
+      <!-- Estado en vivo + acabado -->
+      <div class="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+        <div class="flex items-center gap-3">
+          <span
+            id="sim-swatch"
+            class="swatch h-12 w-12 shrink-0 rounded-xl ring-1 ring-white/15"
+            style={`background-color:${INICIAL.h}`}
+            aria-hidden="true"
+          ></span>
+          <div class="leading-tight">
+            <p id="sim-estado-nombre" class="text-[14px] font-bold text-white">{INICIAL.n}</p>
+            <p id="sim-estado-cod" class="mt-0.5 text-[12px] font-semibold text-papel/65">{INICIAL.c} · Mate</p>
+          </div>
+        </div>
+        <div>
+          <p class="kicker-xs mb-2 text-papel/70">Acabado</p>
+          <div class="inline-flex rounded-full border border-white/15 p-1" role="group" aria-label="Acabado">
+            {
+              ACABADOS.map((a, i) => (
+                <button
+                  type="button"
+                  data-finish={a.id}
+                  aria-pressed={i === 0 ? 'true' : 'false'}
+                  class="sim-finish cursor-pointer rounded-full px-4 py-1.5 text-[13px] font-semibold transition-colors"
+                >
+                  {a.label}
+                </button>
+              ))
+            }
+          </div>
         </div>
       </div>
 
+      <hr class="my-5 border-white/10" />
+
       <!-- Guarda tus colores: favoritos que se quedan guardados en este navegador -->
-      <div class="mt-6">
+      <div>
         <div class="flex flex-wrap items-center justify-between gap-3">
-          <p class="text-[12px] font-semibold tracking-wide text-papel/55 uppercase">Guarda tus colores</p>
+          <p class="kicker-xs text-papel/70">Guarda tus colores</p>
           <button
             type="button"
             id="sim-guardar"
@@ -171,16 +198,15 @@ const ACABADOS = [
           </button>
         </div>
         <div id="sim-favs" class="mt-3 flex flex-wrap items-center gap-2.5" role="group" aria-label="Tus colores guardados" />
-        <p id="sim-favs-vacio" class="mt-2 max-w-md text-[12.5px] leading-relaxed text-papel/45">
-          Aplica un color y pulsa «Guardar color», o marca tus favoritos con el corazón
-          en las <a href={asset('/cartas/')} class="font-semibold text-papel/70 underline underline-offset-2 hover:text-white">cartas de colores</a>:
-          aparecerán aquí para probarlos en la pared.
+        <p id="sim-favs-vacio" class="mt-2 max-w-md text-[12.5px] leading-relaxed text-papel/60">
+          Guarda aquí tus colores para probarlos en la pared. También puedes marcar
+          favoritos con el corazón en las <a href={asset('/cartas/')} class="font-semibold text-papel/80 underline underline-offset-2 hover:text-white">cartas de colores</a>.
         </p>
       </div>
 
-      <AvisoColor variant="inline" class="mt-6" />
+      <AvisoColor variant="inline" class="mt-5" />
 
-      <div class="mt-7 flex flex-wrap items-center gap-3">
+      <div class="mt-6 flex flex-wrap items-center gap-3">
         <a
           href={asset('/cartas/')}
           class="btn-pintura rounded-full bg-rojo px-6 py-3.5 text-[14px] font-bold text-white transition-transform hover:-translate-y-0.5"
@@ -188,12 +214,13 @@ const ACABADOS = [
           Explora las cartas de colores
         </a>
         <a
-          href={site.mapsLink}
+          href={waColor}
           target="_blank"
           rel="noopener"
-          class="rounded-full border border-white/25 px-6 py-3.5 text-[14px] font-semibold text-white transition-colors hover:border-white/60"
+          class="inline-flex items-center gap-2 rounded-full border border-white/25 px-6 py-3.5 text-[14px] font-semibold text-white transition-colors hover:border-white/60"
         >
-          Cómo llegar
+          <svg viewBox="0 0 24 24" class="h-4 w-4 text-wasap" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.1 8.1 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-2-1.2 7.4 7.4 0 0 1-1.4-1.7c-.1-.2 0-.4.1-.5l.4-.5a1.8 1.8 0 0 0 .3-.4.4.4 0 0 0 0-.4c0-.1-.6-1.4-.8-1.9s-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 2.9 2.9 0 0 0-.9 2.1 5 5 0 0 0 1.1 2.7 11.5 11.5 0 0 0 4.4 3.9 14.6 14.6 0 0 0 1.5.5 3.5 3.5 0 0 0 1.6.1 2.6 2.6 0 0 0 1.7-1.2 2.1 2.1 0 0 0 .2-1.2c-.1-.1-.3-.2-.5-.3Z" /></svg>
+          Pídelo por WhatsApp
         </a>
       </div>
     </div>
@@ -203,7 +230,7 @@ const ACABADOS = [
   <div class="container-x mt-16 md:mt-24">
     <div class="reveal flex flex-wrap items-end justify-between gap-4">
       <div>
-        <p class="kicker-brocha text-rojo" style="font-size:1.8rem;">Tendencia</p>
+        <p class="kicker-brocha kicker-brocha--sm text-rojo">Tendencia</p>
         <h3 class="display mt-1 text-2xl text-white md:text-3xl">Blancos rotos que se llevan.</h3>
       </div>
       <p class="max-w-sm text-[13px] leading-relaxed text-papel/60">
@@ -216,14 +243,14 @@ const ACABADOS = [
         BLANCOS_ROTOS.map((b) => (
           <button
             type="button"
-            class="blanco-item reveal group cursor-pointer overflow-hidden rounded-xl border border-white/10 bg-white/5 text-left transition-all hover:-translate-y-1 hover:border-white/25"
+            class="blanco-item panel panel-i reveal group cursor-pointer overflow-hidden text-left"
             data-hex={b.h}
             data-nombre={b.n}
             data-codigo={b.c}
             aria-label={`Ver ${b.n} (${b.c}) en la pared`}
           >
-            <div class="aspect-[5/3] rounded-t-xl" style={`background-color:${b.h};`} />
-            <div class="px-3.5 py-3">
+            <div class="swatch aspect-[5/3]" style={`background-color:${b.h};`} />
+            <div class="border-t border-white/[0.06] px-3.5 py-3">
               <div class="flex items-start justify-between gap-2">
                 <p class="min-w-0 text-[13px] font-bold text-white">{b.n}</p>
                 <BadgeCarta carta={b.carta} class="mt-0.5" />
@@ -287,6 +314,9 @@ const ACABADOS = [
   const nombre = document.getElementById('sim-nombre');
   const info = document.getElementById('sim-info');
   const buscar = document.getElementById('sim-buscar');
+  const swatchEl = document.getElementById('sim-swatch');
+  const estadoNombre = document.getElementById('sim-estado-nombre');
+  const estadoCod = document.getElementById('sim-estado-cod');
 
   // Acabado real: cada uno tiene su reflejo (opacidad de la capa "screen") y su
   // filtro de color. Mate absorbe la luz (plano, algo más apagado); satinado da
@@ -303,9 +333,15 @@ const ACABADOS = [
   const nombreColor = (color) =>
     color.n && color.n !== 'NCS' && color.n !== 'NCS neutro' ? `${color.n} · ${color.c}` : color.c;
 
+  const soloNombre = (color) =>
+    color.n && color.n !== 'NCS' && color.n !== 'NCS neutro' ? color.n : color.c;
   const refrescarNombre = () => {
     const acab = (ACABADOS_JS.find((a) => a.id === acabado) || {}).label || '';
     if (nombre) nombre.textContent = `${nombreColor(colorActual)} · ${acab}`;
+    // Píldora de estado en vivo del panel de control (dato canónico, legible).
+    if (swatchEl) swatchEl.style.backgroundColor = colorActual.h;
+    if (estadoNombre) estadoNombre.textContent = soloNombre(colorActual);
+    if (estadoCod) estadoCod.textContent = `${colorActual.c} · ${acab}`;
   };
 
   // --- Micro-animaciones de pintura ---

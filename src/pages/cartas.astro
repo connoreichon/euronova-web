@@ -39,8 +39,9 @@ const cartas = [
 
     <!-- Hero inmersivo sobre el fondo de vídeo -->
     <section class="relative pt-28 pb-16 text-papel md:pt-40 md:pb-24">
-      <!-- velo mínimo solo tras el titular, para que se lea sin tapar el fondo -->
-      <div class="absolute inset-y-0 left-0 w-full bg-gradient-to-r from-negro/75 via-negro/25 to-transparent md:w-2/3"></div>
+      <!-- velo: VERTICAL en móvil (contraste del titular sobre cualquier fotograma
+           del vídeo) y horizontal en desktop (deja ver el pigmento a la derecha) -->
+      <div class="absolute inset-0 bg-gradient-to-t from-negro/85 via-negro/45 to-negro/10 md:inset-y-0 md:left-0 md:w-2/3 md:bg-gradient-to-r md:from-negro/75 md:via-negro/25 md:to-transparent"></div>
 
       <div class="container-x relative">
         <p class="kicker-brocha text-rojo">Cartas de colores</p>
@@ -51,7 +52,7 @@ const cartas = [
           Explora las cartas RAL y NCS, busca tu tono por código y hazte una idea.
           Después lo igualamos con precisión en tienda, con carta física y tintometría.
         </p>
-        <AvisoColor variant="full" class="mt-7 max-w-2xl rounded-r-lg bg-negro/40 backdrop-blur-sm" />
+        <AvisoColor variant="full" class="mt-7 max-w-2xl bg-negro/40 backdrop-blur-sm" />
       </div>
     </section>
 
@@ -111,7 +112,7 @@ const cartas = [
               type="search"
               placeholder="Ej.: 7016, blanco perla, 0502…"
               autocomplete="off"
-              class="w-full bg-transparent text-[14px] text-white placeholder:text-papel/40 focus:outline-none"
+              class="w-full bg-transparent text-[14px] text-white placeholder:text-papel/55 focus:outline-none"
             />
           </div>
           <p id="resultado-info" class="mt-2 pl-2 text-[12px] text-papel/60" aria-live="polite"></p>
@@ -144,16 +145,16 @@ const cartas = [
                 <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
                   {carta.colores.map((color) => (
                     <div
-                      class="color-item overflow-hidden rounded-xl border border-white/10 bg-white/5 transition-all hover:-translate-y-1 hover:ring-2 hover:ring-white/40"
+                      class="color-item panel panel-i overflow-hidden"
                       data-buscar={`${color.c} ${color.n}`.toLowerCase()}
                       data-hex={color.h}
                       data-codigo={color.c}
                       data-nombre={color.n}
                     >
-                      <div class="relative aspect-[4/3]" style={`background-color:${color.h};`}>
+                      <div class="swatch relative aspect-[4/3]" style={`background-color:${color.h};`}>
                         <button
                           type="button"
-                          class="fav-btn absolute top-2 right-2 grid h-9 w-9 cursor-pointer place-items-center rounded-full bg-black/35 text-white backdrop-blur-sm transition-colors hover:bg-black/55"
+                          class="fav-btn absolute top-2 right-2 grid h-10 w-10 cursor-pointer place-items-center rounded-full bg-black/40 text-white backdrop-blur-sm transition-colors hover:bg-black/60"
                           aria-pressed="false"
                           aria-label={`Guardar ${color.c} en tus colores`}
                         >
@@ -165,7 +166,7 @@ const cartas = [
                           </svg>
                         </button>
                       </div>
-                      <div class="px-3 py-2.5">
+                      <div class="border-t border-white/[0.06] px-3 py-2.5">
                         <p class="text-[12.5px] font-bold text-white">{color.c}</p>
                         <p class="truncate text-[11.5px] text-papel/60">{color.n}</p>
                       </div>
@@ -356,13 +357,12 @@ const cartas = [
   const HEART = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 20.3s-6.9-4.2-9.2-8.6C1.3 8.9 2.7 5.9 5.7 5.9c1.9 0 3.2 1.1 4.4 2.8l1.9 2.6 1.9-2.6c1.2-1.7 2.5-2.8 4.4-2.8 3 0 4.4 3 2.9 5.8-2.3 4.4-9.2 8.6-9.2 8.6z" stroke-linejoin="round"/></svg>`;
   const crearItemColor = (codigo: string, hex: string) => {
     const el = document.createElement('div');
-    el.className =
-      'color-item overflow-hidden rounded-xl border border-white/10 bg-white/5 transition-all hover:-translate-y-1 hover:ring-2 hover:ring-white/40';
+    el.className = 'color-item panel panel-i overflow-hidden';
     el.dataset.buscar = codigo.toLowerCase();
     el.dataset.hex = hex;
     el.dataset.codigo = codigo;
     el.dataset.nombre = '';
-    el.innerHTML = `<div class="relative aspect-[4/3]" style="background-color:${hex};"><button type="button" class="fav-btn absolute top-2 right-2 grid h-9 w-9 cursor-pointer place-items-center rounded-full bg-black/35 text-white backdrop-blur-sm transition-colors hover:bg-black/55" aria-pressed="false" aria-label="Guardar ${codigo} en tus colores">${HEART}</button></div><div class="px-3 py-2.5"><p class="text-[12.5px] font-bold text-white">${codigo}</p></div>`;
+    el.innerHTML = `<div class="swatch relative aspect-[4/3]" style="background-color:${hex};"><button type="button" class="fav-btn absolute top-2 right-2 grid h-10 w-10 cursor-pointer place-items-center rounded-full bg-black/40 text-white backdrop-blur-sm transition-colors hover:bg-black/60" aria-pressed="false" aria-label="Guardar ${codigo} en tus colores">${HEART}</button></div><div class="border-t border-white/[0.06] px-3 py-2.5"><p class="text-[12.5px] font-bold text-white">${codigo}</p></div>`;
     return el;
   };
 

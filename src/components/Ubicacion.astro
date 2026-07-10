@@ -1,14 +1,18 @@
 ---
 import { site } from '../data/site';
+
+const wa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(site.whatsappMensaje)}`;
 ---
 
-<section id="tienda" class="bg-negro py-20 text-papel md:py-32">
+<section id="tienda" class="costura sec-alt py-20 text-papel md:py-32">
   <div class="container-x grid gap-12 md:grid-cols-2">
     <div class="reveal">
       <p class="kicker-brocha text-rojo">Ven a vernos</p>
       <h2 class="display mt-2 text-3xl text-white md:text-5xl">
         La tienda, en Las Lagunas.
       </h2>
+      <!-- Indicador dinámico "abierto/cerrado" (lo rellena el script de abajo). -->
+      <p id="estado-tienda" class="mt-4 rounded-full border px-3.5 py-1.5 text-[12.5px] font-semibold" aria-live="polite"></p>
 
       <address class="mt-6 space-y-4 text-[15px] not-italic">
         <p class="flex items-start gap-3">
@@ -85,15 +89,110 @@ import { site } from '../data/site';
           </div>
         )
       }
-      <a
-        href={`tel:${site.telefonoLink}`}
-        class="mt-5 inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-[14px] font-bold text-rojo transition-transform hover:-translate-y-0.5"
-      >
-        <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-          <path d="M5 4h4l1.5 4.5L8 10a12 12 0 0 0 6 6l1.5-2.5L20 15v4a1.5 1.5 0 0 1-1.7 1.5A16.5 16.5 0 0 1 3.5 5.7 1.5 1.5 0 0 1 5 4Z" stroke-linejoin="round" />
-        </svg>
-        Llámanos: {site.telefono}
-      </a>
+      <div class="mt-5 flex flex-col gap-3 sm:flex-row">
+        <a
+          href={wa}
+          target="_blank"
+          rel="noopener"
+          class="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-wasap px-6 py-3.5 text-[14px] font-bold text-negro transition-transform hover:-translate-y-0.5"
+        >
+          <svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.1 8.1 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-2-1.2 7.4 7.4 0 0 1-1.4-1.7c-.1-.2 0-.4.1-.5l.4-.5a1.8 1.8 0 0 0 .3-.4.4.4 0 0 0 0-.4c0-.1-.6-1.4-.8-1.9s-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 2.9 2.9 0 0 0-.9 2.1 5 5 0 0 0 1.1 2.7 11.5 11.5 0 0 0 4.4 3.9 14.6 14.6 0 0 0 1.5.5 3.5 3.5 0 0 0 1.6.1 2.6 2.6 0 0 0 1.7-1.2 2.1 2.1 0 0 0 .2-1.2c-.1-.1-.3-.2-.5-.3Z" /></svg>
+          WhatsApp
+        </a>
+        <a
+          href={`tel:${site.telefonoLink}`}
+          class="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-[14px] font-bold text-rojo transition-transform hover:-translate-y-0.5"
+        >
+          <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path d="M5 4h4l1.5 4.5L8 10a12 12 0 0 0 6 6l1.5-2.5L20 15v4a1.5 1.5 0 0 1-1.7 1.5A16.5 16.5 0 0 1 3.5 5.7 1.5 1.5 0 0 1 5 4Z" stroke-linejoin="round" />
+          </svg>
+          Llámanos
+        </a>
+      </div>
     </div>
   </div>
 </section>
+
+<style>
+  #estado-tienda {
+    display: none;
+    align-items: center;
+    width: fit-content;
+  }
+  #estado-tienda.abierto,
+  #estado-tienda.cerrado {
+    display: inline-flex;
+  }
+  #estado-tienda::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    margin-right: 0.55rem;
+    border-radius: 9999px;
+    background: currentColor;
+    box-shadow: 0 0 8px currentColor;
+  }
+  #estado-tienda.abierto {
+    border-color: rgba(37, 211, 102, 0.45);
+    background: rgba(37, 211, 102, 0.12);
+    color: #7ef0a8;
+  }
+  #estado-tienda.cerrado {
+    border-color: rgba(210, 38, 43, 0.5);
+    background: rgba(210, 38, 43, 0.14);
+    color: #f6a6a9;
+  }
+</style>
+
+<script>
+  // Indicador "abierto ahora / cerrado" calculado del horario real (L-V:
+  // 7:30-13:30 y 16:00-19:30; sábado y domingo, cerrado en el indicador).
+  const el = document.getElementById('estado-tienda');
+  if (el) {
+    const rangos = [
+      [7.5, 13.5],
+      [16, 19.5]
+    ];
+    const now = new Date();
+    const dia = now.getDay(); // 0 domingo … 6 sábado
+    const t = now.getHours() + now.getMinutes() / 60;
+    const laborable = dia >= 1 && dia <= 5;
+    const fmt = (x: number) => {
+      const h = Math.floor(x);
+      const m = Math.round((x - h) * 60);
+      return `${h}:${String(m).padStart(2, '0')}`;
+    };
+    let abierto = false;
+    let cierra = 0;
+    if (laborable) {
+      for (const [a, b] of rangos) {
+        if (t >= a && t < b) {
+          abierto = true;
+          cierra = b;
+          break;
+        }
+      }
+    }
+    let txt: string;
+    if (abierto) {
+      txt = `Abierto ahora · cierra a las ${fmt(cierra)}`;
+    } else {
+      let prox = '';
+      if (laborable) {
+        for (const [a] of rangos) {
+          if (t < a) {
+            prox = `hoy a las ${fmt(a)}`;
+            break;
+          }
+        }
+      }
+      if (!prox) {
+        const manana = (dia + 1) % 7;
+        prox = manana >= 1 && manana <= 5 ? 'mañana a las 7:30' : 'el lunes a las 7:30';
+      }
+      txt = `Cerrado ahora · abre ${prox}`;
+    }
+    el.textContent = txt;
+    el.classList.add(abierto ? 'abierto' : 'cerrado');
+  }
+</script>

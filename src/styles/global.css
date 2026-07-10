@@ -25,9 +25,34 @@
   /* Negro de marca (rótulo) */
   --color-negro: #171111;
   --color-negro-600: #241b1b;
+  --color-negro-700: #1e1616; /* elevación tonal sutil entre secciones */
+
+  /* Rojo CLARO para texto/acentos pequeños sobre negro (accesible, ~6.3:1) */
+  --color-rojo-400: #f26a6f;
+
+  /* Radios del sistema (una escala corta y coherente) */
+  --radius-chip: 0.625rem; /* 10px: pastillas y controles */
+  --radius-card: 1rem; /* 16px: tarjetas y muestras */
+  --radius-panel: 1.25rem; /* 20px: contenedores grandes */
 
   --font-display: 'Archivo', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+/* ===========================================================================
+   VOCABULARIO DE MOVIMIENTO Y SUPERFICIE (tokens centralizados)
+   =========================================================================== */
+:root {
+  --ease-entrada: cubic-bezier(0.16, 1, 0.3, 1); /* reveals / entradas */
+  --ease-suave: cubic-bezier(0.22, 1, 0.36, 1); /* hovers / tarjetas */
+  --dur-hover: 220ms;
+
+  /* Superficie de panel (una sola fuente de verdad) */
+  --panel-bg: rgba(255, 255, 255, 0.035);
+  --panel-borde: rgba(255, 255, 255, 0.1);
+  --panel-borde-fuerte: rgba(255, 255, 255, 0.22);
+  --panel-realce: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --sombra-panel: 0 14px 30px -16px rgba(0, 0, 0, 0.7);
 }
 
 html {
@@ -36,22 +61,59 @@ html {
   text-rendering: optimizeLegibility;
 }
 
-/* Foco visible y consistente en toda la web (accesibilidad, Fase 6) */
+/* Foco visible en CLARO y OSCURO: anillo rojo de marca + halo blanco (se ve
+   sobre negro, sobre papel y sobre botones blancos). Accesibilidad 2.4.7. */
 :focus-visible {
-  outline: 2px solid #fff;
-  outline-offset: 3px;
+  outline: 2px solid var(--color-rojo);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.6);
   border-radius: 4px;
 }
 
 body {
+  position: relative;
   font-family: var(--font-body);
   background-color: var(--color-negro);
   color: var(--color-papel);
   overflow-x: hidden;
 }
 
+/* --- ATMÓSFERA GLOBAL --------------------------------------------------------
+   Capa fija (no repinta al hacer scroll) que da profundidad a TODA la web:
+   un amanecer cálido arriba, dos halos rojos de marca muy tenues, y una viñeta
+   que centra la composición. Las secciones van transparentes para que se vea. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(100% 60% at 50% -12%, #2c2020 0%, transparent 58%),
+    radial-gradient(65% 50% at 8% 18%, rgba(210, 38, 43, 0.07) 0%, transparent 55%),
+    radial-gradient(60% 55% at 94% 72%, rgba(210, 38, 43, 0.06) 0%, transparent 55%),
+    radial-gradient(120% 120% at 50% 46%, transparent 58%, rgba(0, 0, 0, 0.42) 100%),
+    var(--color-negro);
+}
+/* Grano fino: quita el banding de los gradientes y da tacto de estudio/cartón. */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.04;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
 :where(section[id]) {
-  scroll-margin-top: 5.5rem;
+  scroll-margin-top: 6.75rem; /* header doble en móvil */
+}
+@media (min-width: 768px) {
+  :where(section[id]) {
+    scroll-margin-top: 5.5rem; /* header de una fila en desktop */
+  }
 }
 
 .container-x {
@@ -73,6 +135,13 @@ body {
   font-size: 0.72rem;
   font-weight: 600;
 }
+/* Micro-etiqueta de control/tile (versales, un solo estilo en toda la web). */
+.kicker-xs {
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
 
 /* Titulares display */
 .display {
@@ -83,15 +152,16 @@ body {
 }
 
 /* --- Aparición al hacer scroll -------------------------------------------- */
-.reveal {
+/* Gateado bajo .js-anim: si el JS no corre, el contenido se ve completo
+   (coherente con hero-anim y reveal-img; evita página en blanco). */
+.js-anim .reveal {
   opacity: 0;
   transform: translateY(30px);
-  will-change: opacity, transform;
   transition:
-    opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity 0.8s var(--ease-entrada),
+    transform 0.8s var(--ease-entrada);
 }
-.reveal.is-visible {
+.js-anim .reveal.is-visible {
   opacity: 1;
   transform: none;
 }
@@ -112,7 +182,7 @@ body {
   transition-delay: 350ms;
 }
 @media (prefers-reduced-motion: reduce) {
-  .reveal {
+  .js-anim .reveal {
     opacity: 1;
     transform: none;
     transition: none;
@@ -216,9 +286,94 @@ body {
    Radios moderados, sombras mínimas, transiciones 180-300ms, imagen 1.02 máx.
    =========================================================================== */
 :root {
-  --radio-card: 0.875rem; /* 14px: moderado, nada de 24px por defecto */
-  --transicion: 240ms cubic-bezier(0.33, 1, 0.68, 1);
+  --radio-card: 1rem; /* 16px: tarjetas (alineado con --radius-card) */
   --sombra-suave: 0 6px 18px -10px rgba(0, 0, 0, 0.5);
+}
+
+/* ===========================================================================
+   LENGUAJE DE PANEL PREMIUM + MUESTRAS + ATMÓSFERA DE SECCIÓN (upgrade UI)
+   Una sola fuente de verdad para superficies, muestras de color, halos de
+   marca, costuras y ritmo tonal. Reutilizable en toda la web.
+   =========================================================================== */
+/* Panel: superficie de cristal con filo de luz arriba y borde definido. */
+.panel {
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-borde);
+  border-radius: var(--radius-card);
+  box-shadow: var(--panel-realce);
+}
+/* Panel interactivo: se eleva con sombra real (no "salta" plano). */
+.panel-i {
+  transition:
+    transform var(--dur-hover) var(--ease-suave),
+    box-shadow var(--dur-hover) var(--ease-suave),
+    border-color var(--dur-hover) var(--ease-suave);
+}
+.panel-i:hover {
+  transform: translateY(-4px);
+  border-color: var(--panel-borde-fuerte);
+  box-shadow: var(--panel-realce), var(--sombra-panel);
+}
+@media (prefers-reduced-motion: reduce) {
+  .panel-i,
+  .panel-i:hover {
+    transition: none;
+    transform: none;
+  }
+}
+
+/* Muestra de color con acabado "esmalte": luz de estudio + canto inferior.
+   El color base lo pone el inline style (background-color). */
+.swatch {
+  position: relative;
+  background-image:
+    radial-gradient(120% 100% at 24% 8%, rgba(255, 255, 255, 0.28), transparent 52%),
+    linear-gradient(160deg, rgba(255, 255, 255, 0.06), rgba(0, 0, 0, 0.16));
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Halo rojo de marca detrás de una pieza destacada (luz ambiental de estudio). */
+.halo-rojo {
+  position: relative;
+}
+.halo-rojo::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: -14% -8% auto;
+  height: 64%;
+  background: radial-gradient(58% 100% at 50% 0%, rgba(210, 38, 43, 0.22), transparent 70%);
+  filter: blur(46px);
+  pointer-events: none;
+}
+/* Variante tenue solo para dar profundidad tras un titular. */
+.halo-rojo--tenue::before {
+  background: radial-gradient(60% 100% at 30% 0%, rgba(210, 38, 43, 0.1), transparent 68%);
+}
+
+/* Costura: hilo de luz de marca que separa secciones (alternar, no en todas). */
+.costura {
+  position: relative;
+}
+.costura::before {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.08) 22%,
+    rgba(210, 38, 43, 0.3) 50%,
+    rgba(255, 255, 255, 0.08) 78%,
+    transparent
+  );
+}
+
+/* Ritmo tonal: secciones "elevadas" con un velo mínimo (2-3% luz). */
+.sec-alt {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.022), transparent 26%);
 }
 
 /* Pieza de escaparate editorial: imagen protagonista + texto, sin caja */
@@ -255,10 +410,11 @@ body {
     transparent 58%
   );
   transform: translateX(-130%);
-  transition: transform 0.85s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Sin transición en base: al salir el ratón el destello salta fuera (no barre de vuelta). */
 }
 .pieza:hover .pieza__media::after {
   transform: translateX(130%);
+  transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
 }
 /* Elevación premium de la tarjeta */
 .pieza {
@@ -303,15 +459,6 @@ body {
   padding: 24px;
   background: linear-gradient(180deg, rgba(16, 11, 11, 0) 0%, rgba(16, 11, 11, 0.78) 78%);
 }
-/* Brillo superior común, como pintura extendida con luz de estudio */
-.cat-swatch::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(120% 90% at 28% -10%, rgba(255, 255, 255, 0.32), transparent 55%);
-  pointer-events: none;
-}
-
 /* Paneles del ESCAPARATE de productos: cabecera = muestra de la pintura
    (color `--sw`) con brillo tipo esmalte y un acento rojo al pasar. */
 .prod__cover {
@@ -352,14 +499,6 @@ body {
     transition: none;
     transform: none;
   }
-}
-
-/* Fachadas: revestimiento con grano fino (placeholder de foto de tienda) */
-.mat-fachada {
-  background-color: #ddd3c0;
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)' opacity='0.14'/%3E%3C/svg%3E"),
-    linear-gradient(180deg, #e4dbc9 0%, #d3c8b1 100%);
 }
 
 /* Suelos: hormigón pulido (placeholder del mapa hasta confirmar dirección) */
@@ -538,6 +677,10 @@ body {
 .js-brush.pointer-fino * {
   cursor: none !important;
 }
+/* …salvo en campos de texto: ahí el cursor de escritura (I-beam) es imprescindible. */
+.js-brush.pointer-fino :is(input, textarea, select, [contenteditable]) {
+  cursor: auto !important;
+}
 .brocha-cursor {
   position: fixed;
   top: 0;
@@ -550,6 +693,10 @@ body {
 }
 .brocha-cursor.visible {
   opacity: 1;
+}
+/* Oculta la brocha sobre campos de texto (deja ver el cursor de escritura). */
+.brocha-cursor.oculta {
+  opacity: 0 !important;
 }
 .brocha-cursor__img {
   display: block;
@@ -628,6 +775,14 @@ body {
   fill: currentColor;
 }
 
+/* Cartas de colores: hay miles de muestras (RAL Design + NCS generadas).
+   content-visibility salta layout/paint de las que están fuera de pantalla:
+   primera pintura y scroll mucho más ligeros en móvil. */
+.color-item {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 176px;
+}
+
 /* Hero con vídeo de pigmentos: el póster (inline en el componente) hace de
    fondo/fallback. Con movimiento reducido se oculta el vídeo y queda el póster. */
 .video-hero {
@@ -650,30 +805,33 @@ body {
   display: none;
 }
 
-/* Etiqueta de sección escrita "a brocha", grande, legible y RECTA */
+/* Etiqueta de sección escrita "a brocha", grande, legible y RECTA. Escala para
+   dar aire en móviles pequeños y dejar que el H2 domine. */
 .kicker-brocha {
   font-family: 'Nanum Brush Script', 'Segoe Script', cursive;
-  font-size: 2.2rem;
+  font-size: 1.9rem;
   line-height: 0.9;
   letter-spacing: 0.01em;
   display: inline-block;
 }
-@media (min-width: 768px) {
+@media (min-width: 640px) {
   .kicker-brocha {
-    font-size: 2.6rem;
+    font-size: 2.2rem;
   }
 }
-
-/* Mancha decorativa de pintura en el fondo de una sección */
-.mancha {
-  position: absolute;
-  pointer-events: none;
-  user-select: none;
-  z-index: 0;
+@media (min-width: 768px) {
+  .kicker-brocha {
+    font-size: 2.5rem;
+  }
 }
-.mancha ~ * {
-  position: relative;
-  z-index: 1;
+/* Sub-sección: mismo rótulo a brocha, un punto más pequeño (sin font-size inline). */
+.kicker-brocha--sm {
+  font-size: 1.6rem;
+}
+@media (min-width: 768px) {
+  .kicker-brocha--sm {
+    font-size: 1.9rem;
+  }
 }
 
 /* Goteo del borde inferior del hero (rojo sobre la sección siguiente) */
@@ -702,6 +860,32 @@ body {
 }
 .wa-float:hover {
   transform: scale(1.07);
+}
+/* Pulso de atención periódico (dirige la mirada sin molestar; clave en móvil,
+   donde no hay hover). Se desactiva con movimiento reducido. */
+.wa-float::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  pointer-events: none;
+  animation: wa-pulso 4.5s ease-out infinite;
+}
+@keyframes wa-pulso {
+  0% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5);
+  }
+  16% {
+    box-shadow: 0 0 0 13px rgba(37, 211, 102, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 13px rgba(37, 211, 102, 0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wa-float::before {
+    animation: none;
+  }
 }
 @media (min-width: 768px) {
   .wa-float {

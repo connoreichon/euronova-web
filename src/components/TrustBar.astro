@@ -1,0 +1,24 @@
+---
+// Franja de confianza temprana (justo tras el hero): reduce la incertidumbre
+// del que acaba de entrar, sobre todo desde móvil. Fondo con un velo mínimo
+// para dar ritmo tonal respecto a la atmósfera general.
+const puntos = [
+  'Más de 20 años en Las Lagunas',
+  'Tintometría: color a medida al momento',
+  'Precio de profesional',
+  'Bupisa · Rugoplast y más marcas'
+];
+---
+
+<section aria-label="Por qué confiar en Euronova" class="border-b border-white/[0.07] bg-white/[0.015]">
+  <div class="container-x flex flex-wrap items-center justify-center gap-x-7 gap-y-2.5 py-4 text-center text-[12.5px] font-semibold text-papel/75">
+    {
+      puntos.map((p) => (
+        <span class="inline-flex items-center gap-2">
+          <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-rojo" aria-hidden="true" />
+          {p}
+        </span>
+      ))
+    }
+  </div>
+</section>

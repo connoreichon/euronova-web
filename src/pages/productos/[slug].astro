@@ -25,7 +25,8 @@ const waHref = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent('Hola, 
     <section class="relative isolate overflow-hidden bg-negro">
       <img
         src={asset(categoria.img)}
-        alt={categoria.alt}
+        alt=""
+        role="presentation"
         class="absolute inset-0 -z-10 h-full w-full object-cover opacity-35"
         width="1280"
         height="853"
@@ -56,7 +57,7 @@ const waHref = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent('Hola, 
     </section>
 
     <!-- Cambiar de categoría (escaparate) -->
-    <section class="border-b border-white/10 bg-negro">
+    <section class="border-b border-white/10">
       <div class="container-x flex gap-2 overflow-x-auto py-4 sin-scrollbar">
         {
           otras.map((c) => (
@@ -77,9 +78,10 @@ const waHref = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent('Hola, 
     </section>
 
     <!-- La gama de productos -->
-    <section class="bg-negro py-14 text-papel md:py-20">
+    <section class="py-16 text-papel md:py-24">
       <div class="container-x">
-        <div class="reveal flex flex-col gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-5 sm:flex-row sm:items-center sm:justify-between md:p-6">
+        <h2 class="sr-only">La gama de {categoria.nombre}</h2>
+        <div class="reveal panel flex flex-col gap-3 p-5 sm:flex-row sm:items-center sm:justify-between md:p-6">
           <p class="max-w-2xl text-[13.5px] leading-relaxed text-papel/70">
             Esto es una <span class="font-semibold text-papel/90">muestra</span> de la gama. En tienda tienes el
             catálogo completo, las marcas y el consejo para acertar. Los precios te los damos al momento
@@ -93,13 +95,13 @@ const waHref = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent('Hola, 
         <div class="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {
             categoria.productos.map((p) => (
-              <article class="prod reveal group overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] transition-all hover:-translate-y-1 hover:border-white/25">
+              <article class="prod panel panel-i reveal group overflow-hidden">
                 <div class="prod__cover relative aspect-[16/10] overflow-hidden" style={`--sw:${p.swatch};`}>
-                  <span class="prod__pill absolute top-3 left-3 rounded-full bg-black/45 px-2.5 py-1 text-[11px] font-semibold tracking-wide text-white/90 backdrop-blur-sm">
+                  <span class="prod__pill absolute top-3 left-3 rounded-full bg-black/60 px-2.5 py-1 text-[11px] font-semibold tracking-wide text-white backdrop-blur-sm">
                     {p.tipo}
                   </span>
                 </div>
-                <div class="p-5">
+                <div class="border-t border-white/[0.06] p-5">
                   <h3 class="font-display text-lg font-bold text-white">{p.nombre}</h3>
                   <p class="mt-1.5 text-[13.5px] leading-relaxed text-papel/60">{p.desc}</p>
                 </div>
@@ -108,7 +110,7 @@ const waHref = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent('Hola, 
           }
         </div>
 
-        <p class="reveal mt-8 text-[12.5px] text-papel/40">
+        <p class="reveal mt-8 text-[12.5px] text-papel/60">
           Fotos de muestra · el catálogo real con marcas y formatos, en tienda. Próximamente con fotos de Euronova.
         </p>
       </div>
@@ -119,7 +121,7 @@ const waHref = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent('Hola, 
       <div class="container-x flex flex-col items-start justify-between gap-8 md:flex-row md:items-center">
         <div class="reveal max-w-xl">
           <h2 class="display text-3xl text-white md:text-4xl">¿No lo tienes claro? Te asesoramos.</h2>
-          <p class="mt-3 text-[15px] leading-relaxed text-white/85">
+          <p class="mt-3 text-[15px] leading-relaxed text-white">
             Dinos qué vas a pintar y el estado de la superficie y te decimos el producto exacto, cuánta pintura
             necesitas y cómo aplicarla. El color, a medida en el momento.
           </p>

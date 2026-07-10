@@ -199,11 +199,16 @@ const {
       // Al clicar, se PINTA un trazo de brocha (textura real) donde pinchas: el
       // trazo se "pinta" con un barrido a lo largo (clip-path) y luego se
       // disuelve solo. Respeta prefers-reduced-motion.
-      if (!reduceMov) {
+      // Solo con puntero fino (ratón): en táctil no hay cursor-brocha, así que la
+      // salpicadura sería ruido en cada toque. Coherente con el cursor.
+      if (!reduceMov && window.matchMedia('(pointer: fine)').matches) {
         const N_TRAZOS = 2;
         let vivas = 0;
         addEventListener('click', (e) => {
           if (!e.detail || vivas > 2) return; // e.detail===0 = teclado → se ignora
+          // Nunca sobre controles/UI: la pincelada es un gesto sobre el contenido.
+          const t = e.target as HTMLElement;
+          if (t.closest('a,button,input,textarea,select,label,[role="tab"]')) return;
           vivas++;
           const img = document.createElement('img');
           img.className = 'mancha-click';
@@ -272,6 +277,11 @@ const {
         document.addEventListener('mouseleave', () => cont.classList.remove('visible'));
         document.addEventListener('mouseenter', () => {
           if (mx > -100) cont.classList.add('visible');
+        });
+        // Sobre campos de texto, oculta la brocha (ahí manda el I-beam de escritura).
+        document.addEventListener('mouseover', (e) => {
+          const t = e.target as HTMLElement;
+          cont.classList.toggle('oculta', !!t.closest('input,textarea,select,[contenteditable]'));
         });
       }
     </script>
