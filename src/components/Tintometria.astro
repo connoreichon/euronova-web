@@ -99,6 +99,12 @@ const ACABADOS = [
                 class="sim-sheen sim-mask"
                 style={`-webkit-mask-image:url(${asset(s.mask)}); mask-image:url(${asset(s.mask)})`}
               />
+              <div
+                class="sim-wet sim-mask"
+                style={`-webkit-mask-image:url(${asset(s.mask)}); mask-image:url(${asset(s.mask)})`}
+              >
+                <div class="sim-wet__band" />
+              </div>
             </div>
           </div>
         ))
@@ -308,12 +314,45 @@ const ACABADOS = [
     if (nombre) nombre.textContent = `${nombreColor(colorActual)} · ${acab}`;
   };
 
+  // --- Micro-animaciones de pintura ---
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const latir = (el) => {
+    if (reduce || !el) return;
+    el.classList.remove('late');
+    void el.offsetWidth; // reinicia la animación
+    el.classList.add('late');
+  };
+  // Barrido "húmedo": un destello cruza la superficie recién pintada una vez.
+  const barrerHumedo = () => {
+    if (reduce) return;
+    const panel = document.querySelector('.sim-panel:not(.hidden)');
+    const wet = panel && panel.querySelector('.sim-wet');
+    const band = panel && panel.querySelector('.sim-wet__band');
+    if (!wet || !band) return;
+    wet.animate(
+      [{ opacity: 0 }, { opacity: 0.85, offset: 0.16 }, { opacity: 0.85, offset: 0.6 }, { opacity: 0 }],
+      { duration: 720, easing: 'ease-out' }
+    );
+    band.animate([{ transform: 'translateX(-170%)' }, { transform: 'translateX(320%)' }], {
+      duration: 720,
+      easing: 'cubic-bezier(.4,0,.2,1)'
+    });
+  };
+  let barridoT;
+  const programarBarrido = () => {
+    if (reduce) return;
+    clearTimeout(barridoT);
+    barridoT = setTimeout(barrerHumedo, 200); // coalesce al teclear en el buscador
+  };
+
   const pintar = (color) => {
+    const cambia = !colorActual || colorActual.h !== color.h;
     colorActual = color;
     colorLayers.forEach((c) => (c.style.backgroundColor = color.h));
     refrescarNombre();
     marcarFavActivo();
     actualizarBotonGuardar();
+    if (cambia) programarBarrido();
   };
 
   const setAcabado = (id) => {
@@ -365,12 +404,13 @@ const ACABADOS = [
       .querySelectorAll('.sim-fav-apply')
       .forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.codigo === colorActual.c)));
   };
-  const renderFavs = () => {
+  const renderFavs = (nuevo) => {
     if (!favsEl) return;
     favsEl.textContent = '';
     favs.forEach((f) => {
       const wrap = document.createElement('div');
       wrap.className = 'sim-fav group relative';
+      if (nuevo && f.c === nuevo) wrap.classList.add('pop');
       const b = document.createElement('button');
       b.type = 'button';
       b.className =
@@ -398,22 +438,36 @@ const ACABADOS = [
   };
 
   guardarBtn?.addEventListener('click', () => {
-    if (estaGuardado(colorActual)) {
-      favs = favs.filter((f) => f.c !== colorActual.c);
-    } else {
+    const anadido = !estaGuardado(colorActual);
+    if (anadido) {
       favs.unshift({ h: colorActual.h, c: colorActual.c, n: colorActual.n });
       if (favs.length > MAX_FAVS) favs = favs.slice(0, MAX_FAVS);
+    } else {
+      favs = favs.filter((f) => f.c !== colorActual.c);
     }
     persistir();
-    renderFavs();
+    renderFavs(anadido ? colorActual.c : null);
+    if (anadido) {
+      latir(guardarIco);
+      const r = guardarBtn.getBoundingClientRect();
+      window.salpicarEn &&
+        window.salpicarEn(r.left + r.width / 2, r.top + r.height / 2, colorActual.h, { gotas: 12 });
+    }
   });
 
   favsEl?.addEventListener('click', (e) => {
     const rm = e.target.closest('.sim-fav-x');
     if (rm) {
-      favs = favs.filter((f) => f.c !== rm.dataset.codigo);
-      persistir();
-      renderFavs();
+      const wrap = rm.closest('.sim-fav');
+      const cod = rm.dataset.codigo;
+      const quitar = () => {
+        favs = favs.filter((f) => f.c !== cod);
+        persistir();
+        renderFavs();
+      };
+      if (reduce || !wrap) return quitar();
+      wrap.classList.add('saliendo');
+      wrap.addEventListener('animationend', quitar, { once: true });
       return;
     }
     const ap = e.target.closest('.sim-fav-apply');

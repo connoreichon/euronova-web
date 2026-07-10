@@ -123,35 +123,33 @@ const {
       // salpicadura auténtica teñida, pequeña y discreta) + gotitas finas que
       // se dispersan con gravedad (WAAPI). Respeta prefers-reduced-motion.
       const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (!reduce) {
-        const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
-        const COLORES: Record<string, string> = {
-          rojo: '#d2262b',
-          azul: '#1a4fa8',
-          albero: '#efb700',
-          blanco: '#f5f0e6'
-        };
-        const NOMBRES = Object.keys(COLORES);
-        const rnd = (a: number, b: number) => a + Math.random() * (b - a);
-        let vivos = 0;
-        // En táctil, el scroll ARRANCA con 'pointerdown' pero un gesto de scroll
-        // NO genera 'click': usar 'click' evita que salpique al desplazar el dedo.
-        // e.detail===0 = activación por teclado (Enter); la ignoramos para no
-        // salpicar en (0,0).
-        addEventListener('click', (e) => {
-          if (!e.detail || vivos > 3) return;
-          vivos++;
-          const nombre = NOMBRES[(Math.random() * NOMBRES.length) | 0];
-          const root = document.createElement('div');
-          root.className = 'splash5';
-          root.style.left = e.clientX + 'px';
-          root.style.top = e.clientY + 'px';
-          document.body.appendChild(root);
+      const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
+      const COLORES: Record<string, string> = {
+        rojo: '#d2262b',
+        azul: '#1a4fa8',
+        albero: '#efb700',
+        blanco: '#f5f0e6'
+      };
+      const NOMBRES = Object.keys(COLORES);
+      const rnd = (a: number, b: number) => a + Math.random() * (b - a);
+      let vivos = 0;
 
-          // mini salpicadura real (silueta auténtica, tamaño discreto)
+      // Salpicadura reutilizable: gotas del color dado (+ opcional sprite de
+      // mancha real) en (x,y). Se usa para el clic global y para "guardar color".
+      // No hace nada con prefers-reduced-motion.
+      function salpicarEn(x: number, y: number, color: string, opts: { sprite?: string; gotas?: number } = {}) {
+        if (reduce || vivos > 4) return;
+        vivos++;
+        const root = document.createElement('div');
+        root.className = 'splash5';
+        root.style.left = x + 'px';
+        root.style.top = y + 'px';
+        document.body.appendChild(root);
+
+        if (opts.sprite) {
           const img = document.createElement('img');
           img.className = 'splash5__sprite';
-          img.src = `${BASE}/assets/manchas/splat${2 + ((Math.random() * 2) | 0)}-${nombre}.png`;
+          img.src = opts.sprite;
           img.alt = '';
           const s = rnd(34, 54);
           img.style.width = s.toFixed(0) + 'px';
@@ -166,35 +164,51 @@ const {
             ],
             { duration: 900, easing: 'cubic-bezier(.2,.9,.3,1)', fill: 'forwards' }
           );
+        }
 
-          const n = 7 + ((Math.random() * 4) | 0);
-          for (let i = 0; i < n; i++) {
-            const g = document.createElement('span');
-            g.className = 'splash5__gota';
-            const sz = rnd(1.6, 4);
-            g.style.width = g.style.height = sz.toFixed(1) + 'px';
-            g.style.marginLeft = g.style.marginTop = (-sz / 2).toFixed(1) + 'px';
-            g.style.background = COLORES[nombre];
-            root.appendChild(g);
-            const ang = rnd(0, Math.PI * 2);
-            const alcance = rnd(16, 54);
-            const dx = Math.cos(ang) * alcance;
-            const subida = Math.sin(ang) * alcance * 0.5 - rnd(6, 20);
-            const caida = rnd(16, 42);
-            g.animate(
-              [
-                { transform: 'translate(0,0) scale(0.6)', opacity: 0.9 },
-                { transform: `translate(${(dx * 0.62).toFixed(1)}px, ${subida.toFixed(1)}px) scale(1)`, opacity: 0.85, offset: 0.4 },
-                { transform: `translate(${dx.toFixed(1)}px, ${caida.toFixed(1)}px) scale(0.4)`, opacity: 0 }
-              ],
-              { duration: rnd(420, 700), delay: rnd(0, 60), easing: 'cubic-bezier(.22,.61,.36,1)', fill: 'forwards' }
-            );
-          }
+        const n = opts.gotas ?? 7 + ((Math.random() * 4) | 0);
+        for (let i = 0; i < n; i++) {
+          const g = document.createElement('span');
+          g.className = 'splash5__gota';
+          const sz = rnd(1.6, 4);
+          g.style.width = g.style.height = sz.toFixed(1) + 'px';
+          g.style.marginLeft = g.style.marginTop = (-sz / 2).toFixed(1) + 'px';
+          g.style.background = color;
+          root.appendChild(g);
+          const ang = rnd(0, Math.PI * 2);
+          const alcance = rnd(16, 54);
+          const dx = Math.cos(ang) * alcance;
+          const subida = Math.sin(ang) * alcance * 0.5 - rnd(6, 20);
+          const caida = rnd(16, 42);
+          g.animate(
+            [
+              { transform: 'translate(0,0) scale(0.6)', opacity: 0.9 },
+              { transform: `translate(${(dx * 0.62).toFixed(1)}px, ${subida.toFixed(1)}px) scale(1)`, opacity: 0.85, offset: 0.4 },
+              { transform: `translate(${dx.toFixed(1)}px, ${caida.toFixed(1)}px) scale(0.4)`, opacity: 0 }
+            ],
+            { duration: rnd(420, 700), delay: rnd(0, 60), easing: 'cubic-bezier(.22,.61,.36,1)', fill: 'forwards' }
+          );
+        }
 
-          setTimeout(() => {
-            root.remove();
-            vivos--;
-          }, 1000);
+        setTimeout(() => {
+          root.remove();
+          vivos--;
+        }, 1000);
+      }
+      (window as any).salpicarEn = salpicarEn;
+
+      if (!reduce) {
+        // En táctil, el scroll ARRANCA con 'pointerdown' pero un gesto de scroll
+        // NO genera 'click': usar 'click' evita que salpique al desplazar el dedo.
+        // e.detail===0 = activación por teclado (Enter); la ignoramos.
+        addEventListener('click', (e) => {
+          if (!e.detail || vivos > 3) return;
+          // Los botones de guardar/favorito hacen SU PROPIA salpicadura del color.
+          const t = e.target as HTMLElement;
+          if (t.closest('.fav-btn') || t.closest('#sim-guardar')) return;
+          const nombre = NOMBRES[(Math.random() * NOMBRES.length) | 0];
+          const sprite = `${BASE}/assets/manchas/splat${2 + ((Math.random() * 2) | 0)}-${nombre}.png`;
+          salpicarEn(e.clientX, e.clientY, COLORES[nombre], { sprite });
         });
       }
     </script>

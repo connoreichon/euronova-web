@@ -218,19 +218,25 @@ const cartas = [
         </a>
       </div>
     </section>
-    <!-- Barra flotante: cuántos colores llevas guardados + acceso directo a probarlos en la pared -->
-    <a
-      href={asset('/') + '#color'}
-      id="fav-bar"
+    <!-- Barra flotante: cuántos colores llevas guardados + acceso directo a probarlos en la pared.
+         El contenedor flex centra; el enlace anima su entrada sin pelear con el centrado. -->
+    <div
+      id="fav-bar-wrap"
       style="display:none"
-      class="fixed bottom-4 left-4 z-50 items-center gap-2 rounded-full bg-rojo px-5 py-3 text-[13px] font-bold text-white shadow-lg shadow-black/50 transition-transform hover:-translate-y-0.5 sm:left-1/2 sm:-translate-x-1/2 sm:gap-2.5"
+      class="pointer-events-none fixed inset-x-0 bottom-4 z-50 flex justify-start px-4 sm:justify-center"
     >
-      <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4" aria-hidden="true">
-        <path d="M12 20.3s-6.9-4.2-9.2-8.6C1.3 8.9 2.7 5.9 5.7 5.9c1.9 0 3.2 1.1 4.4 2.8l1.9 2.6 1.9-2.6c1.2-1.7 2.5-2.8 4.4-2.8 3 0 4.4 3 2.9 5.8-2.3 4.4-9.2 8.6-9.2 8.6z" />
-      </svg>
-      <span id="fav-bar-txt">0 colores guardados</span>
-      <span class="hidden opacity-85 sm:inline">· Pruébalos en la pared →</span>
-    </a>
+      <a
+        href={asset('/') + '#color'}
+        id="fav-bar"
+        class="fav-bar pointer-events-auto inline-flex items-center gap-2 rounded-full bg-rojo px-5 py-3 text-[13px] font-bold text-white shadow-lg shadow-black/50 transition-transform hover:-translate-y-0.5 sm:gap-2.5"
+      >
+        <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4" aria-hidden="true">
+          <path d="M12 20.3s-6.9-4.2-9.2-8.6C1.3 8.9 2.7 5.9 5.7 5.9c1.9 0 3.2 1.1 4.4 2.8l1.9 2.6 1.9-2.6c1.2-1.7 2.5-2.8 4.4-2.8 3 0 4.4 3 2.9 5.8-2.3 4.4-9.2 8.6-9.2 8.6z" />
+        </svg>
+        <span id="fav-bar-txt">0 colores guardados</span>
+        <span class="hidden opacity-85 sm:inline">· Pruébalos en la pared →</span>
+      </a>
+    </div>
   </main>
   <Footer />
   <WhatsAppFloat />
@@ -424,12 +430,22 @@ const cartas = [
     } catch (e) {}
   };
 
+  const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const favBarWrap = document.getElementById('fav-bar-wrap');
   const favBar = document.getElementById('fav-bar');
   const favBarTxt = document.getElementById('fav-bar-txt');
+  let barraVisible = false;
   const actualizarBarra = () => {
     const n = leerFavs().length;
-    if (favBar) favBar.style.display = n > 0 ? 'inline-flex' : 'none';
+    const mostrar = n > 0;
+    if (favBarWrap) favBarWrap.style.display = mostrar ? 'flex' : 'none';
     if (favBarTxt) favBarTxt.textContent = `${n} ${n === 1 ? 'color guardado' : 'colores guardados'}`;
+    if (mostrar && !barraVisible && favBar && !REDUCE) {
+      favBar.classList.remove('entra');
+      void favBar.offsetWidth;
+      favBar.classList.add('entra');
+    }
+    barraVisible = mostrar;
   };
   const marcarTodos = () => {
     const cods = new Set(leerFavs().map((f) => f.c));
@@ -449,14 +465,26 @@ const cartas = [
     if (!item) return;
     const color = { h: item.dataset.hex ?? '', c: item.dataset.codigo ?? '', n: item.dataset.nombre ?? '' };
     let favs = leerFavs();
-    if (favs.some((f) => f.c === color.c)) {
-      favs = favs.filter((f) => f.c !== color.c);
-    } else {
+    const anadido = !favs.some((f) => f.c === color.c);
+    if (anadido) {
       favs.unshift(color);
       if (favs.length > FAV_MAX) favs = favs.slice(0, FAV_MAX);
+    } else {
+      favs = favs.filter((f) => f.c !== color.c);
     }
     escribirFavs(favs);
     marcarTodos();
+    if (anadido && !REDUCE) {
+      // el corazón late y salpica una gotita del propio color
+      const ico = btn.querySelector('svg');
+      if (ico) {
+        ico.classList.remove('late');
+        void (ico as HTMLElement).offsetWidth;
+        ico.classList.add('late');
+      }
+      const r = btn.getBoundingClientRect();
+      (window as any).salpicarEn?.(r.left + r.width / 2, r.top + r.height / 2, color.h, { gotas: 10 });
+    }
   });
 
   marcarTodos();
