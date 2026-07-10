@@ -28,9 +28,7 @@ const cartas = [
         id="cartas-bg"
         class="video-hero__media h-full w-full object-cover"
         poster={asset('/assets/video/pigmento-poster.jpg')}
-        autoplay
         muted
-        loop
         playsinline
         preload="auto"
         aria-hidden="true"
@@ -209,9 +207,56 @@ const cartas = [
 </Base>
 
 <script>
-  // ------- Fondo de vídeo (velocidad normal) -------
+  // ------- Fondo de vídeo -------
+  // El clip original tiene un movimiento de cámara incómodo en los primeros
+  // segundos. Lo evitamos arrancando y haciendo BUCLE desde un punto estable
+  // (nunca se vuelve al inicio movido). Un pelín más rápido que lo normal.
   const bgVideo = document.getElementById('cartas-bg') as HTMLVideoElement | null;
-  if (bgVideo) bgVideo.playbackRate = 1;
+  if (bgVideo) {
+    const IN = 4.0; // segundos: entra ya pasado el tembleque de cámara inicial
+    bgVideo.playbackRate = 1.2; // un poco más ágil, sin dejar de ser tranquilo
+    bgVideo.loop = false; // bucle manual: así nunca salta al segundo 0 (movido)
+
+    const reproducir = () => {
+      const p = bgVideo.play();
+      if (p && typeof p.catch === 'function') p.catch(() => {});
+    };
+    const alTramoEstable = () => {
+      try {
+        bgVideo.currentTime = IN;
+      } catch {}
+    };
+    // Coloca el vídeo en el tramo estable ANTES de reproducir, para que ni
+    // siquiera se vea un fotograma del inicio movido (arranca en el segundo IN).
+    const arrancar = () => {
+      if (bgVideo.currentTime < IN) {
+        bgVideo.addEventListener(
+          'seeked',
+          function onSeek() {
+            bgVideo.removeEventListener('seeked', onSeek);
+            reproducir();
+          },
+          { once: true }
+        );
+        alTramoEstable();
+      } else {
+        reproducir();
+      }
+    };
+    if (bgVideo.readyState >= 1) arrancar();
+    else bgVideo.addEventListener('loadedmetadata', arrancar, { once: true });
+
+    // Al llegar al final (o si por algún motivo vuelve al principio movido),
+    // saltar al tramo estable en lugar de al segundo 0.
+    bgVideo.addEventListener('timeupdate', () => {
+      const d = bgVideo.duration;
+      if (!d || Number.isNaN(d)) return;
+      if (bgVideo.currentTime >= d - 0.4 || bgVideo.currentTime < IN - 0.25) {
+        alTramoEstable();
+      }
+    });
+    bgVideo.addEventListener('ended', alTramoEstable);
+  }
 
   // ------- Carta NCS completa, generada digitalmente -------
   // Recorre el sistema NCS estándar: 40 matices (Y→R→B→G) + escala de neutros,
