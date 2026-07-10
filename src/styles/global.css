@@ -85,10 +85,11 @@ body {
 /* --- Aparición al hacer scroll -------------------------------------------- */
 .reveal {
   opacity: 0;
-  transform: translateY(18px);
+  transform: translateY(30px);
+  will-change: opacity, transform;
   transition:
-    opacity 0.9s ease,
-    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .reveal.is-visible {
   opacity: 1;
@@ -115,6 +116,92 @@ body {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+}
+
+/* ===========================================================================
+   PULIDO PREMIUM (barra de progreso, entrada del hero, revelado de imágenes)
+   Todo bajo .js-anim (sin JS se ve completo) y con prefers-reduced-motion.
+   =========================================================================== */
+/* Barra de progreso "de pintura" que se llena al hacer scroll */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: linear-gradient(90deg, var(--color-rojo-700), var(--color-rojo) 55%, #ff6a5a);
+  z-index: 80;
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* Entrada escalonada de los elementos del hero al cargar */
+.js-anim .hero-anim > * {
+  opacity: 0;
+  transform: translateY(22px);
+}
+.js-anim .hero-anim.play > * {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hero-anim.play > *:nth-child(2) {
+  transition-delay: 0.07s;
+}
+.hero-anim.play > *:nth-child(3) {
+  transition-delay: 0.14s;
+}
+.hero-anim.play > *:nth-child(4) {
+  transition-delay: 0.21s;
+}
+.hero-anim.play > *:nth-child(5) {
+  transition-delay: 0.28s;
+}
+
+/* Revelado de imágenes: recorte que se abre + micro-zoom que se asienta */
+.js-anim .reveal-img {
+  overflow: hidden;
+}
+.js-anim .reveal-img > img {
+  clip-path: inset(0 0 100% 0);
+  transform: scale(1.08);
+  transition:
+    clip-path 1s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.js-anim .reveal-img.is-visible > img {
+  clip-path: inset(0 0 0 0);
+  transform: scale(1);
+}
+
+/* Parallax suave (lo mueve el JS con --py) */
+.parallax {
+  will-change: transform;
+  transform: translate3d(0, var(--py, 0), 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-progress {
+    display: none;
+  }
+  .js-anim .hero-anim > *,
+  .js-anim .hero-anim.play > * {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .js-anim .reveal-img > img {
+    clip-path: none;
+    transform: none;
+    transition: none;
+  }
+  .parallax {
+    transform: none !important;
   }
 }
 
@@ -149,10 +236,46 @@ body {
   height: 100%;
   width: 100%;
   object-fit: cover;
-  transition: transform var(--transicion);
+  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .pieza:hover .pieza__media img {
-  transform: scale(1.02);
+  transform: scale(1.06);
+}
+/* Destello que cruza la foto al pasar por encima */
+.pieza__media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    transparent 42%,
+    rgba(255, 255, 255, 0.16) 50%,
+    transparent 58%
+  );
+  transform: translateX(-130%);
+  transition: transform 0.85s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.pieza:hover .pieza__media::after {
+  transform: translateX(130%);
+}
+/* Elevación premium de la tarjeta */
+.pieza {
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.pieza:hover {
+  transform: translateY(-4px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .pieza,
+  .pieza:hover,
+  .pieza__media img,
+  .pieza:hover .pieza__media img,
+  .pieza__media::after {
+    transition: none;
+    transform: none;
+  }
 }
 /* Variante grande: texto sobre la foto con velo inferior para legibilidad */
 .pieza--sobre .pieza__texto {

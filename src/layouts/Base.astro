@@ -98,22 +98,33 @@ const {
     <slot />
 
     <script>
-      // Habilita las animaciones basadas en JS (p. ej. el recorte de los
-      // rótulos "a brocha"): sin JS, el CSS no los recorta y se ven completos.
+      // Habilita las animaciones basadas en JS (sin JS todo se ve completo).
       document.documentElement.classList.add('js-anim');
+      const reduceUI = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-      // Revela secciones + "pinta" los rótulos a brocha al entrar en viewport.
-      const els = document.querySelectorAll('.reveal');
+      // --- Barra de progreso "de pintura" al hacer scroll ---
+      if (!reduceUI) {
+        const bar = document.createElement('div');
+        bar.className = 'scroll-progress';
+        document.body.appendChild(bar);
+        let t = false;
+        const upd = () => {
+          t = false;
+          const h = document.documentElement.scrollHeight - window.innerHeight;
+          bar.style.transform = `scaleX(${h > 0 ? Math.min(window.scrollY / h, 1) : 0})`;
+        };
+        addEventListener('scroll', () => { if (!t) { t = true; requestAnimationFrame(upd); } }, { passive: true });
+        upd();
+      }
+
+      // --- Reveals (+ imágenes) y rótulos a brocha al entrar en viewport ---
+      const els = document.querySelectorAll('.reveal, .reveal-img');
       const kickers = document.querySelectorAll('.kicker-brocha');
+      const nums = document.querySelectorAll('[data-count]');
       if ('IntersectionObserver' in window) {
         const io = new IntersectionObserver(
           (entries) => {
-            for (const e of entries) {
-              if (e.isIntersecting) {
-                e.target.classList.add('is-visible');
-                io.unobserve(e.target);
-              }
-            }
+            for (const e of entries) if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); }
           },
           { threshold: 0.12 }
         );
@@ -121,19 +132,62 @@ const {
 
         const ioBrocha = new IntersectionObserver(
           (entries) => {
-            for (const e of entries) {
-              if (e.isIntersecting) {
-                e.target.classList.add('pintado');
-                ioBrocha.unobserve(e.target);
-              }
-            }
+            for (const e of entries) if (e.isIntersecting) { e.target.classList.add('pintado'); ioBrocha.unobserve(e.target); }
           },
           { threshold: 0.6 }
         );
         kickers.forEach((el) => ioBrocha.observe(el));
+
+        // Contador animado (easing suave hasta el número final)
+        const ioNum = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (!e.isIntersecting) continue;
+              const el = e.target as HTMLElement;
+              ioNum.unobserve(el);
+              const to = parseInt(el.dataset.count || '0', 10);
+              if (reduceUI) { el.textContent = String(to); continue; }
+              let t0: number | null = null;
+              const tick = (now: number) => {
+                if (t0 === null) t0 = now;
+                const k = Math.min((now - t0) / 1100, 1);
+                el.textContent = String(Math.round(to * (1 - Math.pow(1 - k, 3))));
+                if (k < 1) requestAnimationFrame(tick);
+              };
+              requestAnimationFrame(tick);
+            }
+          },
+          { threshold: 0.6 }
+        );
+        nums.forEach((el) => ioNum.observe(el));
       } else {
         els.forEach((el) => el.classList.add('is-visible'));
         kickers.forEach((el) => el.classList.add('pintado'));
+        nums.forEach((el) => { (el as HTMLElement).textContent = (el as HTMLElement).dataset.count || ''; });
+      }
+
+      // --- Entrada escalonada del hero al cargar ---
+      const heroAnim = document.querySelector('.hero-anim');
+      if (heroAnim) setTimeout(() => heroAnim.classList.add('play'), 60);
+
+      // --- Parallax suave de imágenes marcadas ---
+      if (!reduceUI) {
+        const plx = Array.from(document.querySelectorAll<HTMLElement>('[data-parallax]'));
+        if (plx.length) {
+          let t2 = false;
+          const updP = () => {
+            t2 = false;
+            const vh = window.innerHeight;
+            for (const el of plx) {
+              const r = el.getBoundingClientRect();
+              const mid = r.top + r.height / 2 - vh / 2;
+              const f = parseFloat(el.dataset.parallax || '0.08');
+              el.style.setProperty('--py', `${(-mid * f).toFixed(1)}px`);
+            }
+          };
+          addEventListener('scroll', () => { if (!t2) { t2 = true; requestAnimationFrame(updP); } }, { passive: true });
+          updP();
+        }
       }
     </script>
 

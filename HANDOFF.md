@@ -184,6 +184,7 @@ Costó MUCHAS iteraciones. Estado final CORRECTO:
 - Sitemap (`@astrojs/sitemap`) + `robots.txt`.
 - Accesibilidad: `:focus-visible` global, skip-link + `id=main`, contrastes revisados, `aria-live` en el simulador/tintómetro.
 - Rendimiento: imágenes recomprimidas (JPEG progresivo), fuentes recortadas, assets muertos purgados. Build con **0 warnings**.
+- **PULIDO PREMIUM (animaciones)** en `global.css` + script de `Base.astro`, todo bajo `.js-anim` (sin JS se ve completo) y con `prefers-reduced-motion`: (1) **barra de progreso** roja arriba (`.scroll-progress`, `scaleX` en scroll con rAF); (2) **reveals** mejorados (easing `cubic-bezier(.16,1,.3,1)`) + **`.reveal-img`** = revelado de imagen con `clip-path` + micro-zoom (hero y Nosotros); (3) **entrada escalonada del hero** (`.hero-anim`, se activa con `setTimeout` — fiable, no depende de rAF); (4) **hover de tarjetas** `.pieza` (zoom 1.06 + destello `::after` que cruza + elevación); (5) **contador animado** en cualquier `[data-count]` (el "+20 años" del hero). IO reutilizado para reveals + rótulos + contador.
 
 ---
 

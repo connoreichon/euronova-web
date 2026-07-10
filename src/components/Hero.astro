@@ -9,7 +9,7 @@ import LogoEuronova from './LogoEuronova.astro';
 
 <section id="top" class="relative bg-rojo pt-24 pb-16 text-white md:pt-32 md:pb-20">
   <div class="container-x grid items-center gap-12 md:grid-cols-[1.15fr_1fr]">
-    <div>
+    <div class="hero-anim">
       <h1 class="sr-only">{site.nombre} — {site.reclamo}</h1>
       <LogoEuronova class="w-full max-w-md" />
       <p class="font-display mt-8 max-w-lg text-xl leading-snug font-bold text-white md:text-2xl">
@@ -38,13 +38,13 @@ import LogoEuronova from './LogoEuronova.astro';
       </div>
 
       <p class="mt-8 text-[13px] tracking-wide text-white/80">
-        +20 años · Tienda física en Las Lagunas · Color a medida al momento
+        +<span data-count="20">20</span> años · Tienda física en Las Lagunas · Color a medida al momento
       </p>
     </div>
 
     <!-- Foto protagonista: resultado real, contrapunto luminoso al rojo -->
-    <div class="reveal mt-8 md:mt-0">
-      <div class="overflow-hidden rounded-2xl shadow-lg shadow-rojo-900/40">
+    <div class="mt-8 md:mt-0">
+      <div class="reveal-img overflow-hidden rounded-2xl shadow-lg shadow-rojo-900/40">
         <img
           src={asset('/assets/img/categorias/fachadas.jpg')}
           alt="Fachada mediterránea recién pintada en tonos claros con carpintería azul"
