@@ -58,7 +58,9 @@ clic se retiró; ver `pincel/`).
   Pixabay, uso comercial) procesada con Python/PIL: fondo a transparente,
   componente mayor, **cerdas recoloreadas a rojo de marca por rotación de tono**
   (conserva la textura de pelo), recorte del mango sobrante y reescala a ~150px.
-- `trazo1.png`…`trazo5.png`: pinceladas de trazo con textura de cerdas seca,
-  **generadas con Python/PIL/numpy** (no son fotos: cerdas + curva + afinado +
-  extremos deshilachados, en rojo de marca `#c81e20`). Las usa la animación de
-  "pincelada al clicar" en `Base.astro`.
+- `trazo1.png`…`trazo5.png`: **brochazos de acrílico REALES** (foto de
+  **Pixabay** `brush-strokes-3438149`, licencia comercial): una lámina de trazos
+  aislados sobre papel; se recortaron 5 (formas variadas), se quitó el papel por
+  distancia de color y se **recolorearon a rojo de marca** conservando la textura
+  real de cerdas/deshilachado. Las usa la animación de "pincelada al clicar" en
+  `Base.astro`.
