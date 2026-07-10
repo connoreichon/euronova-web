@@ -53,11 +53,10 @@ clic se retiró; ver `pincel/`).
 
 ## Pincel: cursor y pinceladas (`public/assets/pincel/`)
 
-- `brocha-cursor.png`: cursor con forma de brocha. Foto real de **Pixabay**
-  (`paintbrush-4577579`, pincel de artista con la punta cargada; licencia
-  Pixabay, uso comercial) procesada con Python/PIL: fondo a transparente,
-  componente mayor, **cerdas recoloreadas a rojo de marca por rotación de tono**
-  (conserva la textura de pelo), recorte del mango sobrante y reescala a ~150px.
+- `brocha-cursor.png`: cursor con forma de brocha, **ILUSTRACIÓN cartoon dibujada
+  con Python/PIL** (no es foto): mango rojo de marca, anillo/virola plateado,
+  pelos negros con la punta roja (mojada en pintura), con línea de dibujo y filo
+  claro para verse en cualquier fondo. Diagonal (punta arriba-izquierda = hotspot).
 - `trazo1.png`…`trazo5.png`: **brochazos de acrílico REALES** (foto de
   **Pixabay** `brush-strokes-3438149`, licencia comercial): una lámina de trazos
   aislados sobre papel; se recortaron 5 (formas variadas), se quitó el papel por

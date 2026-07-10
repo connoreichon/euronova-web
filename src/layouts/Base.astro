@@ -155,7 +155,7 @@ const {
           img.className = 'mancha-click';
           img.src = `${BASE_URL}/assets/pincel/trazo${1 + ((Math.random() * N_TRAZOS) | 0)}.png`;
           img.alt = '';
-          const ancho = 150 + Math.random() * 140; // 150–290 px
+          const ancho = 52 + Math.random() * 48; // 52–100 px (a la par del click)
           img.style.left = e.clientX + 'px';
           img.style.top = e.clientY + 'px';
           img.style.width = ancho.toFixed(0) + 'px';
@@ -164,17 +164,16 @@ const {
           document.body.appendChild(img);
           img.animate(
             [
-              { clipPath: clip0, opacity: 0.25 },
-              { clipPath: 'inset(0 0 0 0)', opacity: 0.98, offset: 0.24 },
-              { clipPath: 'inset(0 0 0 0)', opacity: 0.95, offset: 0.5 },
+              { clipPath: clip0, opacity: 0.3 },
+              { clipPath: 'inset(0 0 0 0)', opacity: 1, offset: 0.35 },
               { clipPath: 'inset(0 0 0 0)', opacity: 0 }
             ],
-            { duration: 840, easing: 'cubic-bezier(.3,.7,.3,1)', fill: 'forwards' }
+            { duration: 520, easing: 'cubic-bezier(.3,.75,.35,1)', fill: 'forwards' }
           );
           setTimeout(() => {
             img.remove();
             vivas--;
-          }, 860);
+          }, 540);
         });
       }
 
@@ -189,8 +188,8 @@ const {
         img.alt = '';
         cont.appendChild(img);
         document.body.appendChild(cont);
-        const TIPX = 0.05,
-          TIPY = 0.05; // fracción de la punta (cerdas) dentro de la imagen
+        const TIPX = 0.1,
+          TIPY = 0.04; // fracción de la punta (cerdas) dentro de la imagen
         let mx = -200,
           my = -200,
           raf = 0,
