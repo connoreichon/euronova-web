@@ -145,8 +145,25 @@ const cartas = [
                     <div
                       class="color-item overflow-hidden rounded-xl border border-white/10 bg-white/5 transition-all hover:-translate-y-1 hover:ring-2 hover:ring-white/40"
                       data-buscar={`${color.c} ${color.n}`.toLowerCase()}
+                      data-hex={color.h}
+                      data-codigo={color.c}
+                      data-nombre={color.n}
                     >
-                      <div class="aspect-[4/3]" style={`background-color:${color.h};`} />
+                      <div class="relative aspect-[4/3]" style={`background-color:${color.h};`}>
+                        <button
+                          type="button"
+                          class="fav-btn absolute top-2 right-2 grid h-9 w-9 cursor-pointer place-items-center rounded-full bg-black/35 text-white backdrop-blur-sm transition-colors hover:bg-black/55"
+                          aria-pressed="false"
+                          aria-label={`Guardar ${color.c} en tus colores`}
+                        >
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path
+                              d="M12 20.3s-6.9-4.2-9.2-8.6C1.3 8.9 2.7 5.9 5.7 5.9c1.9 0 3.2 1.1 4.4 2.8l1.9 2.6 1.9-2.6c1.2-1.7 2.5-2.8 4.4-2.8 3 0 4.4 3 2.9 5.8-2.3 4.4-9.2 8.6-9.2 8.6z"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                        </button>
+                      </div>
                       <div class="px-3 py-2.5">
                         <p class="text-[12.5px] font-bold text-white">{color.c}</p>
                         <p class="truncate text-[11.5px] text-papel/60">{color.n}</p>
@@ -201,6 +218,19 @@ const cartas = [
         </a>
       </div>
     </section>
+    <!-- Barra flotante: cuántos colores llevas guardados + acceso directo a probarlos en la pared -->
+    <a
+      href={asset('/') + '#color'}
+      id="fav-bar"
+      style="display:none"
+      class="fixed bottom-4 left-4 z-50 items-center gap-2 rounded-full bg-rojo px-5 py-3 text-[13px] font-bold text-white shadow-lg shadow-black/50 transition-transform hover:-translate-y-0.5 sm:left-1/2 sm:-translate-x-1/2 sm:gap-2.5"
+    >
+      <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4" aria-hidden="true">
+        <path d="M12 20.3s-6.9-4.2-9.2-8.6C1.3 8.9 2.7 5.9 5.7 5.9c1.9 0 3.2 1.1 4.4 2.8l1.9 2.6 1.9-2.6c1.2-1.7 2.5-2.8 4.4-2.8 3 0 4.4 3 2.9 5.8-2.3 4.4-9.2 8.6-9.2 8.6z" />
+      </svg>
+      <span id="fav-bar-txt">0 colores guardados</span>
+      <span class="hidden opacity-85 sm:inline">· Pruébalos en la pared →</span>
+    </a>
   </main>
   <Footer />
   <WhatsAppFloat />
@@ -303,12 +333,16 @@ const cartas = [
   const gridNcs = document.getElementById('grid-ncs');
   if (gridNcs) {
     const frag = document.createDocumentFragment();
+    const HEART = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 20.3s-6.9-4.2-9.2-8.6C1.3 8.9 2.7 5.9 5.7 5.9c1.9 0 3.2 1.1 4.4 2.8l1.9 2.6 1.9-2.6c1.2-1.7 2.5-2.8 4.4-2.8 3 0 4.4 3 2.9 5.8-2.3 4.4-9.2 8.6-9.2 8.6z" stroke-linejoin="round"/></svg>`;
     const añadir = (codigo: string, hex: string) => {
       const el = document.createElement('div');
       el.className =
         'color-item overflow-hidden rounded-xl border border-white/10 bg-white/5 transition-all hover:-translate-y-1 hover:ring-2 hover:ring-white/40';
       el.dataset.buscar = codigo.toLowerCase();
-      el.innerHTML = `<div class="aspect-[4/3]" style="background-color:${hex};"></div><div class="px-3 py-2.5"><p class="text-[12.5px] font-bold text-white">${codigo}</p></div>`;
+      el.dataset.hex = hex;
+      el.dataset.codigo = codigo;
+      el.dataset.nombre = '';
+      el.innerHTML = `<div class="relative aspect-[4/3]" style="background-color:${hex};"><button type="button" class="fav-btn absolute top-2 right-2 grid h-9 w-9 cursor-pointer place-items-center rounded-full bg-black/35 text-white backdrop-blur-sm transition-colors hover:bg-black/55" aria-pressed="false" aria-label="Guardar ${codigo} en tus colores">${HEART}</button></div><div class="px-3 py-2.5"><p class="text-[12.5px] font-bold text-white">${codigo}</p></div>`;
       frag.appendChild(el);
     };
     for (const s of [3, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90])
@@ -370,4 +404,60 @@ const cartas = [
     });
   });
   buscador?.addEventListener('input', filtrar);
+
+  // ------- "Guarda tus colores": añadir cualquier tono de la carta a favoritos -------
+  // Se guardan en localStorage (misma clave que el simulador "Imagina tu pared"),
+  // así el cliente marca varios tonos aquí y luego los prueba en la pared sin tener
+  // que volver a buscar el código.
+  const FAV_KEY = 'euronova:favcolores';
+  const FAV_MAX = 16;
+  const leerFavs = (): { h: string; c: string; n: string }[] => {
+    try {
+      return JSON.parse(localStorage.getItem(FAV_KEY) || '[]') || [];
+    } catch (e) {
+      return [];
+    }
+  };
+  const escribirFavs = (a: unknown[]) => {
+    try {
+      localStorage.setItem(FAV_KEY, JSON.stringify(a));
+    } catch (e) {}
+  };
+
+  const favBar = document.getElementById('fav-bar');
+  const favBarTxt = document.getElementById('fav-bar-txt');
+  const actualizarBarra = () => {
+    const n = leerFavs().length;
+    if (favBar) favBar.style.display = n > 0 ? 'inline-flex' : 'none';
+    if (favBarTxt) favBarTxt.textContent = `${n} ${n === 1 ? 'color guardado' : 'colores guardados'}`;
+  };
+  const marcarTodos = () => {
+    const cods = new Set(leerFavs().map((f) => f.c));
+    document.querySelectorAll<HTMLElement>('.color-item').forEach((item) => {
+      const b = item.querySelector('.fav-btn');
+      if (b) b.setAttribute('aria-pressed', String(cods.has(item.dataset.codigo ?? '')));
+    });
+    actualizarBarra();
+  };
+
+  document.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest('.fav-btn');
+    if (!btn) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const item = btn.closest<HTMLElement>('.color-item');
+    if (!item) return;
+    const color = { h: item.dataset.hex ?? '', c: item.dataset.codigo ?? '', n: item.dataset.nombre ?? '' };
+    let favs = leerFavs();
+    if (favs.some((f) => f.c === color.c)) {
+      favs = favs.filter((f) => f.c !== color.c);
+    } else {
+      favs.unshift(color);
+      if (favs.length > FAV_MAX) favs = favs.slice(0, FAV_MAX);
+    }
+    escribirFavs(favs);
+    marcarTodos();
+  });
+
+  marcarTodos();
 </script>

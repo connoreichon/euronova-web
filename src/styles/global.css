@@ -286,6 +286,21 @@ body {
   }
 }
 
+/* Botón "guardar en tus colores" (corazón) sobre cada muestra de las cartas.
+   Sin marcar: corazón en línea sobre disco translúcido. Marcado: disco blanco
+   con corazón rojo relleno (estado "guardado" muy claro en cualquier tono). */
+.fav-btn svg {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+.fav-btn[aria-pressed='true'] {
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--color-rojo);
+}
+.fav-btn[aria-pressed='true'] svg {
+  fill: currentColor;
+}
+
 /* Hero con vídeo de pigmentos: el póster (inline en el componente) hace de
    fondo/fallback. Con movimiento reducido se oculta el vídeo y queda el póster. */
 .video-hero {

@@ -172,8 +172,9 @@ const ACABADOS = [
         </div>
         <div id="sim-favs" class="mt-3 flex flex-wrap items-center gap-2.5" role="group" aria-label="Tus colores guardados" />
         <p id="sim-favs-vacio" class="mt-2 max-w-md text-[12.5px] leading-relaxed text-papel/45">
-          Aplica un color (búscalo arriba o elige uno de la sección de abajo) y pulsa
-          «Guardar color» para tenerlo aquí y compararlo cuando vuelvas.
+          Aplica un color y pulsa «Guardar color», o marca tus favoritos con el corazón
+          en las <a href={asset('/cartas/')} class="font-semibold text-papel/70 underline underline-offset-2 hover:text-white">cartas de colores</a>:
+          aparecerán aquí para probarlos en la pared.
         </p>
       </div>
 
@@ -336,7 +337,7 @@ const ACABADOS = [
   const guardarBtn = document.getElementById('sim-guardar');
   const guardarTxt = document.getElementById('sim-guardar-txt');
   const guardarIco = document.getElementById('sim-guardar-ico');
-  const MAX_FAVS = 12;
+  const MAX_FAVS = 16;
 
   let favs = [];
   try {
