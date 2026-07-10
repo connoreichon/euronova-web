@@ -81,51 +81,108 @@ export const marcas = [
   }
 ];
 
-// --- Categorías de producto (escaparate, sin tienda online) ------------------
-// `img`: foto real (Pixabay, uso comercial sin atribución — ver CREDITS-IMAGENES.md).
-// `acabado`: etiqueta pequeña que acompaña al nombre en la ficha.
+// --- Categorías de producto (escaparate por categorías) ----------------------
+// Cada categoría abre su ESCAPARATE en /productos/[slug]/ con sus productos.
+// `img`: foto real (Pixabay, uso comercial — ver CREDITS-IMAGENES.md).
+// `productos`: catálogo de MUESTRA (sin precio; el cliente cambia fotos y datos).
+//   Cada producto: nombre, tipo (etiqueta), swatch (color de cabecera provisional
+//   hasta tener foto), img (opcional; si existe manda sobre el swatch).
 export const categorias = [
   {
-    nombre: 'Pintura interior',
-    acabado: 'Mate y satinado',
-    desc: 'Mate, satinada y lavable para paredes, techos y estancias con uso diario.',
+    slug: 'interior-exterior',
+    nombre: 'Pintura interior y exterior',
+    acabado: 'Plásticas · mate · satinado',
+    desc: 'Plásticas para paredes y techos, lavables y de gran cubrición, para interior y también fachada.',
     img: '/assets/img/categorias/interior.jpg',
-    alt: 'Pared interior pintada de rojo intenso con un banco delante'
+    alt: 'Pared interior pintada de rojo intenso con un banco delante',
+    intro: 'Plásticas de interior y exterior: mate, satinada y lavable, con buena cubrición y color a medida.',
+    productos: [
+      { nombre: 'Plástica mate interior', tipo: 'Interior · mate', swatch: '#ece6da', desc: 'Gran cubrición y acabado uniforme para paredes y techos.' },
+      { nombre: 'Plástica satinada lavable', tipo: 'Interior · satinado', swatch: '#dfd6c4', desc: 'Resiste roces y limpieza; ideal pasillos y zonas de paso.' },
+      { nombre: 'Antimoho baño y cocina', tipo: 'Interior · antihumedad', swatch: '#e7ede9', desc: 'Formulada para ambientes con vapor y condensación.' },
+      { nombre: 'Plástica exterior lisa', tipo: 'Exterior · lisa', swatch: '#e3ddcf', desc: 'Transpirable y resistente al sol y la lluvia.' },
+      { nombre: 'Color a medida (tintometría)', tipo: 'Cualquier RAL / NCS', swatch: '#c1121c', desc: 'Te la mezclamos en tienda al tono exacto que quieras.' }
+    ]
   },
   {
-    nombre: 'Fachadas y exterior',
-    acabado: 'Liso y rugoso',
-    desc: 'Revestimientos preparados para sol, lluvia y salitre de la costa.',
+    slug: 'exterior',
+    nombre: 'Pintura de exterior',
+    acabado: 'Fachadas · liso y rugoso',
+    desc: 'Revestimientos preparados para el sol, la lluvia y el salitre de la costa.',
     img: '/assets/img/categorias/fachadas.jpg',
-    alt: 'Fachada mediterránea en tonos pastel con carpintería azul'
+    alt: 'Fachada mediterránea en tonos pastel con carpintería azul',
+    intro: 'Todo para fachada: lisos, rugosos, monocapa y elastoméricos que aguantan el clima de la costa.',
+    productos: [
+      { nombre: 'Fachada lisa', tipo: 'Exterior · liso', swatch: '#e8e2d4', desc: 'Acabado liso y transpirable para muros en buen estado.' },
+      { nombre: 'Revestimiento rugoso / pétreo', tipo: 'Exterior · textura', swatch: '#d8cfbc', desc: 'Cubre pequeñas imperfecciones y da textura.' },
+      { nombre: 'Monocapa fachadas', tipo: 'Exterior · monocapa', swatch: '#efe9dc', desc: 'Impermeable al agua de lluvia, en una sola mano.' },
+      { nombre: 'Elastomérica anticarbonatación', tipo: 'Exterior · elástica', swatch: '#e2ddd2', desc: 'Puentea microfisuras y protege el hormigón.' },
+      { nombre: 'Fijador / imprimación exterior', tipo: 'Exterior · fondo', swatch: '#d5cebd', desc: 'Consolida el soporte antes de pintar.' }
+    ]
   },
   {
-    nombre: 'Esmaltes',
-    acabado: 'Brillo lacado',
-    desc: 'Acabados resistentes para metal, puertas, radiadores y pequeños trabajos.',
+    slug: 'esmaltes',
+    nombre: 'Esmaltes al disolvente y al agua',
+    acabado: 'Brillo · satinado · mate',
+    desc: 'Acabados resistentes para metal, madera, puertas, rejas y radiadores.',
     img: '/assets/img/categorias/esmaltes.jpg',
-    alt: 'Reja de forja esmaltada en azul con remates dorados'
+    alt: 'Reja de forja esmaltada en azul con remates dorados',
+    intro: 'Esmaltes al disolvente y al agua para un acabado duro y bonito en metal, madera y carpintería.',
+    productos: [
+      { nombre: 'Esmalte sintético brillo', tipo: 'Disolvente · brillo', swatch: '#1f6fb2', desc: 'Máxima dureza y brillo para interior y exterior.' },
+      { nombre: 'Esmalte al agua satinado', tipo: 'Al agua · satinado', swatch: '#8aa0b8', desc: 'Poco olor, secado rápido y no amarillea.' },
+      { nombre: 'Esmalte antioxidante (forja)', tipo: 'Metal · antióxido', swatch: '#2b2f33', desc: 'Protege y decora rejas, vallas y elementos de hierro.' },
+      { nombre: 'Esmalte para radiadores', tipo: 'Alta temperatura', swatch: '#f0ece2', desc: 'Aguanta el calor sin amarillear.' },
+      { nombre: 'Imprimación multisuperficie', tipo: 'Fondo · agarre', swatch: '#c9c2b4', desc: 'Buen agarre sobre metal, PVC, azulejo y melamina.' }
+    ]
   },
   {
-    nombre: 'Madera y barnices',
-    acabado: 'Veta satinada',
-    desc: 'Barnices, lasures y protectores para cuidar madera interior y exterior.',
-    img: '/assets/img/categorias/madera.jpg',
-    alt: 'Salón con muebles de madera barnizada'
-  },
-  {
-    nombre: 'Suelos',
-    acabado: 'Pulido y epoxi',
-    desc: 'Pinturas y sistemas para garajes, pavimentos y zonas de paso.',
-    img: '/assets/img/categorias/suelos.jpg',
-    alt: 'Suelo de garaje pintado con flecha de señalización y líneas de aparcamiento'
-  },
-  {
-    nombre: 'Impermeabilización',
-    acabado: 'Caucho elástico',
+    slug: 'impermeabilizantes',
+    nombre: 'Impermeabilizantes',
+    acabado: 'Caucho · membranas',
     desc: 'Cauchos, membranas y soluciones para terrazas, cubiertas y filtraciones.',
     img: '/assets/img/categorias/imper.jpg',
-    alt: 'Terraza impermeabilizada en blanco con tumbonas y vistas'
+    alt: 'Terraza impermeabilizada en blanco con tumbonas y vistas',
+    intro: 'Soluciones contra el agua: cauchos elásticos, membranas y selladores para terrazas y cubiertas.',
+    productos: [
+      { nombre: 'Caucho acrílico para terrazas', tipo: 'Transitable · elástico', swatch: '#eef0ef', desc: 'Impermeabiliza y se puede pisar; refleja el calor.' },
+      { nombre: 'Membrana de poliuretano', tipo: 'Alta resistencia', swatch: '#d9d5cc', desc: 'Gran elasticidad y durabilidad en cubiertas.' },
+      { nombre: 'Impermeabilizante fibrado', tipo: 'Refuerzo · fibras', swatch: '#cfcabd', desc: 'Con fibras para puntos críticos y encuentros.' },
+      { nombre: 'Sellador de fisuras', tipo: 'Reparación', swatch: '#e6e2d8', desc: 'Sella grietas y juntas antes de impermeabilizar.' },
+      { nombre: 'Puente de unión / imprimación', tipo: 'Fondo', swatch: '#c6c0b1', desc: 'Mejora la adherencia sobre soportes difíciles.' }
+    ]
+  },
+  {
+    slug: 'madera-barnices',
+    nombre: 'Maderas y barnices',
+    acabado: 'Barniz · lasur · protector',
+    desc: 'Barnices, lasures y protectores para cuidar la madera de interior y exterior.',
+    img: '/assets/img/categorias/madera.jpg',
+    alt: 'Salón con muebles de madera barnizada',
+    intro: 'Para proteger y realzar la madera: barnices, lasures y aceites de interior y de intemperie.',
+    productos: [
+      { nombre: 'Barniz sintético', tipo: 'Interior/exterior · brillo', swatch: '#a9743e', desc: 'Protege y da brillo respetando la veta.' },
+      { nombre: 'Lasur protector exterior', tipo: 'Intemperie · poro abierto', swatch: '#8a5a2e', desc: 'Deja respirar la madera y la protege del sol.' },
+      { nombre: 'Barniz al agua interior', tipo: 'Al agua · bajo olor', swatch: '#c39a63', desc: 'No amarillea, secado rápido, poco olor.' },
+      { nombre: 'Aceite / protector para madera', tipo: 'Nutrición', swatch: '#7a4a28', desc: 'Nutre e hidrata suelos y muebles de madera.' },
+      { nombre: 'Tapaporos / imprimación madera', tipo: 'Fondo', swatch: '#cbb48c', desc: 'Sella el poro para un acabado más liso.' }
+    ]
+  },
+  {
+    slug: 'ecologicas',
+    nombre: 'Pinturas ecológicas',
+    acabado: 'Base agua · bajo olor',
+    desc: 'Pinturas al agua, minerales y a la cal, de bajo olor y bajas emisiones.',
+    img: '/assets/img/categorias/ecologicas.jpg',
+    alt: 'Bote de pintura ecológica con hoja verde sobre fondo claro',
+    intro: 'Opciones más sostenibles: base agua, minerales y a la cal, con bajo olor y bajas emisiones.',
+    productos: [
+      { nombre: 'Pintura mineral al silicato', tipo: 'Mineral · transpirable', swatch: '#e9ead9', desc: 'Muy transpirable y duradera, ideal para fachada.' },
+      { nombre: 'Plástica ecológica bajo olor', tipo: 'Interior · base agua', swatch: '#eef0e4', desc: 'Bajas emisiones (COV), apta para dormitorios.' },
+      { nombre: 'Pintura a la cal', tipo: 'Natural · mate', swatch: '#f0ede2', desc: 'Acabado mate natural y antimoho por naturaleza.' },
+      { nombre: 'Esmalte al agua ecológico', tipo: 'Madera/metal · agua', swatch: '#dfe6d8', desc: 'Acabado esmalte con muy poco olor.' },
+      { nombre: 'Imprimación base agua', tipo: 'Fondo · agua', swatch: '#d9ddca', desc: 'Fondo de bajo olor para preparar el soporte.' }
+    ]
   }
 ];
 // Complementos (sin protagonismo, por decisión de negocio: el foco es la pintura)

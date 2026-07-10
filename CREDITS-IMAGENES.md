@@ -13,6 +13,8 @@ obligatoria). Descargadas 2026-07-07.
 | `madera.jpg` | furniture-998265 | Salón con muebles de madera barnizada |
 | `suelos.jpg` | parking-219767 | Suelo de garaje pintado con flecha y líneas de aparcamiento |
 | `imper.jpg` | roof-terrace-354906 | Terraza impermeabilizada con tumbonas |
+| `ecologicas.jpg` | — (generada) | Pared verde recién pintada, textura de rodillo, GENERADA con Python/PIL (provisional para la categoría "Pinturas ecológicas"; sustituir por foto real) |
+| `suelos.jpg` | parking-219767 | (SIN USO: la categoría "Suelos" se quitó del escaparate) |
 | `tienda/botes.jpg` | color-417694 | Estantería de botes de pintura mezclada (provisional para Nosotros) |
 | `simulador/interior.jpg` | wall-751342 | Pared lisa de interior con suelo abajo (superficie Interior del simulador); solo se pinta la pared, no el rodapié/suelo; suelo cambiado a tarima gris clara; la pintura llega hasta el suelo sin hueco blanco; base neutralizada para color fiel; máscara propia |
 | `simulador/fachada.jpg` | door-2096367 | Fachada mediterránea (superficie Exterior); placa/cartel y farol de encima de la puerta eliminados por inpaint; pavimento subido para que la puerta llegue al suelo + sombra de contacto (sin franja blanca abajo); máscara propia con dilatación anti-hilillos (recorte milimétrico) |

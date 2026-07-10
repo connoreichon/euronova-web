@@ -74,6 +74,12 @@ También en memoria global: `feedback_direccion_arte.md` y `feedback_web_design_
 
 ## 4. MAPA DEL PROYECTO
 
+### ESCAPARATE DE PRODUCTOS (nuevo)
+- La sección `#productos` de la portada (`Categorias.astro`) es ahora un **selector de categorías**: cada tile es un enlace a `/productos/[slug]/`. Titular cambiado a "Elige qué vas a pintar."
+- **Categorías** (en `site.ts`, con `slug`, `intro` y `productos[]`): `interior-exterior` (1ª, obligatoria), `exterior` (2ª, obligatoria), `esmaltes`, `impermeabilizantes`, `madera-barnices`, `ecologicas`. (Se QUITÓ "Suelos".) Cada categoría lleva su gama de `productos` de MUESTRA (sin precio): `{nombre, tipo, swatch (color de cabecera provisional), desc}`. El cliente cambiará fotos/datos.
+- **`src/pages/productos/[slug].astro`** — escaparate premium por categoría (`getStaticPaths` desde `categorias`): cabecera con la foto de la categoría + intro + WhatsApp, selector de categorías (chips), rejilla de tarjetas `.prod` (cabecera = muestra de color `--sw` con brillo esmalte + etiqueta `tipo`, sin precio), banner "muestra" y cierre rojo. Estilos `.prod`/`.prod__cover` en `global.css`.
+- **`VideoDemo.astro`** (sección `#video` en la portada, tras Nosotros) — vídeo demostrativo; usa `pigmento.mp4` como **PROVISIONAL** (etiqueta "Vídeo de muestra"), a sustituir por el vídeo real del cliente.
+
 ### Páginas (`src/pages/`)
 - **`index.astro`** — portada. Orden de secciones: `Hero → Categorias → Tintometria(#color = "Imagina tu pared") → Servicios → Nosotros → Ubicacion(#tienda) → Marcas → CTAFinal → Footer → WhatsAppFloat`. `<main id="main">`.
 - **`cartas.astro`** (`/cartas/`) — explorador de cartas. **VÍDEO de pigmentos en agua como FONDO FIJO de todo el apartado** (commit `3407921`). El clip (43,4 s) tenía un **movimiento de cámara incómodo en los primeros segundos**; el JS lo evita **arrancando y haciendo BUCLE desde un punto estable** (`IN=4.0 s`, nunca vuelve al segundo 0): quita `autoplay`/`loop` del HTML, hace `seek(IN)` con el vídeo en pausa y solo entonces `play()` (sin destello del inicio), y en `timeupdate` salta a `IN` al acercarse al final. `playbackRate = 1.2` (un pelín más ágil). Las secciones de contenido son translúcidas. Respeta `prefers-reduced-motion` (`.video-hero__media` se oculta). Tabs RAL/NCS/Eurotrend con distintivo de cada sistema; buscador por código/nombre; rejilla RAL (213) + NCS COMPLETO generado en cliente (2259 tonos) + Eurotrend vacía con aviso. Enlace final a "Imagina tu pared".

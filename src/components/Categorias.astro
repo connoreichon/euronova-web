@@ -30,18 +30,22 @@ const MEDIA = [
     <div class="reveal max-w-xl">
       <p class="kicker-brocha text-rojo">Escaparate</p>
       <h2 class="display mt-2 text-3xl text-white md:text-5xl">
-        Todo en pintura,<br />del bote a tu pared.
+        Elige qué vas<br />a pintar.
       </h2>
       <p class="mt-4 text-[15px] leading-relaxed text-papel/70">
-        Interior, exterior, esmaltes, madera, suelos e impermeabilización.
-        Trabajamos con marcas de confianza y preparamos tu color a medida en tienda.
+        Interior y exterior, esmaltes, madera, impermeabilizantes y ecológicas.
+        Pincha una categoría y verás nuestra gama; el color te lo mezclamos a medida en tienda.
       </p>
     </div>
 
     <div class="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-6">
       {
         categorias.map((c, i) => (
-          <article class={`pieza reveal group ${SPAN[i]} ${i === 0 ? 'pieza--sobre relative' : ''}`}>
+          <a
+            href={asset('/productos/' + c.slug + '/')}
+            class={`pieza reveal group block ${SPAN[i]} ${i === 0 ? 'pieza--sobre relative' : ''}`}
+            aria-label={`Ver productos de ${c.nombre}`}
+          >
             <div class={`pieza__media ${MEDIA[i]} ${i === 0 ? 'lg:min-h-full' : ''}`}>
               <img
                 src={asset(c.img)}
@@ -57,15 +61,22 @@ const MEDIA = [
                 <p class="text-[11px] font-semibold tracking-[0.16em] text-white/60 uppercase">{c.acabado}</p>
                 <h3 class="font-display mt-1 text-2xl font-bold text-white">{c.nombre}</h3>
                 <p class="mt-1.5 max-w-sm text-[13.5px] leading-relaxed text-white/75">{c.desc}</p>
+                <span class="pieza__cta mt-3 inline-flex items-center gap-1.5 text-[13px] font-bold text-white">
+                  Ver la gama
+                  <svg viewBox="0 0 16 16" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                </span>
               </div>
             ) : (
               <div class="mt-4">
                 <p class="text-[11px] font-semibold tracking-[0.16em] text-papel/55 uppercase">{c.acabado}</p>
-                <h3 class="font-display mt-1 text-lg font-bold text-white">{c.nombre}</h3>
+                <h3 class="font-display mt-1 flex items-center gap-1.5 text-lg font-bold text-white">
+                  {c.nombre}
+                  <svg viewBox="0 0 16 16" class="pieza__arrow h-3.5 w-3.5 text-rojo" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                </h3>
                 <p class="mt-1 text-[13.5px] leading-relaxed text-papel/60">{c.desc}</p>
               </div>
             )}
-          </article>
+          </a>
         ))
       }
     </div>

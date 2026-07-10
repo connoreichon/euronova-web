@@ -1,0 +1,140 @@
+---
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import WhatsAppFloat from '../../components/WhatsAppFloat.astro';
+import { site, categorias } from '../../data/site';
+import { asset } from '../../lib/asset';
+
+export function getStaticPaths() {
+  return categorias.map((c) => ({ params: { slug: c.slug }, props: { categoria: c } }));
+}
+
+const { categoria } = Astro.props;
+const otras = categorias;
+const waHref = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent('Hola, me interesa vuestra gama de ' + categoria.nombre + '. ¿Podéis informarme?')}`;
+---
+
+<Base
+  title={`${categoria.nombre} · ${site.nombre} (Las Lagunas de Mijas)`}
+  description={`${categoria.intro} Escaparate de la gama de ${categoria.nombre} de Pinturas Euronova en Las Lagunas de Mijas. Te asesoramos y preparamos el color a medida en tienda.`}
+>
+  <Header />
+  <main id="main">
+    <!-- Cabecera de la categoría -->
+    <section class="relative isolate overflow-hidden bg-negro">
+      <img
+        src={asset(categoria.img)}
+        alt={categoria.alt}
+        class="absolute inset-0 -z-10 h-full w-full object-cover opacity-35"
+        width="1280"
+        height="853"
+        loading="eager"
+      />
+      <div class="absolute inset-0 -z-10 bg-gradient-to-t from-negro via-negro/80 to-negro/40"></div>
+      <div class="container-x pt-28 pb-14 md:pt-36 md:pb-20">
+        <a
+          href={asset('/') + '#productos'}
+          class="inline-flex items-center gap-1.5 text-[13px] font-semibold text-papel/70 transition-colors hover:text-white"
+        >
+          <svg viewBox="0 0 16 16" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M13 8H3M7 4L3 8l4 4" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          Escaparate
+        </a>
+        <p class="kicker-brocha mt-4 text-rojo">{categoria.acabado}</p>
+        <h1 class="display mt-1 max-w-2xl text-4xl text-white md:text-6xl">{categoria.nombre}</h1>
+        <p class="mt-5 max-w-xl text-[15px] leading-relaxed text-papel/75">{categoria.intro}</p>
+        <div class="mt-7 flex flex-wrap items-center gap-3">
+          <a href={waHref} target="_blank" rel="noopener" class="btn-pintura inline-flex items-center gap-2 rounded-full bg-rojo px-6 py-3.5 text-[14px] font-bold text-white transition-transform hover:-translate-y-0.5">
+            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-1.7-.1-.4-.1-.9-.3-1.6-.6-2.8-1.2-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8 0-1.3.7-2 .9-2.2.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.3 0 .5l-.4.6c-.2.2-.3.4-.1.7.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.2.1.4.1.6-.1l.7-.9c.2-.2.4-.2.6-.1l1.9.9c.3.1.4.2.5.3.1.3.1.6-.1 1.1Z" /></svg>
+            Pregúntanos por WhatsApp
+          </a>
+          <a href={site.mapsLink} target="_blank" rel="noopener" class="rounded-full border border-white/25 px-6 py-3.5 text-[14px] font-semibold text-white transition-colors hover:border-white/60">
+            Cómo llegar a la tienda
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cambiar de categoría (escaparate) -->
+    <section class="border-b border-white/10 bg-negro">
+      <div class="container-x flex gap-2 overflow-x-auto py-4 sin-scrollbar">
+        {
+          otras.map((c) => (
+            <a
+              href={asset('/productos/' + c.slug + '/')}
+              class={`shrink-0 rounded-full border px-4 py-2 text-[13px] font-semibold transition-colors ${
+                c.slug === categoria.slug
+                  ? 'border-rojo bg-rojo/15 text-white'
+                  : 'border-white/12 text-papel/65 hover:border-white/35 hover:text-white'
+              }`}
+              aria-current={c.slug === categoria.slug ? 'page' : undefined}
+            >
+              {c.nombre}
+            </a>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- La gama de productos -->
+    <section class="bg-negro py-14 text-papel md:py-20">
+      <div class="container-x">
+        <div class="reveal flex flex-col gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-5 sm:flex-row sm:items-center sm:justify-between md:p-6">
+          <p class="max-w-2xl text-[13.5px] leading-relaxed text-papel/70">
+            Esto es una <span class="font-semibold text-papel/90">muestra</span> de la gama. En tienda tienes el
+            catálogo completo, las marcas y el consejo para acertar. Los precios te los damos al momento
+            (varían según formato y acabado).
+          </p>
+          <a href={asset('/cartas/')} class="shrink-0 self-start text-[13px] font-semibold text-rojo transition-colors hover:text-white sm:self-auto">
+            Ver cartas de colores →
+          </a>
+        </div>
+
+        <div class="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {
+            categoria.productos.map((p) => (
+              <article class="prod reveal group overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] transition-all hover:-translate-y-1 hover:border-white/25">
+                <div class="prod__cover relative aspect-[16/10] overflow-hidden" style={`--sw:${p.swatch};`}>
+                  <span class="prod__pill absolute top-3 left-3 rounded-full bg-black/45 px-2.5 py-1 text-[11px] font-semibold tracking-wide text-white/90 backdrop-blur-sm">
+                    {p.tipo}
+                  </span>
+                </div>
+                <div class="p-5">
+                  <h3 class="font-display text-lg font-bold text-white">{p.nombre}</h3>
+                  <p class="mt-1.5 text-[13.5px] leading-relaxed text-papel/60">{p.desc}</p>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+
+        <p class="reveal mt-8 text-[12.5px] text-papel/40">
+          Fotos de muestra · el catálogo real con marcas y formatos, en tienda. Próximamente con fotos de Euronova.
+        </p>
+      </div>
+    </section>
+
+    <!-- Cierre: color a medida + tienda -->
+    <section class="bg-rojo py-16 text-white md:py-20">
+      <div class="container-x flex flex-col items-start justify-between gap-8 md:flex-row md:items-center">
+        <div class="reveal max-w-xl">
+          <h2 class="display text-3xl text-white md:text-4xl">¿No lo tienes claro? Te asesoramos.</h2>
+          <p class="mt-3 text-[15px] leading-relaxed text-white/85">
+            Dinos qué vas a pintar y el estado de la superficie y te decimos el producto exacto, cuánta pintura
+            necesitas y cómo aplicarla. El color, a medida en el momento.
+          </p>
+        </div>
+        <div class="reveal flex flex-wrap items-center gap-3">
+          <a href={waHref} target="_blank" rel="noopener" class="rounded-full bg-white px-6 py-3 text-[14px] font-bold text-rojo transition-transform hover:-translate-y-0.5">
+            Escríbenos por WhatsApp
+          </a>
+          <a href={`tel:${site.telefonoLink}`} class="rounded-full border border-white/50 px-6 py-3 text-[14px] font-semibold text-white transition-colors hover:border-white hover:bg-white/10">
+            {site.telefono}
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+  <WhatsAppFloat />
+</Base>
