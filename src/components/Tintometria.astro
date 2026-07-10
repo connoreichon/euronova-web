@@ -183,7 +183,7 @@ const ACABADOS = [
       <div class="mt-7 flex flex-wrap items-center gap-3">
         <a
           href={asset('/cartas/')}
-          class="rounded-full bg-rojo px-6 py-3.5 text-[14px] font-bold text-white transition-transform hover:-translate-y-0.5"
+          class="btn-pintura rounded-full bg-rojo px-6 py-3.5 text-[14px] font-bold text-white transition-transform hover:-translate-y-0.5"
         >
           Explora las cartas de colores
         </a>
@@ -417,12 +417,7 @@ const ACABADOS = [
     }
     persistir();
     renderFavs(anadido ? colorActual.c : null);
-    if (anadido) {
-      latir(guardarIco);
-      const r = guardarBtn.getBoundingClientRect();
-      window.salpicarEn &&
-        window.salpicarEn(r.left + r.width / 2, r.top + r.height / 2, colorActual.h, { gotas: 12 });
-    }
+    if (anadido) latir(guardarIco);
   });
 
   favsEl?.addEventListener('click', (e) => {

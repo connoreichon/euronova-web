@@ -184,7 +184,7 @@ const cartas = [
                     href={site.mapsLink}
                     target="_blank"
                     rel="noopener"
-                    class="mt-6 inline-flex items-center gap-2 rounded-full bg-rojo px-6 py-3 text-[13px] font-bold text-white transition-transform hover:-translate-y-0.5"
+                    class="btn-pintura mt-6 inline-flex items-center gap-2 rounded-full bg-rojo px-6 py-3 text-[13px] font-bold text-white transition-transform hover:-translate-y-0.5"
                   >
                     Consúltala en tienda
                   </a>
@@ -209,7 +209,7 @@ const cartas = [
         </p>
         <a
           href={asset('/') + '#color'}
-          class="inline-flex items-center gap-2 rounded-full bg-rojo px-6 py-3 text-[13px] font-bold text-white transition-transform hover:-translate-y-0.5"
+          class="btn-pintura inline-flex items-center gap-2 rounded-full bg-rojo px-6 py-3 text-[13px] font-bold text-white transition-transform hover:-translate-y-0.5"
         >
           Imagina tu pared
           <svg viewBox="0 0 16 16" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -228,7 +228,7 @@ const cartas = [
       <a
         href={asset('/') + '#color'}
         id="fav-bar"
-        class="fav-bar pointer-events-auto inline-flex items-center gap-2 rounded-full bg-rojo px-5 py-3 text-[13px] font-bold text-white shadow-lg shadow-black/50 transition-transform hover:-translate-y-0.5 sm:gap-2.5"
+        class="fav-bar btn-pintura pointer-events-auto inline-flex items-center gap-2 rounded-full bg-rojo px-5 py-3 text-[13px] font-bold text-white shadow-lg shadow-black/50 transition-transform hover:-translate-y-0.5 sm:gap-2.5"
       >
         <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4" aria-hidden="true">
           <path d="M12 20.3s-6.9-4.2-9.2-8.6C1.3 8.9 2.7 5.9 5.7 5.9c1.9 0 3.2 1.1 4.4 2.8l1.9 2.6 1.9-2.6c1.2-1.7 2.5-2.8 4.4-2.8 3 0 4.4 3 2.9 5.8-2.3 4.4-9.2 8.6-9.2 8.6z" />
@@ -475,15 +475,13 @@ const cartas = [
     escribirFavs(favs);
     marcarTodos();
     if (anadido && !REDUCE) {
-      // el corazón late y salpica una gotita del propio color
+      // el corazón "late" al guardar
       const ico = btn.querySelector('svg');
       if (ico) {
         ico.classList.remove('late');
         void (ico as HTMLElement).offsetWidth;
         ico.classList.add('late');
       }
-      const r = btn.getBoundingClientRect();
-      (window as any).salpicarEn?.(r.left + r.width / 2, r.top + r.height / 2, color.h, { gotas: 10 });
     }
   });
 
