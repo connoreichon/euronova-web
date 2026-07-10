@@ -81,10 +81,12 @@ const enlaces = [
   const header = document.getElementById('site-header');
   const aplicar = () => {
     if (!header) return;
+    // Rojo SÓLIDO (opaco) al bajar: así la barra tapa por completo el logo del
+    // hero y no se transparenta la palabra "pinturas" por detrás (líneas blancas).
     if (window.scrollY > 24) {
-      header.classList.add('bg-rojo/95', 'shadow-lg', 'shadow-rojo-900/20', 'backdrop-blur');
+      header.classList.add('bg-rojo', 'shadow-lg', 'shadow-rojo-900/20');
     } else {
-      header.classList.remove('bg-rojo/95', 'shadow-lg', 'shadow-rojo-900/20', 'backdrop-blur');
+      header.classList.remove('bg-rojo', 'shadow-lg', 'shadow-rojo-900/20');
     }
   };
   aplicar();

@@ -40,6 +40,9 @@ de las marcas para su uso como distribuidor.
 - `lockup.png` / `word.png`: imagen REAL del rótulo de la tienda (facilitada por
   el propietario y por el rotulista), con la E del cartel integrada. Marca
   propia del cliente: sin problema de derechos ni fuentes que licenciar.
+  La E se re-integró (2026-07): recoloreada al mismo carbón (#222) del resto de
+  la palabra, con el mismo contorno blanco fino, y separada de la "u" (ya no la
+  toca), sin costura visible. Lienzos: word 621×89, lockup 892×239.
 - `favicon.png` y `apple-touch-icon.png`: la E del rótulo sobre el rojo de marca.
 - Tipografías de la web (Archivo, Inter, Nanum Brush Script): Google Fonts,
   licencia libre OFL.
