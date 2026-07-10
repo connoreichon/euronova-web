@@ -213,8 +213,8 @@ const {
           img.style.left = e.clientX + 'px';
           img.style.top = e.clientY + 'px';
           img.style.width = ancho.toFixed(0) + 'px';
-          // Todos en la misma diagonal (gesto de marca) con una variación mínima.
-          const ang = -18 + (Math.random() * 14 - 7); // ~ -25° a -11°
+          // Horizontales, con una variación mínima para que no queden robóticos.
+          const ang = -3 + Math.random() * 6; // ~ -3° a +3°
           const base = `translate(-50%,-50%) rotate(${ang.toFixed(1)}deg)`;
           img.style.transform = base + ' scale(1)';
           document.body.appendChild(img);
