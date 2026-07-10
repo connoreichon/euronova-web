@@ -337,6 +337,38 @@ body {
   animation: fav-bar-in 0.4s cubic-bezier(0.34, 1.3, 0.64, 1) both;
 }
 
+/* Mancha de pintura al clicar: una silueta de salpicadura REAL (no vectorial)
+   aparece donde pinchas, florece y se disuelve sola. La anima el JS (WAAPI). */
+.mancha-click {
+  position: fixed;
+  z-index: 60; /* sobre el contenido, bajo el botón de WhatsApp (z-70) */
+  pointer-events: none;
+  opacity: 0;
+  will-change: transform, opacity;
+  user-select: none;
+}
+
+/* Cursor "brocha": en dispositivos con puntero fino ocultamos el cursor nativo
+   y seguimos el ratón con una imagen real de brocha (la pinta el JS). */
+.js-brush.pointer-fino,
+.js-brush.pointer-fino * {
+  cursor: none !important;
+}
+.brocha-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 90; /* por encima de todo, incluso del WhatsApp */
+  pointer-events: none;
+  will-change: transform;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+  transform-origin: var(--bx, 8px) var(--by, 8px); /* punta de las cerdas = hotspot */
+}
+.brocha-cursor.visible {
+  opacity: 1;
+}
+
 /* Rótulos "a brocha": se PINTAN de izquierda a derecha al entrar en pantalla,
    como una pincelada. El recorte solo se aplica si hay JS (.js-anim), para que
    sin JS el rótulo se vea completo. */
