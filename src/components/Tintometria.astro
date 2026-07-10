@@ -10,18 +10,8 @@ import BadgeCarta from './BadgeCarta.astro';
 import AvisoColor from './AvisoColor.astro';
 import { asset } from '../lib/asset';
 
-// Color inicial y accesos rápidos (curados, del claro al intenso).
+// Color inicial de la pared del simulador.
 const INICIAL = { h: '#e9e2ce', c: 'NCS S 1005-Y', n: 'Lino' };
-const RAPIDOS = [
-  { n: 'Blanco cálido', c: 'NCS S 0502-Y', h: '#f2efe2' },
-  { n: 'Lino', c: 'NCS S 1005-Y', h: '#e9e2ce' },
-  { n: 'Greige', c: 'NCS S 3005-Y20R', h: '#ada290' },
-  { n: 'Verde salvia', c: 'RAL 6021', h: '#89ac76' },
-  { n: 'Azul genciana', c: 'RAL 5010', h: '#0e518d' },
-  { n: 'Terracota', c: 'NCS S 4020-Y30R', h: '#a87f5d' },
-  { n: 'Gris antracita', c: 'RAL 7016', h: '#293133' },
-  { n: 'Rojo Euronova', c: 'RAL 3020', h: '#c1121c' }
-];
 
 // Superficies: cada una es una foto real + una máscara (blanco = lo que se pinta).
 const SUPERFICIES = [
@@ -142,45 +132,49 @@ const ACABADOS = [
 
     <!-- Acabado + colores rápidos -->
     <div class="reveal mx-auto mt-5 max-w-3xl">
-      <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-        <div>
-          <p class="mb-2 text-[12px] font-semibold tracking-wide text-papel/55 uppercase">Acabado</p>
-          <div class="inline-flex rounded-full border border-white/15 p-1" role="group" aria-label="Acabado">
-            {
-              ACABADOS.map((a, i) => (
-                <button
-                  type="button"
-                  data-finish={a.id}
-                  aria-pressed={i === 0 ? 'true' : 'false'}
-                  class="sim-finish cursor-pointer rounded-full px-4 py-1.5 text-[13px] font-semibold transition-colors"
-                >
-                  {a.label}
-                </button>
-              ))
-            }
-          </div>
+      <!-- Acabado -->
+      <div>
+        <p class="mb-2 text-[12px] font-semibold tracking-wide text-papel/55 uppercase">Acabado</p>
+        <div class="inline-flex rounded-full border border-white/15 p-1" role="group" aria-label="Acabado">
+          {
+            ACABADOS.map((a, i) => (
+              <button
+                type="button"
+                data-finish={a.id}
+                aria-pressed={i === 0 ? 'true' : 'false'}
+                class="sim-finish cursor-pointer rounded-full px-4 py-1.5 text-[13px] font-semibold transition-colors"
+              >
+                {a.label}
+              </button>
+            ))
+          }
         </div>
+      </div>
 
-        <div>
-          <p class="mb-2 text-[12px] font-semibold tracking-wide text-papel/55 uppercase">O prueba estos</p>
-          <div class="grid grid-cols-4 gap-3 sm:flex sm:flex-wrap sm:gap-2.5" role="group" aria-label="Colores rápidos">
-            {
-              RAPIDOS.map((c, i) => (
-                <button
-                  type="button"
-                  class="sim-chip h-10 w-10 cursor-pointer rounded-full border-2 border-white/25 transition-transform hover:scale-110 focus-visible:outline-none"
-                  style={`background-color:${c.h}`}
-                  data-hex={c.h}
-                  data-codigo={c.c}
-                  data-nombre={c.n}
-                  title={`${c.n} · ${c.c}`}
-                  aria-label={`Ver la superficie en ${c.n} (${c.c})`}
-                  aria-pressed={c.c === INICIAL.c ? 'true' : 'false'}
-                />
-              ))
-            }
-          </div>
+      <!-- Guarda tus colores: favoritos que se quedan guardados en este navegador -->
+      <div class="mt-6">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <p class="text-[12px] font-semibold tracking-wide text-papel/55 uppercase">Guarda tus colores</p>
+          <button
+            type="button"
+            id="sim-guardar"
+            aria-pressed="false"
+            class="sim-guardar inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-white/25 px-4 py-2 text-[13px] font-semibold text-white transition-colors hover:border-white/60"
+          >
+            <svg id="sim-guardar-ico" viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path
+                d="M12 20.3s-6.9-4.2-9.2-8.6C1.3 8.9 2.7 5.9 5.7 5.9c1.9 0 3.2 1.1 4.4 2.8l1.9 2.6 1.9-2.6c1.2-1.7 2.5-2.8 4.4-2.8 3 0 4.4 3 2.9 5.8-2.3 4.4-9.2 8.6-9.2 8.6z"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <span id="sim-guardar-txt">Guardar color</span>
+          </button>
         </div>
+        <div id="sim-favs" class="mt-3 flex flex-wrap items-center gap-2.5" role="group" aria-label="Tus colores guardados" />
+        <p id="sim-favs-vacio" class="mt-2 max-w-md text-[12.5px] leading-relaxed text-papel/45">
+          Aplica un color (búscalo arriba o elige uno de la sección de abajo) y pulsa
+          «Guardar color» para tenerlo aquí y compararlo cuando vuelvas.
+        </p>
       </div>
 
       <AvisoColor variant="inline" class="mt-6" />
@@ -292,7 +286,6 @@ const ACABADOS = [
   const nombre = document.getElementById('sim-nombre');
   const info = document.getElementById('sim-info');
   const buscar = document.getElementById('sim-buscar');
-  const chips = document.querySelectorAll('.sim-chip');
 
   // Acabado real: cada uno tiene su reflejo (opacidad de la capa "screen") y su
   // filtro de color. Mate absorbe la luz (plano, algo más apagado); satinado da
@@ -318,7 +311,8 @@ const ACABADOS = [
     colorActual = color;
     colorLayers.forEach((c) => (c.style.backgroundColor = color.h));
     refrescarNombre();
-    chips.forEach((ch) => ch.setAttribute('aria-pressed', String(ch.dataset.codigo === color.c)));
+    marcarFavActivo();
+    actualizarBotonGuardar();
   };
 
   const setAcabado = (id) => {
@@ -334,6 +328,96 @@ const ACABADOS = [
     paneles.forEach((p) => p.classList.toggle('hidden', p.dataset.panel !== id));
     surfaceTabs.forEach((t) => t.setAttribute('aria-selected', String(t.dataset.surface === id)));
   };
+
+  // --- "Guarda tus colores": favoritos persistentes en el navegador ---
+  const KEY_FAVS = 'euronova:favcolores';
+  const favsEl = document.getElementById('sim-favs');
+  const favsVacio = document.getElementById('sim-favs-vacio');
+  const guardarBtn = document.getElementById('sim-guardar');
+  const guardarTxt = document.getElementById('sim-guardar-txt');
+  const guardarIco = document.getElementById('sim-guardar-ico');
+  const MAX_FAVS = 12;
+
+  let favs = [];
+  try {
+    favs = JSON.parse(localStorage.getItem(KEY_FAVS)) || [];
+  } catch (e) {
+    favs = [];
+  }
+  const persistir = () => {
+    try {
+      localStorage.setItem(KEY_FAVS, JSON.stringify(favs));
+    } catch (e) {}
+  };
+  const estaGuardado = (color) => favs.some((f) => f.c === color.c);
+
+  const actualizarBotonGuardar = () => {
+    if (!guardarBtn) return;
+    const g = estaGuardado(colorActual);
+    guardarBtn.setAttribute('aria-pressed', String(g));
+    if (guardarTxt) guardarTxt.textContent = g ? 'Guardado' : 'Guardar color';
+    if (guardarIco) guardarIco.setAttribute('fill', g ? 'currentColor' : 'none');
+  };
+  const marcarFavActivo = () => {
+    if (!favsEl) return;
+    favsEl
+      .querySelectorAll('.sim-fav-apply')
+      .forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.codigo === colorActual.c)));
+  };
+  const renderFavs = () => {
+    if (!favsEl) return;
+    favsEl.textContent = '';
+    favs.forEach((f) => {
+      const wrap = document.createElement('div');
+      wrap.className = 'sim-fav group relative';
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className =
+        'sim-chip sim-fav-apply h-10 w-10 cursor-pointer rounded-full border-2 border-white/25 transition-transform hover:scale-110';
+      b.style.backgroundColor = f.h;
+      b.title = nombreColor(f);
+      b.setAttribute('aria-label', 'Aplicar ' + nombreColor(f));
+      b.setAttribute('aria-pressed', String(f.c === colorActual.c));
+      b.dataset.hex = f.h;
+      b.dataset.codigo = f.c;
+      b.dataset.nombre = f.n || '';
+      const x = document.createElement('button');
+      x.type = 'button';
+      x.className =
+        'sim-fav-x absolute -top-2 -right-2 grid h-5 w-5 place-items-center rounded-full border border-white/40 bg-negro/90 text-[13px] leading-none text-white transition-colors hover:bg-rojo';
+      x.textContent = '×';
+      x.setAttribute('aria-label', 'Quitar ' + nombreColor(f));
+      x.dataset.codigo = f.c;
+      wrap.appendChild(b);
+      wrap.appendChild(x);
+      favsEl.appendChild(wrap);
+    });
+    if (favsVacio) favsVacio.classList.toggle('hidden', favs.length > 0);
+    actualizarBotonGuardar();
+  };
+
+  guardarBtn?.addEventListener('click', () => {
+    if (estaGuardado(colorActual)) {
+      favs = favs.filter((f) => f.c !== colorActual.c);
+    } else {
+      favs.unshift({ h: colorActual.h, c: colorActual.c, n: colorActual.n });
+      if (favs.length > MAX_FAVS) favs = favs.slice(0, MAX_FAVS);
+    }
+    persistir();
+    renderFavs();
+  });
+
+  favsEl?.addEventListener('click', (e) => {
+    const rm = e.target.closest('.sim-fav-x');
+    if (rm) {
+      favs = favs.filter((f) => f.c !== rm.dataset.codigo);
+      persistir();
+      renderFavs();
+      return;
+    }
+    const ap = e.target.closest('.sim-fav-apply');
+    if (ap) pintar({ h: ap.dataset.hex, c: ap.dataset.codigo, n: ap.dataset.nombre });
+  });
 
   surfaceTabs.forEach((t) => t.addEventListener('click', () => setSuperficie(t.dataset.surface)));
   finishBtns.forEach((b) => b.addEventListener('click', () => setAcabado(b.dataset.finish)));
@@ -352,11 +436,12 @@ const ACABADOS = [
     }
   });
 
-  document.querySelectorAll('.sim-chip, .blanco-item').forEach((el) => {
+  document.querySelectorAll('.blanco-item').forEach((el) => {
     el.addEventListener('click', () =>
       pintar({ h: el.dataset.hex, c: el.dataset.codigo, n: el.dataset.nombre })
     );
   });
 
   refrescarNombre();
+  renderFavs();
 </script>
