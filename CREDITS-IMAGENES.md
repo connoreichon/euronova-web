@@ -53,17 +53,20 @@ Siluetas de salpicadura reales de **Pixabay** (licencia Pixabay, uso comercial
 sin atribución), teñidas a los colores de marca con Python/PIL:
 paint-2174689 (splat1), paint-splatter-312092 (splat2), paint-2174687 (splat3),
 ink-5949451 (splat4/5), paint-2209578 (splat6 con goteo y splat7 masa),
-ink-303244 (splat8 pictórica densa). **Actualmente SIN USO** (la salpicadura al
-clic se retiró; ver `pincel/`).
+ink-303244 (splat8 pictórica densa). **EN USO (2026-07): splat2/splat3 (rojo y
+blanco)** para el "splash" al guardar un color en favoritos (helper
+`euronovaSplash` en `Base.astro`).
 
 ## Pincel: cursor y pinceladas (`public/assets/pincel/`)
 
-- `brocha-cursor.png`: cursor con forma de brocha, **ILUSTRACIÓN cartoon dibujada
-  con Python/PIL** (no es foto): mango rojo de marca, anillo/virola plateado,
-  pelos negros con la punta roja (mojada en pintura), con línea de dibujo y filo
-  claro para verse en cualquier fondo. Diagonal (punta arriba-izquierda = hotspot).
-- `trazo1.png`, `trazo2.png`: **brochazos cartoon GENERADOS con Python/PIL/numpy**
-  (no son fotos): cuerpo sólido + cerdas individuales, carga a la izquierda y
-  cola seca deshilachada, en rojo de marca. Dos casi iguales (al clicar sale casi
-  siempre el mismo). Los usa la animación de "pincelada al clicar" en `Base.astro`
-  (se pinta con barrido `clip-path` + presión y se disuelve).
+- `brocha-cursor.png` / `brocha-cursor-negra.png`: cursor brocha v2 a partir de
+  una IMAGEN GENERADA por el cliente (ChatGPT), procesada con Python/PIL: fondo
+  damero eliminado por flood restringido a neutros claros, rotada (punta
+  arriba-izquierda = hotspot) y con variante de PUNTA NEGRA (recoloreada
+  conservando sombreado) que se funde cuando el fondo es rojo/claro.
+- `trazo1.png`, `trazo2.png` (+ `trazo1-negro.png`, `trazo2-negro.png`):
+  **brochazos GENERADOS con Python/PIL/numpy** (no son fotos): cuerpo sólido +
+  cerdas individuales, carga a la izquierda y cola seca deshilachada. En rojo de
+  marca y en NEGRO con las mismas luces claras (microdetalles). La animación de
+  "pincelada al clicar" en `Base.astro` elige el color por contraste con el
+  fondo (rojo sobre oscuro, negro sobre rojo/claro).

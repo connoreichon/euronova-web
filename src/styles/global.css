@@ -373,6 +373,36 @@ body::after {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.022), transparent 26%);
 }
 
+/* Secciones ROJAS con profundidad (luz arriba-derecha, sombra abajo-izquierda):
+   el rojo de marca deja de ser una masa plana. */
+.seccion-roja {
+  background:
+    radial-gradient(110% 85% at 80% -5%, #de3d43 0%, transparent 55%),
+    radial-gradient(130% 110% at -10% 112%, #94161a 0%, transparent 52%),
+    var(--color-rojo);
+}
+
+/* Foto del hero: entra al cargar (sin depender del IntersectionObserver — es el
+   LCP y no debe quedar en blanco si el observer tarda). */
+.js-anim .hero-foto {
+  animation: hero-foto-in 1s var(--ease-entrada) 0.15s both;
+}
+@keyframes hero-foto-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(1.03);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .js-anim .hero-foto {
+    animation: none;
+  }
+}
+
 /* Pieza de escaparate editorial: imagen protagonista + texto, sin caja */
 .pieza {
   display: flex;
@@ -562,6 +592,251 @@ body::after {
   }
 }
 
+/* --- Modo "DOS COLORES": la pared se divide en dos mitades comparables ------ */
+/* La mitad derecha es una segunda capa de color recortada por --split; entre
+   ambas, una línea con asa arrastrable (como un comparador antes/después). */
+.sim-estancia {
+  --split: 50%;
+}
+.sim-color--b {
+  clip-path: inset(0 0 0 var(--split));
+}
+.sim-divisor {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--split);
+  width: 0;
+  z-index: 6;
+}
+.sim-divisor__linea {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -1.5px;
+  width: 3px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+}
+.sim-divisor__asa {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  background: #fff;
+  color: #171111;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+  cursor: ew-resize;
+  touch-action: none;
+}
+
+/* Píldoras de lado (Izquierda/Derecha) en el panel: solo son "elegibles" en
+   modo dos colores; la activa se marca con borde. */
+#sim-lados .sim-lado {
+  border: 1px solid transparent;
+  border-radius: 0.75rem;
+}
+#sim-lados.split .sim-lado {
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.08);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+#sim-lados.split .sim-lado[aria-pressed='true'] {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+.sim-lado-tag {
+  display: none;
+}
+#sim-lados.split .sim-lado-tag {
+  display: block;
+}
+
+/* --- Gestos de favoritos: mantener pulsado = quitar; arrastrar = reordenar --- */
+.sim-fav {
+  user-select: none;
+  -webkit-user-select: none;
+}
+.sim-fav .sim-fav-apply {
+  touch-action: none; /* el arrastre lo gestionamos nosotros */
+}
+.sim-fav.lift .sim-fav-apply {
+  transform: scale(1.16);
+  box-shadow: 0 10px 22px -6px rgba(0, 0, 0, 0.65);
+}
+.sim-fav.dragging {
+  z-index: 40;
+}
+.sim-fav-pop {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 10px);
+  transform: translateX(-50%);
+  z-index: 50;
+  animation: fav-pop-in 0.18s ease-out both;
+}
+.sim-fav-pop::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: #fff;
+}
+.sim-fav-pop .sim-fav-del {
+  border-radius: 9999px;
+  background: #fff;
+  color: var(--color-rojo);
+  font-weight: 700;
+  font-size: 12px;
+  padding: 0.45rem 0.95rem;
+  box-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.7);
+  cursor: pointer;
+  white-space: nowrap;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sim-fav.lift .sim-fav-apply {
+    transform: none;
+  }
+  .sim-fav-pop {
+    animation: none;
+  }
+}
+
+/* --- Mini selector flotante de cartas (en /cartas, al dejar atrás el selector) --- */
+#mini-cartas {
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition:
+    opacity 0.3s var(--ease-suave),
+    transform 0.3s var(--ease-suave);
+}
+#mini-cartas.visible {
+  opacity: 1;
+  transform: none;
+}
+#mini-cartas.visible > div {
+  pointer-events: auto;
+}
+.mini-carta {
+  color: rgba(250, 247, 242, 0.7);
+}
+.mini-carta:hover {
+  color: #fff;
+}
+.mini-carta.is-on {
+  background: #fff;
+  color: #171111;
+}
+/* Lupa del mini selector: el campo se despliega al pulsarla */
+.mini-buscador {
+  width: 0;
+  opacity: 0;
+  transition:
+    width 0.3s var(--ease-suave),
+    opacity 0.2s ease;
+}
+#mini-cartas.buscando .mini-buscador {
+  width: 8.5rem;
+  opacity: 1;
+  padding-right: 0.4rem;
+}
+@media (prefers-reduced-motion: reduce) {
+  #mini-cartas,
+  .mini-buscador {
+    transition: none;
+  }
+}
+
+/* --- Abanico de carta (pestañas de /cartas): hojas de color tras el distintivo
+   que se ABREN al activar la pestaña, como desplegar la carta física. --- */
+.carta-fan__hoja {
+  position: absolute;
+  left: 50%;
+  bottom: 6px;
+  width: 10px;
+  height: 30px;
+  border-radius: 3px;
+  transform-origin: 50% 100%;
+  transform: translateX(-50%) rotate(var(--rot));
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.4),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+  transition: transform 0.35s var(--ease-suave);
+}
+.tab-carta[aria-selected='true'] .carta-fan__hoja {
+  transform: translateX(-50%) rotate(calc(var(--rot) * 1.6));
+}
+@media (prefers-reduced-motion: reduce) {
+  .carta-fan__hoja {
+    transition: none;
+  }
+}
+
+/* --- Buscador de marca: pincelada roja que se pinta bajo el campo al enfocar --- */
+.buscador-marca {
+  position: relative;
+}
+.buscador-marca::after {
+  content: '';
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: -3px;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--color-rojo), #ff6a5a);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.45s var(--ease-suave);
+}
+.buscador-marca:focus-within::after {
+  transform: scaleX(1);
+}
+.buscador-marca:focus-within svg {
+  color: var(--color-rojo-400);
+}
+@media (prefers-reduced-motion: reduce) {
+  .buscador-marca::after {
+    transition: none;
+  }
+}
+
+/* --- Regla tricolor del mostrador (aviso de color): rojo/albero/azul del rótulo --- */
+.aviso-tricolor {
+  border-left: 3px solid transparent;
+  border-image: linear-gradient(
+      180deg,
+      var(--color-rojo) 0 40%,
+      var(--color-albero) 40% 70%,
+      var(--color-azul) 70% 100%
+    )
+    1;
+}
+.aviso-tricolor__banda {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(
+    180deg,
+    var(--color-rojo) 0 40%,
+    var(--color-albero) 40% 70%,
+    var(--color-azul) 70% 100%
+  );
+}
+
 /* ===========================================================================
    MICRO-ANIMACIONES DE PINTURA (pulido de UI)
    Sobrias y con la misma lengua visual que la salpicadura al clicar. Todas se
@@ -676,14 +951,29 @@ body::after {
 .brocha-cursor.oculta {
   opacity: 0 !important;
 }
+/* Dos capas (punta roja / punta negra) con fundido según el fondo. */
+.brocha-cursor__wrap {
+  position: relative;
+  display: block;
+  width: 46px;
+  transform-origin: 4% 4%; /* la punta */
+  transition: transform 0.12s cubic-bezier(0.34, 1.4, 0.64, 1);
+  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.35));
+}
 .brocha-cursor__img {
   display: block;
-  width: 40px;
-  filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.3));
-  transform-origin: 15% 5%; /* punta roja de las cerdas */
-  transition: transform 0.12s cubic-bezier(0.34, 1.4, 0.64, 1);
+  width: 100%;
 }
-.brocha-cursor.pressing .brocha-cursor__img {
+.brocha-cursor__img--negra {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+.brocha-cursor.tinta-negra .brocha-cursor__img--negra {
+  opacity: 1;
+}
+.brocha-cursor.pressing .brocha-cursor__wrap {
   transform: scale(0.82) rotate(-7deg); /* "toque" de pincelada al clicar */
 }
 

@@ -76,9 +76,40 @@ const SUPERFICIES = [
       }
     </div>
 
-    <!-- Escenario: una foto por superficie (solo la activa visible) con el
-         buscador flotando encima. Solo se pinta la superficie de su máscara. -->
-    <figure class="reveal sim-stage relative mx-auto mt-4 max-w-3xl overflow-hidden rounded-panel ring-1 ring-white/10 shadow-[0_26px_60px_-26px_rgba(0,0,0,0.8),0_0_90px_-28px_rgba(210,38,43,0.42)]">
+    <!-- Buscador FUERA de la foto (no tapa la pared) con lista de resultados -->
+    <div class="reveal relative z-20 mx-auto mt-4 max-w-3xl">
+      <label for="sim-buscar" class="sr-only">Busca un color por código o nombre</label>
+      <div class="relative">
+        <div class="flex items-center gap-2.5 rounded-full bg-white/95 px-4 py-3 shadow-lg shadow-black/30 backdrop-blur-sm transition-shadow focus-within:ring-2 focus-within:ring-rojo focus-within:ring-offset-2 focus-within:ring-offset-negro">
+          <svg viewBox="0 0 24 24" class="h-4.5 w-4.5 shrink-0 text-negro/50" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+            <circle cx="11" cy="11" r="7" />
+            <path d="m20 20-3.8-3.8" stroke-linecap="round" />
+          </svg>
+          <input
+            id="sim-buscar"
+            type="search"
+            role="combobox"
+            aria-expanded="false"
+            aria-controls="sim-resultados"
+            aria-autocomplete="list"
+            placeholder="Escribe un color: 7016, 5010, verde…"
+            autocomplete="off"
+            class="w-full bg-transparent text-[14px] font-semibold text-negro placeholder:font-normal placeholder:text-negro/60 focus:outline-none"
+          />
+        </div>
+        <ul
+          id="sim-resultados"
+          role="listbox"
+          aria-label="Colores encontrados"
+          class="sim-resultados absolute inset-x-0 top-full z-30 mt-2 hidden max-h-60 divide-y divide-black/5 overflow-auto rounded-2xl border border-black/10 bg-white/95 shadow-xl backdrop-blur-sm"
+        ></ul>
+      </div>
+      <p id="sim-info" class="mt-1.5 ml-3 min-h-[1.15rem] text-[12px] font-semibold text-papel/75" aria-live="polite"></p>
+    </div>
+
+    <!-- Escenario: una foto por superficie (solo la activa visible). Solo se
+         pinta la superficie de su máscara; en "dos colores", en dos mitades. -->
+    <figure class="reveal sim-stage relative mx-auto mt-3 max-w-3xl overflow-hidden rounded-panel ring-1 ring-white/10 shadow-[0_26px_60px_-26px_rgba(0,0,0,0.8),0_0_90px_-28px_rgba(210,38,43,0.42)]">
       {
         SUPERFICIES.map((s, i) => (
           <div
@@ -98,46 +129,32 @@ const SUPERFICIES = [
                 loading="lazy"
               />
               <div
-                class="sim-color sim-mask"
+                class="sim-color sim-color--a sim-mask"
                 style={`background-color:${INICIAL.h}; -webkit-mask-image:url(${asset(s.mask)}); mask-image:url(${asset(s.mask)})`}
               />
+              <div
+                class="sim-color sim-color--b sim-mask"
+                style={`display:none; background-color:#9a8c7a; -webkit-mask-image:url(${asset(s.mask)}); mask-image:url(${asset(s.mask)})`}
+              />
+              <!-- Divisor del modo "dos colores": línea + asa arrastrable -->
+              <div class="sim-divisor" hidden>
+                <span class="sim-divisor__linea" aria-hidden="true"></span>
+                <button
+                  type="button"
+                  class="sim-divisor__asa"
+                  aria-label="Arrastra para mover la división entre los dos colores"
+                >
+                  <svg viewBox="0 0 16 16" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M5 4 1.5 8 5 12M11 4l3.5 4L11 12" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
         ))
       }
 
-      <!-- Buscador flotante (único, sobre la superficie activa) con lista de resultados -->
-      <div class="absolute inset-x-0 top-0 z-20 flex flex-col gap-2 p-3 sm:p-4">
-        <label for="sim-buscar" class="sr-only">Busca un color por código o nombre</label>
-        <div class="relative">
-          <div class="flex items-center gap-2.5 rounded-full bg-white/95 px-4 py-3 shadow-lg shadow-black/30 backdrop-blur-sm transition-shadow focus-within:ring-2 focus-within:ring-rojo focus-within:ring-offset-2 focus-within:ring-offset-negro">
-            <svg viewBox="0 0 24 24" class="h-4.5 w-4.5 shrink-0 text-negro/50" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
-              <circle cx="11" cy="11" r="7" />
-              <path d="m20 20-3.8-3.8" stroke-linecap="round" />
-            </svg>
-            <input
-              id="sim-buscar"
-              type="search"
-              role="combobox"
-              aria-expanded="false"
-              aria-controls="sim-resultados"
-              aria-autocomplete="list"
-              placeholder="Escribe un color: 7016, 5010, verde…"
-              autocomplete="off"
-              class="w-full bg-transparent text-[14px] font-semibold text-negro placeholder:font-normal placeholder:text-negro/60 focus:outline-none"
-            />
-          </div>
-          <ul
-            id="sim-resultados"
-            role="listbox"
-            aria-label="Colores encontrados"
-            class="sim-resultados absolute inset-x-0 top-full z-30 mt-2 hidden max-h-60 divide-y divide-black/5 overflow-auto rounded-2xl border border-black/10 bg-white/95 shadow-xl backdrop-blur-sm"
-          ></ul>
-        </div>
-        <p id="sim-info" class="ml-3 min-h-[1.15rem] text-[12px] font-semibold text-white [text-shadow:0_1px_4px_rgba(0,0,0,0.85)]" aria-live="polite"></p>
-      </div>
-
-      <!-- Color + acabado aplicados, abajo, con velo para legibilidad -->
+      <!-- Color aplicado, abajo, con velo para legibilidad -->
       <figcaption class="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-3 bg-gradient-to-t from-black/70 via-black/20 to-transparent px-4 pt-12 pb-3">
         <span class="text-[11.5px] text-white/70">Resultado orientativo</span>
         <span id="sim-nombre" class="text-right text-[13px] font-semibold text-white [text-shadow:0_1px_4px_rgba(0,0,0,0.6)]">{INICIAL.n} · {INICIAL.c}</span>
@@ -146,18 +163,43 @@ const SUPERFICIES = [
 
     <!-- Panel de control (dock premium bajo el escenario) -->
     <div class="reveal panel mx-auto mt-5 max-w-3xl p-5 md:p-6">
-      <!-- Estado en vivo del color aplicado -->
-      <div class="flex items-center gap-3">
-        <span
-          id="sim-swatch"
-          class="swatch h-12 w-12 shrink-0 rounded-xl ring-1 ring-white/15"
-          style={`background-color:${INICIAL.h}`}
-          aria-hidden="true"
-        ></span>
-        <div class="leading-tight">
-          <p id="sim-estado-nombre" class="text-[14px] font-bold text-white">{INICIAL.n}</p>
-          <p id="sim-estado-cod" class="mt-0.5 text-[12px] font-semibold text-papel/65">{INICIAL.c}</p>
+      <!-- Estado en vivo + modo "dos colores" (divide la pared en dos mitades) -->
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <div id="sim-lados" class="flex flex-wrap items-center gap-2">
+          <button type="button" data-lado="a" aria-pressed="true" class="sim-lado flex items-center gap-3 p-1.5 pr-3 text-left">
+            <span
+              id="sim-sw-a"
+              class="h-11 w-11 shrink-0 rounded-lg ring-1 ring-white/15"
+              style={`background-color:${INICIAL.h}`}
+              aria-hidden="true"
+            ></span>
+            <span class="leading-tight">
+              <span class="sim-lado-tag kicker-xs text-papel/50">Izquierda</span>
+              <span id="sim-nom-a" class="block text-[13.5px] font-bold text-white">{INICIAL.n}</span>
+              <span id="sim-cod-a" class="mt-0.5 block text-[11.5px] font-semibold text-papel/65">{INICIAL.c}</span>
+            </span>
+          </button>
+          <button type="button" data-lado="b" aria-pressed="false" class="sim-lado hidden items-center gap-3 p-1.5 pr-3 text-left">
+            <span id="sim-sw-b" class="h-11 w-11 shrink-0 rounded-lg ring-1 ring-white/15" aria-hidden="true"></span>
+            <span class="leading-tight">
+              <span class="sim-lado-tag kicker-xs text-papel/50">Derecha</span>
+              <span id="sim-nom-b" class="block text-[13.5px] font-bold text-white"></span>
+              <span id="sim-cod-b" class="mt-0.5 block text-[11.5px] font-semibold text-papel/65"></span>
+            </span>
+          </button>
         </div>
+        <button
+          type="button"
+          id="sim-split"
+          aria-pressed="false"
+          class="inline-flex cursor-pointer items-center gap-2 rounded-full border border-white/25 px-4 py-2 text-[13px] font-semibold text-white transition-colors hover:border-white/60"
+        >
+          <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <rect x="3" y="5" width="18" height="14" rx="2" />
+            <path d="M12 5v14" />
+          </svg>
+          <span id="sim-split-txt">Dos colores</span>
+        </button>
       </div>
 
       <hr class="my-5 border-white/10" />
@@ -179,7 +221,10 @@ const SUPERFICIES = [
             <span id="sim-guardar-txt">Guardar color</span>
           </button>
         </div>
-        <div id="sim-favs" class="mt-3 flex flex-wrap items-center gap-2.5" role="group" aria-label="Tus colores guardados" />
+        <div id="sim-favs" class="relative mt-3 flex flex-wrap items-center gap-2.5" role="group" aria-label="Tus colores guardados" />
+        <p id="sim-favs-hint" class="mt-2 hidden text-[11.5px] text-papel/50">
+          Mantén pulsado un color para moverlo de sitio o quitarlo.
+        </p>
         <p id="sim-favs-vacio" class="mt-2 max-w-md text-[12.5px] leading-relaxed text-papel/60">
           Ideas para empezar — pincha cualquiera para verla en la pared. Guarda las
           que te gusten con el corazón (o desde las <a href={asset('/cartas/')} class="font-semibold text-papel/80 underline underline-offset-2 hover:text-white">cartas de colores</a>)
@@ -288,18 +333,21 @@ const SUPERFICIES = [
     for (const [s, c] of pares)
       TODOS.push({ c: `NCS S ${p2(s).padStart(2, '0')}${p2(c).padStart(2, '0')}-${hue}`, n: 'NCS', h: ncsHex(s, c, hue) });
 
-  // --- Estado: superficie activa y color ---
-  const colorLayers = document.querySelectorAll('.sim-color');
+  // --- Estado: superficie activa, color por LADO (a/b) y modo "dos colores" ---
+  const capas = {
+    a: document.querySelectorAll('.sim-color--a'),
+    b: document.querySelectorAll('.sim-color--b')
+  };
   const paneles = document.querySelectorAll('[data-panel]');
   const surfaceTabs = document.querySelectorAll('[data-surface]');
   const nombre = document.getElementById('sim-nombre');
   const info = document.getElementById('sim-info');
   const buscar = document.getElementById('sim-buscar');
-  const swatchEl = document.getElementById('sim-swatch');
-  const estadoNombre = document.getElementById('sim-estado-nombre');
-  const estadoCod = document.getElementById('sim-estado-cod');
 
-  let colorActual = { h: '#e9e2ce', c: 'NCS S 1005-Y', n: 'Lino' };
+  const colores = { a: { h: '#e9e2ce', c: 'NCS S 1005-Y', n: 'Lino' }, b: null };
+  let lado = 'a';
+  let split = false;
+  const actual = () => colores[lado];
 
   const nombreColor = (color) =>
     color.n && color.n !== 'NCS' && color.n !== 'NCS neutro' ? `${color.n} · ${color.c}` : color.c;
@@ -307,11 +355,21 @@ const SUPERFICIES = [
   const soloNombre = (color) =>
     color.n && color.n !== 'NCS' && color.n !== 'NCS neutro' ? color.n : color.c;
   const refrescarNombre = () => {
-    if (nombre) nombre.textContent = nombreColor(colorActual);
-    // Píldora de estado en vivo del panel de control (dato canónico, legible).
-    if (swatchEl) swatchEl.style.backgroundColor = colorActual.h;
-    if (estadoNombre) estadoNombre.textContent = soloNombre(colorActual);
-    if (estadoCod) estadoCod.textContent = colorActual.c;
+    // Píldoras de estado en vivo del panel (dato canónico, legible).
+    const pinta = (l) => {
+      const c = colores[l];
+      if (!c) return;
+      const sw = document.getElementById('sim-sw-' + l);
+      if (sw) sw.style.backgroundColor = c.h;
+      const n = document.getElementById('sim-nom-' + l);
+      if (n) n.textContent = soloNombre(c);
+      const cd = document.getElementById('sim-cod-' + l);
+      if (cd) cd.textContent = c.c;
+    };
+    pinta('a');
+    pinta('b');
+    if (nombre)
+      nombre.textContent = split && colores.b ? `${colores.a.c} | ${colores.b.c}` : nombreColor(colores.a);
   };
 
   // --- Micro-animaciones de pintura ---
@@ -324,8 +382,8 @@ const SUPERFICIES = [
   };
 
   const pintar = (color) => {
-    colorActual = color;
-    colorLayers.forEach((c) => (c.style.backgroundColor = color.h));
+    colores[lado] = color;
+    capas[lado].forEach((c) => (c.style.backgroundColor = color.h));
     refrescarNombre();
     marcarFavActivo();
     actualizarBotonGuardar();
@@ -360,7 +418,7 @@ const SUPERFICIES = [
 
   const actualizarBotonGuardar = () => {
     if (!guardarBtn) return;
-    const g = estaGuardado(colorActual);
+    const g = estaGuardado(actual());
     guardarBtn.setAttribute('aria-pressed', String(g));
     if (guardarTxt) guardarTxt.textContent = g ? 'Guardado' : 'Guardar color';
     if (guardarIco) guardarIco.setAttribute('fill', g ? 'currentColor' : 'none');
@@ -369,7 +427,7 @@ const SUPERFICIES = [
     if (!favsEl) return;
     favsEl
       .querySelectorAll('.sim-fav-apply')
-      .forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.codigo === colorActual.c)));
+      .forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.codigo === actual().c)));
   };
 
   // Sugerencias: si el cliente aún no ha guardado ningún color, mostramos 6
@@ -405,8 +463,11 @@ const SUPERFICIES = [
 
   const renderFavs = (nuevo) => {
     if (!favsEl) return;
+    cerrarPop();
     favsEl.textContent = '';
-    // Sin colores guardados → sugerencias al azar (aplicables, sin botón de quitar).
+    const hint = document.getElementById('sim-favs-hint');
+    if (hint) hint.classList.toggle('hidden', favs.length === 0);
+    // Sin colores guardados → sugerencias al azar (aplicables, sin gestos).
     if (favs.length === 0) {
       sugerencias.forEach((f) => {
         const b = document.createElement('button');
@@ -416,7 +477,7 @@ const SUPERFICIES = [
         b.style.backgroundColor = f.h;
         b.title = nombreColor(f);
         b.setAttribute('aria-label', 'Probar ' + nombreColor(f));
-        b.setAttribute('aria-pressed', String(f.c === colorActual.c));
+        b.setAttribute('aria-pressed', String(f.c === actual().c));
         b.dataset.hex = f.h;
         b.dataset.codigo = f.c;
         b.dataset.nombre = f.n;
@@ -426,9 +487,10 @@ const SUPERFICIES = [
       actualizarBotonGuardar();
       return;
     }
+    // Con guardados: chips con gestos (mantener pulsado = quitar; arrastrar = reordenar).
     favs.forEach((f) => {
       const wrap = document.createElement('div');
-      wrap.className = 'sim-fav group relative';
+      wrap.className = 'sim-fav relative';
       if (nuevo && f.c === nuevo) wrap.classList.add('pop');
       const b = document.createElement('button');
       b.type = 'button';
@@ -436,56 +498,289 @@ const SUPERFICIES = [
         'sim-chip sim-fav-apply h-10 w-10 cursor-pointer rounded-full border-2 border-white/25 transition-transform hover:scale-110';
       b.style.backgroundColor = f.h;
       b.title = nombreColor(f);
-      b.setAttribute('aria-label', 'Aplicar ' + nombreColor(f));
-      b.setAttribute('aria-pressed', String(f.c === colorActual.c));
+      b.setAttribute('aria-label', 'Aplicar ' + nombreColor(f) + '. Mantén pulsado para reordenar o quitar');
+      b.setAttribute('aria-pressed', String(f.c === actual().c));
       b.dataset.hex = f.h;
       b.dataset.codigo = f.c;
       b.dataset.nombre = f.n || '';
-      const x = document.createElement('button');
-      x.type = 'button';
-      x.className =
-        'sim-fav-x absolute -top-2 -right-2 grid h-5 w-5 place-items-center rounded-full border border-white/40 bg-negro/90 text-[13px] leading-none text-white transition-colors hover:bg-rojo';
-      x.textContent = '×';
-      x.setAttribute('aria-label', 'Quitar ' + nombreColor(f));
-      x.dataset.codigo = f.c;
       wrap.appendChild(b);
-      wrap.appendChild(x);
       favsEl.appendChild(wrap);
+      montarGestos(wrap, b);
     });
     if (favsVacio) favsVacio.classList.toggle('hidden', favs.length > 0);
     actualizarBotonGuardar();
   };
 
   guardarBtn?.addEventListener('click', () => {
-    const anadido = !estaGuardado(colorActual);
+    const c = actual();
+    const anadido = !estaGuardado(c);
     if (anadido) {
-      favs.unshift({ h: colorActual.h, c: colorActual.c, n: colorActual.n });
+      favs.unshift({ h: c.h, c: c.c, n: c.n });
       if (favs.length > MAX_FAVS) favs = favs.slice(0, MAX_FAVS);
     } else {
-      favs = favs.filter((f) => f.c !== colorActual.c);
+      favs = favs.filter((f) => f.c !== c.c);
     }
     persistir();
-    renderFavs(anadido ? colorActual.c : null);
-    if (anadido) latir(guardarIco);
+    renderFavs(anadido ? c.c : null);
+    if (anadido) {
+      latir(guardarIco);
+      // Splash de pintura sobre el botón (blanca si el color ya es rojizo)
+      if (!reduce && guardarBtn && window.euronovaSplash) {
+        const r = guardarBtn.getBoundingClientRect();
+        const rr = parseInt(c.h.slice(1, 3), 16) || 0;
+        const gg = parseInt(c.h.slice(3, 5), 16) || 0;
+        const bb = parseInt(c.h.slice(5, 7), 16) || 0;
+        const tinta = rr > 130 && rr > gg * 1.4 && rr > bb * 1.4 ? 'blanco' : 'rojo';
+        window.euronovaSplash(r.left + r.width / 2, r.top + r.height / 2, tinta);
+      }
+    }
   });
 
   favsEl?.addEventListener('click', (e) => {
-    const rm = e.target.closest('.sim-fav-x');
-    if (rm) {
-      const wrap = rm.closest('.sim-fav');
-      const cod = rm.dataset.codigo;
-      const quitar = () => {
-        favs = favs.filter((f) => f.c !== cod);
-        persistir();
-        renderFavs();
-      };
-      if (reduce || !wrap) return quitar();
-      wrap.classList.add('saliendo');
-      wrap.addEventListener('animationend', quitar, { once: true });
-      return;
-    }
+    if (gestoConsumido) return; // el gesto (drag/long-press) ya consumió este toque
     const ap = e.target.closest('.sim-fav-apply');
     if (ap) pintar({ h: ap.dataset.hex, c: ap.dataset.codigo, n: ap.dataset.nombre });
+  });
+
+  // --- Gestos de favorito: MANTENER PULSADO = opción de quitar; mantener y
+  //     ARRASTRAR = reordenar (como recolocar apps en un móvil). ---
+  let popAbierto = null;
+  let gestoConsumido = false;
+  const cerrarPop = () => {
+    if (popAbierto) popAbierto.remove();
+    popAbierto = null;
+    document.removeEventListener('pointerdown', popFuera, true);
+  };
+  const popFuera = (e) => {
+    if (popAbierto && !popAbierto.contains(e.target)) cerrarPop();
+  };
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') cerrarPop();
+  });
+  const quitarFav = (cod) => {
+    let hecho = false;
+    const doIt = () => {
+      if (hecho) return;
+      hecho = true;
+      favs = favs.filter((f) => f.c !== cod);
+      persistir();
+      renderFavs();
+    };
+    const wrap = [...favsEl.querySelectorAll('.sim-fav')].find(
+      (w) => w.querySelector('.sim-fav-apply')?.dataset.codigo === cod
+    );
+    if (reduce || !wrap) return doIt();
+    wrap.classList.add('saliendo');
+    wrap.addEventListener('animationend', doIt, { once: true });
+    setTimeout(doIt, 260); // red de seguridad si la animación no llega a dispararse
+  };
+  const abrirPopQuitar = (wrap, chip) => {
+    cerrarPop();
+    const pop = document.createElement('div');
+    pop.className = 'sim-fav-pop';
+    const del = document.createElement('button');
+    del.type = 'button';
+    del.className = 'sim-fav-del';
+    del.textContent = 'Quitar';
+    del.setAttribute('aria-label', 'Quitar ' + (chip.title || 'este color'));
+    del.addEventListener('click', () => {
+      const cod = chip.dataset.codigo;
+      cerrarPop();
+      quitarFav(cod);
+    });
+    pop.appendChild(del);
+    wrap.appendChild(pop);
+    popAbierto = pop;
+    setTimeout(() => document.addEventListener('pointerdown', popFuera, true), 0);
+  };
+
+  // FLIP: al recolocar un chip, los demás se deslizan suaves a su nuevo sitio.
+  const flipMove = (el, ref) => {
+    const otros = [...favsEl.querySelectorAll('.sim-fav')].filter((s) => s !== el);
+    const antes = new Map(otros.map((s) => [s, s.getBoundingClientRect()]));
+    favsEl.insertBefore(el, ref);
+    if (reduce) return;
+    otros.forEach((s) => {
+      const r0 = antes.get(s);
+      const r1 = s.getBoundingClientRect();
+      const dx = r0.left - r1.left;
+      const dy = r0.top - r1.top;
+      if (dx || dy)
+        s.animate([{ transform: `translate(${dx}px, ${dy}px)` }, { transform: 'none' }], {
+          duration: 180,
+          easing: 'ease-out'
+        });
+    });
+  };
+
+  const montarGestos = (wrap, chip) => {
+    chip.addEventListener('contextmenu', (e) => e.preventDefault());
+    chip.addEventListener('keydown', (e) => {
+      if (e.key === 'Delete' || e.key === 'Backspace') {
+        e.preventDefault();
+        quitarFav(chip.dataset.codigo);
+      }
+    });
+    chip.addEventListener('pointerdown', (e) => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      cerrarPop();
+      const startX = e.clientX;
+      const startY = e.clientY;
+      const offL = wrap.offsetLeft;
+      const offT = wrap.offsetTop;
+      let lifted = false;
+      let drag = false;
+      const timer = setTimeout(() => {
+        lifted = true;
+        wrap.classList.add('lift');
+        if (navigator.vibrate) navigator.vibrate(12);
+      }, 420);
+      const mover = (ev) => {
+        const dx = ev.clientX - startX;
+        const dy = ev.clientY - startY;
+        if (!lifted) {
+          if (Math.hypot(dx, dy) > 10) limpiar(); // movimiento antes de "levantar" → no era gesto
+          return;
+        }
+        if (!drag && Math.hypot(dx, dy) > 6) {
+          drag = true;
+          wrap.classList.add('dragging');
+          try {
+            chip.setPointerCapture(ev.pointerId);
+          } catch (err) {}
+        }
+        if (!drag) return;
+        ev.preventDefault();
+        // Si el puntero entra en otro chip, recolocamos (con FLIP en los demás)
+        const sibs = [...favsEl.querySelectorAll('.sim-fav')].filter((s) => s !== wrap);
+        for (const s of sibs) {
+          const r = s.getBoundingClientRect();
+          if (ev.clientX > r.left && ev.clientX < r.right && ev.clientY > r.top - 8 && ev.clientY < r.bottom + 8) {
+            const ref = ev.clientX < r.left + r.width / 2 ? s : s.nextSibling;
+            if (ref !== wrap && ref !== wrap.nextSibling) flipMove(wrap, ref);
+            break;
+          }
+        }
+        // El chip sigue al dedo compensando su nueva posición de layout
+        wrap.style.transform = `translate(${dx - (wrap.offsetLeft - offL)}px, ${dy - (wrap.offsetTop - offT)}px)`;
+      };
+      const soltar = () => {
+        clearTimeout(timer);
+        quitarEscucha();
+        if (drag) {
+          gestoConsumido = true;
+          wrap.classList.remove('dragging', 'lift');
+          wrap.style.transform = '';
+          // Persistir el nuevo orden según el DOM
+          const orden = [...favsEl.querySelectorAll('.sim-fav-apply')].map((x) => x.dataset.codigo);
+          favs.sort((a, b) => orden.indexOf(a.c) - orden.indexOf(b.c));
+          persistir();
+          renderFavs();
+        } else if (lifted) {
+          gestoConsumido = true;
+          wrap.classList.remove('lift');
+          abrirPopQuitar(wrap, chip);
+        }
+        setTimeout(() => (gestoConsumido = false), 0);
+      };
+      const limpiar = () => {
+        clearTimeout(timer);
+        wrap.classList.remove('lift', 'dragging');
+        wrap.style.transform = '';
+        quitarEscucha();
+      };
+      const quitarEscucha = () => {
+        window.removeEventListener('pointermove', mover);
+        window.removeEventListener('pointerup', soltar);
+        window.removeEventListener('pointercancel', limpiar);
+      };
+      window.addEventListener('pointermove', mover, { passive: false });
+      window.addEventListener('pointerup', soltar);
+      window.addEventListener('pointercancel', limpiar);
+    });
+  };
+
+  // --- Modo "DOS COLORES": divide la pared en dos mitades comparables ---
+  const splitBtn = document.getElementById('sim-split');
+  const splitTxt = document.getElementById('sim-split-txt');
+  const ladosWrap = document.getElementById('sim-lados');
+  const ladoBtns = document.querySelectorAll('#sim-lados .sim-lado');
+  const divisores = document.querySelectorAll('.sim-divisor');
+  const estancias = document.querySelectorAll('.sim-estancia');
+
+  const setLado = (l) => {
+    lado = l;
+    ladoBtns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.lado === l)));
+    refrescarNombre();
+    marcarFavActivo();
+    actualizarBotonGuardar();
+  };
+  ladoBtns.forEach((b) =>
+    b.addEventListener('click', () => {
+      if (split) setLado(b.dataset.lado);
+    })
+  );
+
+  const setSplit = (on) => {
+    split = on;
+    if (on && !colores.b) {
+      // El lado derecho arranca con una sugerencia distinta al color actual
+      colores.b =
+        sugerencias.find((s) => s.c !== colores.a.c) || { h: '#383e42', c: 'RAL 7016', n: 'Gris antracita' };
+    }
+    capas.b.forEach((c) => {
+      c.style.display = on ? '' : 'none';
+      if (on && colores.b) c.style.backgroundColor = colores.b.h;
+    });
+    divisores.forEach((d) => (d.hidden = !on));
+    const ladoB = document.querySelector('#sim-lados [data-lado="b"]');
+    if (ladoB) {
+      ladoB.classList.toggle('hidden', !on);
+      ladoB.classList.toggle('flex', on);
+    }
+    ladosWrap?.classList.toggle('split', on);
+    splitBtn?.setAttribute('aria-pressed', String(on));
+    if (splitTxt) splitTxt.textContent = on ? 'Un color' : 'Dos colores';
+    setLado(on ? 'b' : 'a');
+  };
+  splitBtn?.addEventListener('click', () => setSplit(!split));
+
+  // Arrastre del divisor (y flechas de teclado en el asa)
+  const setSplitPos = (pct) => {
+    const v = Math.min(88, Math.max(12, pct));
+    estancias.forEach((es) => es.style.setProperty('--split', v + '%'));
+  };
+  document.querySelectorAll('.sim-divisor__asa').forEach((asa) => {
+    asa.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      try {
+        asa.setPointerCapture(e.pointerId);
+      } catch (err) {}
+      const est = asa.closest('.sim-estancia');
+      const mover = (ev) => {
+        const r = est.getBoundingClientRect();
+        setSplitPos(((ev.clientX - r.left) / r.width) * 100);
+      };
+      const fin = () => {
+        asa.removeEventListener('pointermove', mover);
+        asa.removeEventListener('pointerup', fin);
+        asa.removeEventListener('pointercancel', fin);
+      };
+      asa.addEventListener('pointermove', mover);
+      asa.addEventListener('pointerup', fin);
+      asa.addEventListener('pointercancel', fin);
+    });
+    asa.addEventListener('keydown', (e) => {
+      const cur = parseFloat(getComputedStyle(asa.closest('.sim-estancia')).getPropertyValue('--split')) || 50;
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        setSplitPos(cur - 3);
+      }
+      if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        setSplitPos(cur + 3);
+      }
+    });
   });
 
   surfaceTabs.forEach((t) => t.addEventListener('click', () => setSuperficie(t.dataset.surface)));

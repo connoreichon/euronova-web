@@ -13,6 +13,13 @@ const cartas = [
   { id: 'ncs', nombre: 'NCS', sub: 'Sistema completo · ≈2050 tonos', colores: [] },
   { id: 'eurotrend', nombre: 'EUROTREND', sub: 'Muy pronto en la web', colores: EUROTREND }
 ];
+
+// Mini "abanico" de cada carta (hojas de color tras el distintivo; se abre al activar)
+const FAN: Record<string, string[]> = {
+  ral: ['#c1121c', '#e5be01', '#0e518d', '#3a7d44'],
+  ncs: ['#f4efe2', '#c9c4b8', '#8a8378', '#4b443c'],
+  eurotrend: ['#dfe8f4', '#a9c6ee', '#5c8fd6', '#1a4fa8']
+};
 ---
 
 <Base
@@ -56,10 +63,56 @@ const cartas = [
       </div>
     </section>
 
+    <!-- Mini selector FLOTANTE: cambia de carta sin volver a subir (aparece al
+         dejar atrás el selector grande; muy útil en las rejillas de miles de tonos) -->
+    <div id="mini-cartas" aria-hidden="true" class="fixed inset-x-0 top-[6.6rem] z-40 flex justify-center px-4 md:top-[4.4rem]">
+      <div class="flex gap-1 rounded-full border border-white/15 bg-negro/90 p-1.5 shadow-xl shadow-black/50 backdrop-blur-md">
+        {
+          cartas.map((c, i) => (
+            <button
+              type="button"
+              data-mini={c.id}
+              class={`mini-carta flex cursor-pointer items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[12px] font-bold transition-colors ${i === 0 ? 'is-on' : ''}`}
+              aria-label={`Cambiar a la carta ${c.nombre}`}
+            >
+              <span
+                class="h-2 w-2 rounded-[3px]"
+                style={`background:${c.id === 'ral' ? '#c1121c' : c.id === 'ncs' ? '#fff' : '#1a4fa8'}`}
+                aria-hidden="true"
+              />
+              {c.nombre}
+            </button>
+          ))
+        }
+        <span class="mx-0.5 w-px self-stretch bg-white/15" aria-hidden="true"></span>
+        <!-- Lupa: buscador accesible en cualquier punto del scroll -->
+        <button
+          type="button"
+          id="mini-lupa"
+          class="grid h-8 w-8 shrink-0 cursor-pointer place-items-center rounded-full text-papel/75 transition-colors hover:text-white"
+          aria-label="Buscar un color"
+          aria-expanded="false"
+        >
+          <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+            <circle cx="11" cy="11" r="7" />
+            <path d="m20 20-3.8-3.8" stroke-linecap="round" />
+          </svg>
+        </button>
+        <input
+          id="mini-buscador"
+          type="search"
+          placeholder="7016, verde…"
+          autocomplete="off"
+          aria-label="Buscar color por código o nombre"
+          class="mini-buscador bg-transparent text-[12.5px] font-semibold text-white placeholder:font-normal placeholder:text-papel/50 focus:outline-none"
+        />
+      </div>
+    </div>
+
     <section class="pt-12 pb-4 text-papel md:pt-16">
       <div class="container-x">
         <!-- Selector de carta, con el distintivo de cada sistema -->
-        <div class="flex flex-wrap gap-3" role="tablist" aria-label="Elige una carta de colores">
+        <div id="selector-cartas" class="flex flex-wrap gap-3" role="tablist" aria-label="Elige una carta de colores">
           {
             cartas.map((carta, i) => (
               <button
@@ -69,27 +122,33 @@ const cartas = [
                 aria-selected={i === 0 ? 'true' : 'false'}
                 aria-controls={`panel-${carta.id}`}
                 data-carta={carta.id}
-                class={`tab-carta flex cursor-pointer items-center gap-2.5 rounded-2xl border-2 px-4 py-2.5 text-left transition-all ${
+                class={`tab-carta flex cursor-pointer items-center gap-3 rounded-xl border px-4 py-2.5 text-left transition-all ${
                   i === 0
-                    ? 'border-white/70 bg-white/12'
-                    : 'border-white/12 bg-white/6 hover:border-white/30'
+                    ? 'border-rojo/70 bg-rojo/10'
+                    : 'border-white/12 bg-white/[0.04] hover:border-white/30'
                 }`}
               >
-                {carta.id === 'ral' && (
-                  <span class="grid h-9 w-9 shrink-0 place-items-center rounded-md bg-[#c1121c] font-display text-[13px] font-extrabold text-white">
-                    RAL
-                  </span>
-                )}
-                {carta.id === 'ncs' && (
-                  <span class="grid h-9 w-9 shrink-0 place-items-center rounded-md bg-white font-display text-[13px] font-extrabold text-[#111]">
-                    NCS<span class="-mt-2 text-[7px]">®</span>
-                  </span>
-                )}
-                {carta.id === 'eurotrend' && (
-                  <span class="grid h-9 w-14 shrink-0 place-items-center rounded-md bg-white px-1 font-display text-[9px] font-extrabold tracking-tight text-[#1a4fa8] italic">
-                    EUROTREND
-                  </span>
-                )}
+                <!-- Abanico de carta: hojas de color que se abren al activarse -->
+                <span class="carta-fan relative h-12 w-14 shrink-0" aria-hidden="true">
+                  {FAN[carta.id].map((f, j) => (
+                    <span class="carta-fan__hoja" style={`background:${f}; --rot:${((j - 1.5) * 14).toFixed(0)}deg;`} />
+                  ))}
+                  {carta.id === 'ral' && (
+                    <span class="absolute bottom-0 left-1/2 z-10 grid h-8 w-8 -translate-x-1/2 place-items-center rounded-md bg-[#c1121c] font-display text-[11.5px] font-extrabold text-white shadow-md shadow-black/40">
+                      RAL
+                    </span>
+                  )}
+                  {carta.id === 'ncs' && (
+                    <span class="absolute bottom-0 left-1/2 z-10 grid h-8 w-8 -translate-x-1/2 place-items-center rounded-md bg-white font-display text-[11.5px] font-extrabold text-[#111] shadow-md shadow-black/40">
+                      NCS<span class="-mt-2 text-[6px]">®</span>
+                    </span>
+                  )}
+                  {carta.id === 'eurotrend' && (
+                    <span class="absolute bottom-0 left-1/2 z-10 grid h-8 w-14 -translate-x-1/2 place-items-center rounded-md bg-white px-1 font-display text-[8px] font-extrabold tracking-tight text-[#1a4fa8] italic shadow-md shadow-black/40">
+                      EUROTREND
+                    </span>
+                  )}
+                </span>
                 <span>
                   <span class="block text-[13px] font-bold text-white">Carta {carta.nombre}</span>
                   <span class="block text-[11px] text-papel/60">{carta.sub}</span>
@@ -102,7 +161,7 @@ const cartas = [
         <!-- Buscador -->
         <div class="mt-5 max-w-md">
           <label for="buscador" class="sr-only">Buscar color por código o nombre</label>
-          <div class="flex items-center gap-2.5 rounded-full border border-white/20 bg-white/8 px-5 py-3 transition-colors focus-within:border-rojo">
+          <div class="buscador-marca flex items-center gap-2.5 rounded-full border border-white/20 bg-white/8 px-5 py-3 transition-colors focus-within:border-white/40">
             <svg viewBox="0 0 24 24" class="h-4.5 w-4.5 shrink-0 text-papel/60" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <circle cx="11" cy="11" r="7" />
               <path d="m20 20-3.8-3.8" stroke-linecap="round" />
@@ -121,7 +180,7 @@ const cartas = [
     </section>
 
     <!-- Rejillas de colores -->
-    <section class="py-10 md:py-14">
+    <section id="rejillas" class="py-10 md:py-14">
       <div class="container-x">
         <h2 class="sr-only">Muestrario de colores por carta</h2>
         {
@@ -440,8 +499,8 @@ const cartas = [
   const info = document.getElementById('resultado-info');
   const sinResultados = document.getElementById('sin-resultados');
   let activa = 'ral';
-  const CL_ON = ['border-white/70', 'bg-white/12'];
-  const CL_OFF = ['border-white/12', 'bg-white/6'];
+  const CL_ON = ['border-rojo/70', 'bg-rojo/10'];
+  const CL_OFF = ['border-white/12', 'bg-white/[0.04]'];
 
   const filtrar = () => {
     const q = buscador.value.trim().toLowerCase().replace(/\s+/g, ' ');
@@ -462,6 +521,11 @@ const cartas = [
     sinResultados?.classList.toggle('hidden', visibles > 0 || items.length === 0);
   };
 
+  const syncMini = () => {
+    document
+      .querySelectorAll<HTMLElement>('.mini-carta')
+      .forEach((m) => m.classList.toggle('is-on', m.dataset.mini === activa));
+  };
   tabs.forEach((tab) => {
     tab.addEventListener('click', () => {
       activa = tab.dataset.carta ?? 'ral';
@@ -472,10 +536,63 @@ const cartas = [
         CL_OFF.forEach((c) => t.classList.toggle(c, !sel));
       });
       paneles.forEach((p) => p.classList.toggle('hidden', p.dataset.panel !== activa));
+      syncMini();
       filtrar();
     });
   });
   buscador?.addEventListener('input', filtrar);
+
+  // ------- Mini selector flotante: cambiar de carta sin volver a subir -------
+  const mini = document.getElementById('mini-cartas');
+  const selectorCartas = document.getElementById('selector-cartas');
+  const rejillas = document.getElementById('rejillas');
+  if (mini && selectorCartas && 'IntersectionObserver' in window) {
+    const ioMini = new IntersectionObserver(
+      (entries) => {
+        for (const en of entries) {
+          // Visible solo cuando el selector grande queda ARRIBA, fuera de vista
+          const pasado = !en.isIntersecting && en.boundingClientRect.top < 0;
+          mini.classList.toggle('visible', pasado);
+          mini.setAttribute('aria-hidden', String(!pasado));
+        }
+      },
+      { rootMargin: '-110px 0px 0px 0px' }
+    );
+    ioMini.observe(selectorCartas);
+    mini.querySelectorAll<HTMLElement>('.mini-carta').forEach((mb) =>
+      mb.addEventListener('click', () => {
+        (document.getElementById('tab-' + mb.dataset.mini) as HTMLButtonElement | null)?.click();
+        // Al cambiar, arrancamos la nueva carta desde su principio (tras el
+        // scroll-por-focus que provoca click(), para que no lo pise).
+        if (rejillas) setTimeout(() => window.scrollTo({ top: rejillas.offsetTop - 150 }), 0);
+      })
+    );
+
+    // Lupa flotante: buscar sin volver arriba (sincroniza con el buscador principal)
+    const lupa = document.getElementById('mini-lupa');
+    const miniBuscador = document.getElementById('mini-buscador') as HTMLInputElement | null;
+    lupa?.addEventListener('click', () => {
+      const abierto = mini.classList.toggle('buscando');
+      lupa.setAttribute('aria-expanded', String(abierto));
+      if (abierto) {
+        miniBuscador?.focus();
+      } else if (miniBuscador && miniBuscador.value) {
+        miniBuscador.value = '';
+        buscador.value = '';
+        filtrar();
+      }
+    });
+    miniBuscador?.addEventListener('input', () => {
+      buscador.value = miniBuscador.value;
+      filtrar();
+    });
+    miniBuscador?.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        mini.classList.remove('buscando');
+        lupa?.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
 
   // ------- "Guarda tus colores": añadir cualquier tono de la carta a favoritos -------
   // Se guardan en localStorage (misma clave que el simulador "Imagina tu pared"),
@@ -541,13 +658,21 @@ const cartas = [
     escribirFavs(favs);
     marcarTodos();
     if (anadido && !REDUCE) {
-      // el corazón "late" al guardar
+      // el corazón "late" al guardar…
       const ico = btn.querySelector('svg');
       if (ico) {
         ico.classList.remove('late');
         void (ico as HTMLElement).offsetWidth;
         ico.classList.add('late');
       }
+      // …y salpica pintura (blanca si la muestra ya es rojiza, roja si no)
+      const r = btn.getBoundingClientRect();
+      const hex = color.h || '';
+      const rr = parseInt(hex.slice(1, 3), 16) || 0;
+      const gg = parseInt(hex.slice(3, 5), 16) || 0;
+      const bb = parseInt(hex.slice(5, 7), 16) || 0;
+      const tinta = rr > 130 && rr > gg * 1.4 && rr > bb * 1.4 ? 'blanco' : 'rojo';
+      (window as any).euronovaSplash?.(r.left + r.width / 2, r.top + r.height / 2, tinta);
     }
   });
 

@@ -196,6 +196,77 @@ const {
       const reduceMov = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const BASE_URL = import.meta.env.BASE_URL.replace(/\/$/, '');
 
+      // Luminancia del fondo bajo un elemento (para elegir tinta roja o negra).
+      const lin = (v: number) => {
+        v /= 255;
+        return v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+      };
+      const luminancia = (r: number, g: number, b: number) =>
+        0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
+      const fondoDe = (el: HTMLElement | null): [number, number, number] => {
+        while (el && el !== document.documentElement) {
+          const c = getComputedStyle(el).backgroundColor;
+          const m = c.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/);
+          if (m && (m[4] === undefined || parseFloat(m[4]) > 0.3)) return [+m[1], +m[2], +m[3]];
+          el = el.parentElement;
+        }
+        return [23, 17, 17]; // negro de marca por defecto
+      };
+      // Fondo claro o rojo → tinta NEGRA; fondo oscuro → tinta ROJA de marca.
+      const fondoClaro = (el: HTMLElement | null) => {
+        const [r, g, b] = fondoDe(el);
+        return luminancia(r, g, b) >= 0.12;
+      };
+
+      // Splash de pintura reutilizable (corazones de favoritos, etc.): una
+      // salpicadura real de marca florece y se disuelve en el punto (x, y).
+      (window as any).euronovaSplash = (x: number, y: number, color?: string) => {
+        if (reduceMov) return;
+        const tinta = color || 'rojo';
+        const splat = document.createElement('img');
+        splat.className = 'mancha-click';
+        splat.src = `${BASE_URL}/assets/manchas/splat${Math.random() < 0.5 ? 2 : 3}-${tinta}.png`;
+        splat.alt = '';
+        const w = 86 + Math.random() * 26;
+        splat.style.left = x + 'px';
+        splat.style.top = y + 'px';
+        splat.style.width = w.toFixed(0) + 'px';
+        const rot = (Math.random() * 50 - 25).toFixed(0);
+        const base = `translate(-50%,-50%) rotate(${rot}deg)`;
+        document.body.appendChild(splat);
+        splat.animate(
+          [
+            { transform: base + ' scale(0.3)', opacity: 0.95, offset: 0 },
+            { transform: base + ' scale(1.04)', opacity: 0.9, offset: 0.45 },
+            { transform: base + ' scale(1.12)', opacity: 0, offset: 1 }
+          ],
+          { duration: 520, easing: 'cubic-bezier(.2,.7,.3,1)', fill: 'forwards' }
+        );
+        // Gotitas que saltan
+        const dotColor = tinta === 'blanco' ? '#f6f1e7' : '#d2262b';
+        for (let i = 0; i < 3; i++) {
+          const d = document.createElement('span');
+          d.className = 'mancha-click';
+          const s = 4 + Math.random() * 5;
+          d.style.cssText = `left:${x}px;top:${y}px;width:${s}px;height:${s}px;border-radius:9999px;background:${dotColor};`;
+          document.body.appendChild(d);
+          const ang = Math.random() * Math.PI * 2;
+          const dist = 26 + Math.random() * 26;
+          d.animate(
+            [
+              { transform: 'translate(-50%,-50%)', opacity: 0.9 },
+              {
+                transform: `translate(calc(-50% + ${(Math.cos(ang) * dist).toFixed(0)}px), calc(-50% + ${(Math.sin(ang) * dist + 10).toFixed(0)}px)) scale(0.6)`,
+                opacity: 0
+              }
+            ],
+            { duration: 430 + Math.random() * 120, easing: 'cubic-bezier(.2,.6,.4,1)', fill: 'forwards' }
+          );
+          setTimeout(() => d.remove(), 620);
+        }
+        setTimeout(() => splat.remove(), 560);
+      };
+
       // Al clicar, se PINTA un trazo de brocha (textura real) donde pinchas: el
       // trazo se "pinta" con un barrido a lo largo (clip-path) y luego se
       // disuelve solo. Respeta prefers-reduced-motion.
@@ -204,24 +275,6 @@ const {
       if (!reduceMov && window.matchMedia('(pointer: fine)').matches) {
         const N_TRAZOS = 2;
         let vivas = 0;
-        // Contraste del trazo con el fondo: el PNG es ROJO. Sobre fondo oscuro se
-        // deja rojo (marca); sobre fondo claro/rojo se tiñe de negro (brightness 0).
-        const lin = (v: number) => {
-          v /= 255;
-          return v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
-        };
-        const luminancia = (r: number, g: number, b: number) =>
-          0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
-        const fondoDe = (el: HTMLElement | null): [number, number, number] => {
-          while (el && el !== document.documentElement) {
-            const c = getComputedStyle(el).backgroundColor;
-            const m = c.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/);
-            if (m && (m[4] === undefined || parseFloat(m[4]) > 0.3))
-              return [+m[1], +m[2], +m[3]];
-            el = el.parentElement;
-          }
-          return [23, 17, 17]; // negro de marca por defecto
-        };
         addEventListener('click', (e) => {
           if (!e.detail || vivas > 2) return; // e.detail===0 = teclado → se ignora
           // Nunca sobre controles/UI: la pincelada es un gesto sobre el contenido.
@@ -230,11 +283,10 @@ const {
           vivas++;
           const img = document.createElement('img');
           img.className = 'mancha-click';
-          img.src = `${BASE_URL}/assets/pincel/trazo${1 + ((Math.random() * N_TRAZOS) | 0)}.png`;
+          // Fondo claro/rojo → trazo NEGRO (con sus luces); oscuro → trazo ROJO.
+          const sufijo = fondoClaro(t) ? '-negro' : '';
+          img.src = `${BASE_URL}/assets/pincel/trazo${1 + ((Math.random() * N_TRAZOS) | 0)}${sufijo}.png`;
           img.alt = '';
-          // Fondo claro/rojo → trazo NEGRO; fondo oscuro → trazo ROJO (contraste).
-          const [fr, fg, fb] = fondoDe(t);
-          img.style.filter = luminancia(fr, fg, fb) >= 0.12 ? 'brightness(0)' : 'none';
           const ancho = 68 + Math.random() * 60; // 68–128 px
           img.style.left = e.clientX + 'px';
           img.style.top = e.clientY + 'px';
@@ -262,26 +314,36 @@ const {
       }
 
       // Cursor brocha (solo con puntero fino = ratón; en táctil no hay cursor).
+      // Dos capas: punta ROJA (fondos oscuros) y punta NEGRA (fondos rojos/claros),
+      // con fundido entre ambas según el fondo bajo el cursor.
       if (window.matchMedia('(pointer: fine)').matches) {
         document.documentElement.classList.add('js-brush', 'pointer-fino');
         const cont = document.createElement('div');
         cont.className = 'brocha-cursor';
-        const img = document.createElement('img');
-        img.className = 'brocha-cursor__img';
-        img.src = `${BASE_URL}/assets/pincel/brocha-cursor.png`;
-        img.alt = '';
-        cont.appendChild(img);
+        const wrap = document.createElement('span');
+        wrap.className = 'brocha-cursor__wrap';
+        const imgA = document.createElement('img');
+        imgA.className = 'brocha-cursor__img brocha-cursor__img--roja';
+        imgA.src = `${BASE_URL}/assets/pincel/brocha-cursor.png`;
+        imgA.alt = '';
+        const imgB = document.createElement('img');
+        imgB.className = 'brocha-cursor__img brocha-cursor__img--negra';
+        imgB.src = `${BASE_URL}/assets/pincel/brocha-cursor-negra.png`;
+        imgB.alt = '';
+        wrap.appendChild(imgA);
+        wrap.appendChild(imgB);
+        cont.appendChild(wrap);
         document.body.appendChild(cont);
-        const TIPX = 0.16,
-          TIPY = 0.05; // fracción de la punta (cerdas) dentro de la imagen
+        const TIPX = 0.03,
+          TIPY = 0.04; // fracción de la punta dentro de la imagen (arriba-izquierda)
         let mx = -200,
           my = -200,
           raf = 0,
           visible = false;
         const pintar = () => {
           raf = 0;
-          const w = img.offsetWidth || 62;
-          const h = img.offsetHeight || 38;
+          const w = wrap.offsetWidth || 46;
+          const h = wrap.offsetHeight || 45;
           cont.style.transform = `translate(${(mx - w * TIPX).toFixed(1)}px, ${(my - h * TIPY).toFixed(1)}px)`;
         };
         window.addEventListener('mousemove', (e) => {
@@ -299,10 +361,12 @@ const {
         document.addEventListener('mouseenter', () => {
           if (mx > -100) cont.classList.add('visible');
         });
-        // Sobre campos de texto, oculta la brocha (ahí manda el I-beam de escritura).
         document.addEventListener('mouseover', (e) => {
           const t = e.target as HTMLElement;
+          // Sobre campos de texto, oculta la brocha (ahí manda el I-beam).
           cont.classList.toggle('oculta', !!t.closest('input,textarea,select,[contenteditable]'));
+          // La punta cambia de tinta según el fondo (roja en oscuro, negra en rojo/claro).
+          cont.classList.toggle('tinta-negra', fondoClaro(t));
         });
       }
     </script>

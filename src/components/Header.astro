@@ -4,6 +4,14 @@ import LogoEuronova from './LogoEuronova.astro';
 import { asset } from '../lib/asset';
 
 const enCartas = Astro.url.pathname.includes('/cartas');
+// La portada tiene hero ROJO (header transparente encima queda bien); el resto
+// de páginas abren sobre fondo oscuro → header SIEMPRE rojo sólido (el logo
+// negro no se lee sobre oscuro).
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const esPortada =
+  Astro.url.pathname === base + '/' ||
+  Astro.url.pathname === base ||
+  Astro.url.pathname === base + '/index.html';
 // Rutas absolutas con base: funcionan desde la portada y desde /cartas
 const enlaces = [
   { href: asset('/') + '#productos', txt: 'Productos' },
@@ -16,7 +24,10 @@ const enlaces = [
 
 <header
   id="site-header"
-  class="fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow] duration-300"
+  data-solida={esPortada ? undefined : '1'}
+  class={`fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow] duration-300 ${
+    esPortada ? '' : 'bg-rojo shadow-lg shadow-rojo-900/20'
+  }`}
 >
   <div class="container-x flex items-center justify-between gap-3 py-3.5">
     <a href={asset('/') + '#top'} aria-label={site.nombre} class="block">
@@ -80,7 +91,7 @@ const enlaces = [
   // Arriba: transparente sobre el hero rojo. Con scroll: barra roja sólida.
   const header = document.getElementById('site-header');
   const aplicar = () => {
-    if (!header) return;
+    if (!header || header.dataset.solida) return; // en páginas oscuras ya es sólido
     // Rojo SÓLIDO (opaco) al bajar: así la barra tapa por completo el logo del
     // hero y no se transparenta la palabra "pinturas" por detrás (líneas blancas).
     if (window.scrollY > 24) {
