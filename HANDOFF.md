@@ -97,7 +97,9 @@ También en memoria global: `feedback_direccion_arte.md` y `feedback_web_design_
 
 ### Datos
 - **`src/data/site.ts`** — TODO lo editable del cliente (nombre, contacto, horario, categorías con `img`/`alt`/`acabado`/`desc`, servicios, redes, mapsEmbed…). Ver `CAMBIAR_DATOS_CLIENTE.md`.
-- **`src/data/cartas.ts`** — `RAL` (carta clásica completa ~213, hex estándar), `NCS` (selección curada), `EUROTREND` (vacía, pendiente carta física), `BLANCOS_ROTOS` (10 curados con código+nombre+carta+nota). El NCS COMPLETO (2259) se GENERA en cliente (algoritmo `ncsHex` con anclas Y#FFD200 R#C40233 B#0088BF G#009E60) tanto en `cartas.astro` como en `Tintometria.astro`.
+- **`src/data/cartas.ts`** — `RAL` (carta **Clásico** completa 213, hex oficiales), `NCS` (selección curada), `EUROTREND` (vacía, pendiente carta física), `BLANCOS_ROTOS` (10 curados con código+nombre+carta+nota).
+  - **NCS completo (2259)** se GENERA en cliente (algoritmo `ncsHex` con anclas Y#FFD200 R#C40233 B#0088BF G#009E60) tanto en `cartas.astro` como en `Tintometria.astro`.
+  - **RAL Design (~1298)** se GENERA en cliente en `cartas.astro` (`#grid-raldesign`, bajo el Clásico en la pestaña RAL): el sistema RAL Design se define en CIELAB, así que se convierte `LCH→Lab→XYZ→sRGB` (D65) sobre una malla H∈0–350/10°, L∈20–90/10, C∈10–80/10, mostrando solo los tonos dentro de gama. Códigos "RAL HHH LL CC". La pestaña RAL muestra "Clásico + Design · 1511 tonos". Reproducción ORIENTATIVA (referencia = carta física); RAL Design son códigos sistemáticos, no todos figuran en el abanico Clásico.
 
 ---
 
