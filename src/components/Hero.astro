@@ -38,18 +38,33 @@ import { asset } from '../lib/asset';
           Ver cartas de colores
         </a>
       </div>
-      <p class="mt-4 text-[12.5px] text-white/75">
-        El color en pantalla es orientativo — para acertar, carta física o muestra real en tienda.
-      </p>
+      <!-- Aviso de color: panel CLARO (no rojo sobre rojo), acento de muestra -->
+      <div class="mt-5 flex max-w-[520px] items-center gap-3 rounded-xl border border-white/20 bg-white/[0.12] px-4 py-3 backdrop-blur-sm">
+        <span class="flex shrink-0 gap-0.5" aria-hidden="true">
+          <span class="h-6 w-2.5 rounded-[2px] bg-[#f2e9d8]"></span>
+          <span class="h-6 w-2.5 rounded-[2px] bg-[#d9a441]"></span>
+        </span>
+        <p class="text-[12.5px] leading-snug text-white">
+          <span class="font-semibold">El color en pantalla es orientativo.</span>{' '}
+          Para acertar, ven con una muestra real o consulta la carta física en tienda.
+        </p>
+      </div>
 
-      <!-- Banda de confianza -->
-      <p class="mt-9 flex flex-wrap items-center gap-x-3 gap-y-1.5 border-t border-white/25 pt-4 text-[13px] font-medium text-white/95">
-        <span>+<span data-count="20">20</span> años asesorando</span>
-        <span class="h-1 w-1 rounded-full bg-white/50" aria-hidden="true"></span>
-        <span>Color a medida en tienda</span>
-        <span class="h-1 w-1 rounded-full bg-white/50" aria-hidden="true"></span>
-        <span>Particulares y profesionales</span>
-      </p>
+      <!-- Confianza: tira de "muestras" (cuadrado de color + dato) -->
+      <div class="mt-9 flex flex-wrap items-center gap-2.5 border-t border-white/20 pt-5">
+        <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1.5 text-[12.5px] font-semibold text-white ring-1 ring-white/15 backdrop-blur-sm">
+          <span class="h-2.5 w-2.5 shrink-0 rounded-[2px] bg-[#f2e9d8]" aria-hidden="true"></span>
+          +<span data-count="20">20</span> años asesorando
+        </span>
+        <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1.5 text-[12.5px] font-semibold text-white ring-1 ring-white/15 backdrop-blur-sm">
+          <span class="h-2.5 w-2.5 shrink-0 rounded-[2px] bg-[#d9a441]" aria-hidden="true"></span>
+          Color a medida en tienda
+        </span>
+        <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1.5 text-[12.5px] font-semibold text-white ring-1 ring-white/15 backdrop-blur-sm">
+          <span class="h-2.5 w-2.5 shrink-0 rounded-[2px] bg-[#2a5cad]" aria-hidden="true"></span>
+          Particulares y profesionales
+        </span>
+      </div>
     </div>
 
     <!-- Pieza visual: fachada real con marco editorial + detalle de color -->

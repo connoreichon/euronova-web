@@ -6,10 +6,14 @@
    =========================================================================== */
 @theme {
   /* Rojo de marca (sacado del rótulo/toldo de la tienda) */
-  --color-rojo: #d2262b;
+  /* SISTEMA ROJO — un único rojo maestro (#d2262b, del rótulo) + derivados SOLO
+     más oscuros para dar profundidad. Prohibido introducir rojos más claros o
+     coral: la marca debe leerse siempre igual. */
+  --color-rojo: #d2262b; /* maestro */
   --color-rojo-600: #b81e23;
   --color-rojo-700: #a81b1f;
-  --color-rojo-900: #6d1013;
+  --color-rojo-800: #8c1519; /* granate de sombra */
+  --color-rojo-900: #6d1013; /* granate profundo */
 
   /* Neutros cálidos */
   --color-papel: #faf7f2;
@@ -373,30 +377,31 @@ body::after {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.022), transparent 26%);
 }
 
-/* Secciones ROJAS con profundidad (luz arriba-derecha, sombra abajo-izquierda):
-   el rojo de marca deja de ser una masa plana. */
+/* Secciones ROJAS con profundidad: UN solo rojo de marca. La variación viene de
+   luz blanca (arriba-derecha) y granate derivado (abajo-izquierda) — nunca de
+   otro rojo. */
 .seccion-roja {
   background:
-    radial-gradient(110% 85% at 80% -5%, #de3d43 0%, transparent 55%),
-    radial-gradient(130% 110% at -10% 112%, #94161a 0%, transparent 52%),
+    radial-gradient(115% 90% at 82% -8%, rgba(255, 250, 245, 0.12) 0%, transparent 46%),
+    radial-gradient(130% 115% at -12% 115%, var(--color-rojo-900) 0%, transparent 50%),
     var(--color-rojo);
 }
 
 /* ===========================================================================
-   HERO PRINCIPAL — rojo ATMOSFÉRICO: luz sobre superficie pintada, pigmento
-   casi imperceptible y viñeta suave. El borde inferior converge al rojo de
-   marca para que el goteo (text-rojo) encaje sin escalón.
+   HERO — "MURO DE COLOR VIVO": base plana de rojo de marca (#d2262b, único),
+   profundidad granate en bordes/inferior, viñeta, grano de pared y una veladura
+   de luz cálida que respira muy lento (pigment-breath). Cero coral: el rojo se
+   lee siempre igual. El borde inferior converge al rojo para encajar el goteo.
    =========================================================================== */
 .hero-fondo {
   position: relative;
   isolation: isolate;
   background:
-    linear-gradient(180deg, transparent 88%, var(--color-rojo) 99%),
-    radial-gradient(85% 95% at 16% 28%, rgba(255, 126, 116, 0.17) 0%, transparent 56%),
-    radial-gradient(52% 62% at 79% 44%, rgba(255, 176, 152, 0.13) 0%, transparent 62%),
-    radial-gradient(120% 85% at 50% 118%, rgba(112, 14, 17, 0.85) 0%, transparent 56%),
-    radial-gradient(135% 125% at 50% 38%, transparent 58%, rgba(58, 7, 9, 0.42) 100%),
-    linear-gradient(163deg, #d93a40 0%, var(--color-rojo) 46%, #b2201f 100%);
+    linear-gradient(180deg, transparent 85%, var(--color-rojo) 99%),
+    radial-gradient(120% 78% at 50% 120%, var(--color-rojo-900) 0%, transparent 52%),
+    radial-gradient(120% 66% at 8% 8%, var(--color-rojo-800) 0%, transparent 46%),
+    radial-gradient(145% 130% at 50% 44%, transparent 55%, rgba(58, 7, 9, 0.5) 100%),
+    var(--color-rojo);
 }
 /* Pigmento: grano finísimo de pared pintada (se nota por cómo eleva, no se ve) */
 .hero-fondo::before {
@@ -405,21 +410,69 @@ body::after {
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  opacity: 0.055;
+  opacity: 0.06;
   mix-blend-mode: soft-light;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23p)'/%3E%3C/svg%3E");
 }
+/* Veladura de luz cálida que "respira" sobre la pared roja: MUY sutil, blanca
+   cálida (no desplaza el rojo), movimiento lento de 22s. */
+.hero-fondo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(52% 48% at 26% 26%, rgba(255, 248, 242, 0.11) 0%, transparent 60%),
+    radial-gradient(42% 42% at 80% 68%, rgba(255, 244, 236, 0.07) 0%, transparent 62%);
+  /* size >100% para poder "pasear" la luz con background-position sin que la
+     caja crezca (nada de overflow horizontal). */
+  background-size:
+    170% 170%,
+    150% 150%;
+  background-position:
+    18% 28%,
+    78% 64%;
+  animation: pigment-breath 22s ease-in-out infinite;
+  will-change: background-position, opacity;
+}
+@keyframes pigment-breath {
+  0%,
+  100% {
+    background-position:
+      18% 28%,
+      78% 64%;
+    opacity: 0.82;
+  }
+  50% {
+    background-position:
+      31% 19%,
+      67% 55%;
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-fondo::after {
+    animation: none;
+  }
+}
 
 /* Marco editorial de la foto del hero: losa granate desplazada detrás
-   (profundidad real, no card flotante) */
+   (profundidad real, no card flotante). En móvil NO asoma a la derecha (evita
+   scroll horizontal); solo se despliega desde tablet. */
 .hero-marco::before {
   content: '';
   position: absolute;
-  inset: 22px -16px -16px 22px;
+  inset: 18px 0 -14px 18px;
   z-index: -1;
   border-radius: 1.75rem;
   background: linear-gradient(160deg, rgba(122, 15, 18, 0.62), rgba(74, 9, 11, 0.55));
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+@media (min-width: 768px) {
+  .hero-marco::before {
+    inset: 22px -16px -16px 22px;
+  }
 }
 
 /* Foto del hero: entra al cargar (sin depender del IntersectionObserver — es el
