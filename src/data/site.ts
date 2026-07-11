@@ -61,27 +61,26 @@ export const site = {
 };
 
 // --- Marcas con las que trabaja la tienda ------------------------------------
-// LISTA de la nota manuscrita del cliente (2026). Muro de marcas SIN enlaces ni
-// descripciones. Logos oficiales descargados de la web de cada fabricante (marcas
-// registradas de cada empresa; se muestran para identificar lo que distribuye la
-// tienda). `inv`: el logo oficial es BLANCO (hecho para fondo oscuro) → se invierte
-// a tinta oscura por CSS para verse sobre el tile crema (si el fabricante tiene
-// versión a color, se sustituye y se quita `inv`). `logo: null` → wordmark del
-// nombre hasta tener logo.
-// TODO(cliente): Tixol (web tixol.es caída) y Jeivsa (logo SVG embebido) → aportar
-//   logo. Bupisa/Rugoplast salieron del muro (no estaban en la nota; ficheros
-//   conservados en la carpeta por si procede).
+// Muro de logos SIN enlaces ni descripciones, sobre fondo oscuro. Los logos se
+// pintan en MONOCROMO blanco atenuado (filter en CSS) para un muro premium y
+// consistente sea cual sea el color/formato original de cada logo. Logos oficiales
+// descargados de la web de cada fabricante (marcas registradas de cada empresa;
+// se muestran para identificar lo que distribuye la tienda). `big`: logo un punto
+// mayor. `logo: null` → wordmark del nombre hasta tener logo.
+// TODO(cliente): logos de Tixol y Jeivsa (pendientes de localizar buen archivo).
 export const marcas = [
-  { nombre: 'Barpimo', logo: '/assets/marcas/barpimo.svg', inv: true }, // logo oficial blanco
+  { nombre: 'Bupisa', logo: '/assets/marcas/bupisa.png' },
+  { nombre: 'Rugoplast', logo: '/assets/marcas/rugoplast.webp' },
+  { nombre: 'Barpimo', logo: '/assets/marcas/barpimo.svg' },
   { nombre: 'Alber Cover', logo: '/assets/marcas/albercover.png' }, // "Cover" = Alber Cover (Pinturas Alber)
-  { nombre: 'Sifra', logo: '/assets/marcas/sifra.jpg' }, // italiana (Colorificio Sifra)
-  { nombre: 'Rodapin', logo: '/assets/marcas/rodapin.png', inv: true }, // logo oficial blanco
-  { nombre: 'Werku', logo: '/assets/marcas/werku.png', inv: true }, // logo oficial blanco
+  { nombre: 'Sifra', logo: '/assets/marcas/sifra.png', big: true }, // italiana (Colorificio Sifra)
+  { nombre: 'Rodapin', logo: '/assets/marcas/rodapin.png' },
+  { nombre: 'Werku', logo: '/assets/marcas/werku.png' },
   { nombre: 'Revetón', logo: '/assets/marcas/reveton.svg' },
-  { nombre: 'Tixol', logo: null }, // TODO: web tixol.es no responde
-  { nombre: 'Jeivsa', logo: null }, // TODO: logo SVG embebido en jeivsa.com
+  { nombre: 'Tixol', logo: null }, // TODO: pendiente de logo
+  { nombre: 'Jeivsa', logo: null }, // TODO: pendiente de logo
   { nombre: 'Drocasa', logo: '/assets/marcas/drocasa.png' } // Pinturas Droca (Drocasa)
-] as { nombre: string; logo: string | null; inv?: boolean }[];
+] as { nombre: string; logo: string | null; big?: boolean }[];
 
 // --- Categorías de producto (escaparate por categorías) ----------------------
 // Cada categoría abre su ESCAPARATE en /productos/[slug]/ con sus productos.
