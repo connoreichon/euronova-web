@@ -62,14 +62,11 @@ ink-303244 (splat8 pictórica densa). Actualmente sin uso directo.
 
 ## Pincel: cursor y pinceladas (`public/assets/pincel/`)
 
-- `brocha-cursor.png` / `brocha-cursor-negra.png`: cursor brocha v2 a partir de
-  una IMAGEN GENERADA por el cliente (ChatGPT), procesada con Python/PIL: fondo
-  damero eliminado por flood restringido a neutros claros, rotada (punta
-  arriba-izquierda = hotspot) y con variante de PUNTA NEGRA (recoloreada
-  conservando sombreado) que se funde cuando el fondo es rojo/claro.
-- `trazo1.png`, `trazo2.png` (+ `trazo1-negro.png`, `trazo2-negro.png`):
-  **brochazos GENERADOS con Python/PIL/numpy** (no son fotos): cuerpo sólido +
-  cerdas individuales, carga a la izquierda y cola seca deshilachada. En rojo de
-  marca y en NEGRO con las mismas luces claras (microdetalles). La animación de
-  "pincelada al clicar" en `Base.astro` elige el color por contraste con el
-  fondo (rojo sobre oscuro, negro sobre rojo/claro).
+- `brocha-cursor.png`: cursor brocha a partir de una IMAGEN GENERADA por el
+  cliente (ChatGPT), procesada con Python/PIL: fondo damero eliminado por flood
+  restringido a neutros claros, rotada (punta arriba-izquierda = hotspot). La
+  punta es SIEMPRE roja de marca.
+- Al clicar sobre contenido salpican DOS gotitas cartoon pequeñas (lágrima con
+  luz + filo, hechas con CSS puro en `Base.astro`, sin assets), rojas sobre
+  fondo oscuro y oscuras sobre rojo/claro (contraste). Sustituyen al antiguo
+  "brochazo al clic" (los PNG trazo1/2 y brocha-cursor-negra se retiraron).
