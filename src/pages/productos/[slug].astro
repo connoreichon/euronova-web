@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import WhatsAppFloat from '../../components/WhatsAppFloat.astro';
+import AvisoColor from '../../components/AvisoColor.astro';
 import { site, categorias } from '../../data/site';
 import { asset } from '../../lib/asset';
 
@@ -13,6 +14,15 @@ export function getStaticPaths() {
 const { categoria } = Astro.props;
 const otras = categorias;
 const waHref = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent('Hola, me interesa vuestra gama de ' + categoria.nombre + '. ¿Podéis informarme?')}`;
+
+// Ficha técnica — "soporte / uso" derivado de los tipos REALES (site.ts). Cada
+// producto trae `tipo` = "Soporte · acabado"; tomamos el 1.er segmento (soporte),
+// descartamos fondos/preparación (no son superficie final) y dejamos la lista única.
+const FONDO = /^(fondo|reparación|refuerzo)/i;
+const soporteUso = [
+  ...new Set(categoria.productos.map((p) => p.tipo.split('·')[0].trim()).filter((s) => !FONDO.test(s)))
+].join(' · ');
+const nRef = categoria.productos.length;
 ---
 
 <Base
@@ -78,6 +88,27 @@ const waHref = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent('Hola, 
       </div>
     </section>
 
+    <!-- Ficha técnica: cabecera de especificaciones (solo datos reales de site.ts) -->
+    <section class="border-b border-white/10 bg-negro/40">
+      <div class="container-x py-6 md:py-8">
+        <p class="kicker-brocha kicker-brocha--sm text-rojo">Ficha técnica</p>
+        <dl class="mt-3 grid grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-3">
+          <div>
+            <dt class="text-[11px] tracking-wide text-papel/45 uppercase">Acabado</dt>
+            <dd class="mt-1 font-mono text-[13px] leading-snug text-papel/85">{categoria.acabado}</dd>
+          </div>
+          <div class="col-span-2 sm:col-span-1">
+            <dt class="text-[11px] tracking-wide text-papel/45 uppercase">Soporte / uso</dt>
+            <dd class="mt-1 font-mono text-[13px] leading-snug text-papel/85">{soporteUso}</dd>
+          </div>
+          <div>
+            <dt class="text-[11px] tracking-wide text-papel/45 uppercase">Referencias</dt>
+            <dd class="mt-1 font-mono text-[13px] leading-snug text-papel/85">{nRef} en la gama</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
     <!-- La gama de productos -->
     <section class="py-16 text-papel md:py-24">
       <div class="container-x">
@@ -93,21 +124,37 @@ const waHref = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent('Hola, 
           </a>
         </div>
 
+        <AvisoColor variant="inline" class="mt-3" />
+
         <div class="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {
-            categoria.productos.map((p) => (
-              <article class="prod panel panel-i reveal group overflow-hidden">
-                <div class="prod__cover relative aspect-[16/10] overflow-hidden" style={`--sw:${p.swatch};`}>
-                  <span class="prod__pill absolute top-3 left-3 rounded-full bg-black/60 px-2.5 py-1 text-[11px] font-semibold tracking-wide text-white backdrop-blur-sm">
-                    {p.tipo}
-                  </span>
-                </div>
-                <div class="border-t border-white/[0.06] p-5">
-                  <h3 class="font-display text-lg font-bold text-white">{p.nombre}</h3>
-                  <p class="mt-1.5 text-[13.5px] leading-relaxed text-papel/60">{p.desc}</p>
-                </div>
-              </article>
-            ))
+            categoria.productos.map((p) => {
+              const [sop, ...rest] = p.tipo.split('·').map((s) => s.trim());
+              const acab = rest.join(' · ');
+              return (
+                <article class="prod panel panel-i reveal group overflow-hidden">
+                  <div class="prod__cover relative aspect-[16/10] overflow-hidden" style={`--sw:${p.swatch};`}>
+                    <span class="prod__pill absolute top-3 left-3 rounded-full bg-black/60 px-2.5 py-1 text-[11px] font-semibold tracking-wide text-white backdrop-blur-sm">
+                      {p.tipo}
+                    </span>
+                  </div>
+                  <div class="border-t border-white/[0.06] p-5">
+                    <h3 class="font-display text-lg font-bold text-white">{p.nombre}</h3>
+                    <p class="mt-1.5 text-[13.5px] leading-relaxed text-papel/60">{p.desc}</p>
+                    <dl class="mt-4 grid grid-cols-2 gap-px overflow-hidden rounded-md border border-white/[0.06] bg-white/[0.06] text-[12px]">
+                      <div class="bg-negro/60 px-3 py-2">
+                        <dt class="text-papel/40">Soporte / uso</dt>
+                        <dd class="mt-0.5 font-mono text-papel/85">{sop}</dd>
+                      </div>
+                      <div class="bg-negro/60 px-3 py-2">
+                        <dt class="text-papel/40">Acabado</dt>
+                        <dd class="mt-0.5 font-mono text-papel/85">{acab || '—'}</dd>
+                      </div>
+                    </dl>
+                  </div>
+                </article>
+              );
+            })
           }
         </div>
 

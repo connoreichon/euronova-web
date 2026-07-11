@@ -1027,17 +1027,30 @@ body::after {
 .sim-estancia.split3 .sim-zona-label--c {
   opacity: 1;
 }
+/* Cada etiqueta se CIÑE al ancho de SU franja (calc sobre --split/--split2):
+   centrada y con max-width = ancho de franja − 12px, jamás cruza el corte ni pisa
+   a las vecinas. Con white-space:nowrap + ellipsis ya presentes, se recorta DENTRO
+   de su franja (el JS mejora ese recorte con código corto o fundido). */
 .sim-zona-label--a {
   left: calc(var(--split) / 2);
+  max-width: calc(var(--split) - 12px);
 }
 .sim-estancia:not(.split3) .sim-zona-label--b {
   left: calc((var(--split) + 100%) / 2);
+  max-width: calc(100% - var(--split) - 12px);
 }
 .sim-estancia.split3 .sim-zona-label--b {
   left: calc((var(--split) + var(--split2)) / 2);
+  max-width: calc(var(--split2) - var(--split) - 12px);
 }
 .sim-zona-label--c {
   left: calc((var(--split2) + 100%) / 2);
+  max-width: calc(100% - var(--split2) - 12px);
+}
+/* Franja demasiado estrecha para leer el código: la etiqueta se funde (el banco de
+   abajo conserva el código completo). !important para ganar a .split-on/.split3. */
+.sim-zona-label.is-oculta {
+  opacity: 0 !important;
 }
 
 /* SWATCH TILE: muestra guardada con VOLUMEN físico (no un círculo plano). */
@@ -2048,7 +2061,8 @@ body::after {
   .sim-zona-label {
     font-size: 9.5px;
     padding: 3px 8px;
-    max-width: 44vw;
+    /* el ancho lo gobierna el calc por-franja en todos los tamaños (no un vw fijo,
+       que reintroduciría el solape al estrechar una franja). */
   }
   .sim-chip {
     width: 44px !important;
@@ -2056,5 +2070,25 @@ body::after {
   }
   .sim-chip__code {
     font-size: 8px;
+  }
+  /* Área táctil cómoda: corazones a 44px (mínimo recomendado) en móvil. */
+  .fav-btn {
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+  }
+}
+
+/* En dispositivos táctiles (sin hover) el tirador del divisor se ve y muestra las
+   flechas ‹›, para que se perciba que la línea se puede arrastrar. En escritorio
+   sigue discreto (aparece al pasar el ratón). */
+@media (hover: none) {
+  .sim-divisor__asa {
+    opacity: 0.92;
+  }
+  .sim-divisor__asa > svg {
+    display: block;
+    color: var(--color-rojo);
+    width: 11px;
+    height: 11px;
   }
 }
