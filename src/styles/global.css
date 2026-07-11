@@ -1708,6 +1708,22 @@ body::after {
 .blanco-item .border-t span {
   color: var(--color-tinta) !important;
 }
+/* CASILLAS UNIFORMES: la tarjeta es columna flex; el swatch mantiene su alto y la
+   etiqueta crema CRECE para llenar la casilla (misma altura por fila del grid),
+   así no queda franja oscura bajo el texto y todas las muestras se ven idénticas. */
+.color-item,
+.blanco-item {
+  display: flex;
+  flex-direction: column;
+}
+.color-item .swatch,
+.blanco-item .swatch {
+  flex: 0 0 auto;
+}
+.color-item .border-t,
+.blanco-item .border-t {
+  flex: 1 1 auto;
+}
 .color-item:hover,
 .blanco-item:hover {
   transform: translateY(-6px) rotate(-1.2deg) scale(1.02) !important;
