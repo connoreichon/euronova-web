@@ -179,10 +179,10 @@ body::after {
    (coherente con hero-anim y reveal-img; evita página en blanco). */
 .js-anim .reveal {
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateY(18px);
   transition:
-    opacity 0.8s var(--ease-entrada),
-    transform 0.8s var(--ease-entrada);
+    opacity 0.6s var(--ease-entrada),
+    transform 0.6s var(--ease-entrada);
 }
 .js-anim .reveal.is-visible {
   opacity: 1;
@@ -414,22 +414,25 @@ body::after {
 .hero-fondo {
   position: relative;
   isolation: isolate;
-  background:
-    /* Convergencia inferior: el rojo se asienta en granate profundo para enlazar
-       con la transición limpia hacia la sección oscura (sin goteo). */
-    linear-gradient(180deg, transparent 82%, #4a0c0f 100%),
-    /* Luz cálida sobre la superficie: foco suave arriba-derecha (luz sobre pared). */
-    radial-gradient(76% 56% at 74% -8%, rgba(255, 247, 238, 0.16) 0%, transparent 52%),
-    /* Veladura granate profunda abajo-izquierda: peso y profundidad. */
-    radial-gradient(82% 70% at 1% 112%, var(--color-rojo-900) 0%, transparent 56%),
-    /* Nube de pigmento granate arriba-izquierda (muy suave). */
-    radial-gradient(54% 50% at 15% 18%, var(--color-rojo-800) 0%, transparent 54%),
-    /* Nube cálida profunda derecha-media (veladura). */
-    radial-gradient(48% 54% at 98% 56%, rgba(86, 12, 16, 0.5) 0%, transparent 55%),
-    /* Viñeta cálida general: enmarca la composición y calma el rojo (comodidad). */
-    radial-gradient(150% 125% at 50% 38%, transparent 48%, rgba(40, 6, 8, 0.58) 100%),
-    /* Base: rojo maestro, único y consistente. */
-    var(--color-rojo);
+  /* PIGMENTO VIVO — base GRANATE profundo (no rojo brillante plano): reduce la
+     masa saturada y da descanso. El rojo de marca vuelve concentrado como un
+     latido de luz tras el contenido. */
+  background-color: var(--color-rojo-800);
+  background-image:
+    /* Transición inferior a granate muy oscuro (enlaza con el seam). */
+    linear-gradient(180deg, transparent 78%, #380a0d 100%),
+    /* NÚCLEO de pigmento vivo: el rojo maestro concentrado (izq-centro, tras el
+       titular); el resto queda en granate refinado. */
+    radial-gradient(72% 82% at 32% 44%, var(--color-rojo) 0%, rgba(210, 38, 43, 0) 60%),
+    /* Luz cálida sobre la superficie (arriba-derecha). */
+    radial-gradient(70% 55% at 80% -6%, rgba(255, 246, 236, 0.13) 0%, transparent 52%),
+    /* Veladuras burdeos profundas en las esquinas (profundidad y calma). */
+    radial-gradient(90% 78% at -8% 110%, #460b0e 0%, transparent 55%),
+    radial-gradient(62% 72% at 108% 72%, #52100f 0%, transparent 52%),
+    /* Nube de pigmento granate difusa (arriba-izquierda). */
+    radial-gradient(64% 58% at 12% 12%, var(--color-rojo-900) 0%, transparent 60%),
+    /* Viñeta cálida general (más profunda): enmarca y descansa la vista. */
+    radial-gradient(155% 120% at 50% 36%, transparent 40%, rgba(30, 5, 7, 0.66) 100%);
 }
 /* Pigmento: grano finísimo de pared pintada (se nota por cómo eleva, no se ve). */
 .hero-fondo::before {
@@ -451,35 +454,40 @@ body::after {
   z-index: -1;
   pointer-events: none;
   background:
-    radial-gradient(46% 44% at 24% 28%, rgba(255, 248, 240, 0.12) 0%, transparent 60%),
-    radial-gradient(40% 40% at 82% 64%, rgba(255, 243, 233, 0.08) 0%, transparent 62%),
-    radial-gradient(52% 48% at 58% 42%, rgba(118, 14, 18, 0.3) 0%, transparent 60%);
-  /* size >100% para "pasear" las nubes con background-position sin overflow. */
+    radial-gradient(50% 48% at 26% 30%, rgba(255, 244, 234, 0.1) 0%, transparent 62%),
+    radial-gradient(44% 44% at 80% 62%, rgba(255, 240, 228, 0.07) 0%, transparent 64%),
+    radial-gradient(60% 56% at 56% 44%, rgba(120, 14, 20, 0.34) 0%, transparent 62%),
+    radial-gradient(46% 50% at 10% 78%, rgba(150, 24, 28, 0.2) 0%, transparent 60%);
+  /* size >100% para "pasear" las veladuras con background-position sin overflow. */
   background-size:
-    175% 175%,
-    155% 155%,
-    195% 195%;
+    180% 180%,
+    160% 160%,
+    200% 200%,
+    175% 175%;
   background-position:
-    18% 28%,
-    78% 64%,
-    48% 42%;
-  animation: pigment-breath 30s ease-in-out infinite;
+    18% 30%,
+    78% 62%,
+    50% 44%,
+    12% 76%;
+  animation: pigment-breath 34s ease-in-out infinite;
   will-change: background-position, opacity;
 }
 @keyframes pigment-breath {
   0%,
   100% {
     background-position:
-      18% 28%,
-      78% 64%,
-      48% 42%;
+      18% 30%,
+      78% 62%,
+      50% 44%,
+      12% 76%;
     opacity: 0.85;
   }
   50% {
     background-position:
-      29% 20%,
-      67% 55%,
-      57% 34%;
+      27% 22%,
+      68% 54%,
+      58% 36%,
+      18% 68%;
     opacity: 1;
   }
 }
