@@ -77,8 +77,8 @@ export const marcas = [
   { nombre: 'Rodapin', logo: '/assets/marcas/rodapin.png' },
   { nombre: 'Werku', logo: '/assets/marcas/werku.png' },
   { nombre: 'Revetón', logo: '/assets/marcas/reveton.svg' },
-  { nombre: 'Tixol', logo: null }, // TODO: pendiente de logo
-  { nombre: 'Jeivsa', logo: null }, // TODO: pendiente de logo
+  { nombre: 'Tixol', logo: '/assets/marcas/tixol.png' },
+  { nombre: 'Jeivsa', logo: '/assets/marcas/jeivsa.png' },
   { nombre: 'Drocasa', logo: '/assets/marcas/drocasa.png' } // Pinturas Droca (Drocasa)
 ] as { nombre: string; logo: string | null; big?: boolean }[];
 
