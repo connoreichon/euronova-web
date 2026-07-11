@@ -138,6 +138,15 @@ const SUPERFICIES = [
                 class="sim-color sim-color--c sim-mask"
                 style={`display:none; background-color:#6b6f4b; -webkit-mask-image:url(${asset(s.mask)}); mask-image:url(${asset(s.mask)})`}
               />
+              <!-- Pasada de pintura: barrido de luz (recortado a la máscara) al aplicar un color -->
+              <div
+                class="sim-wipe sim-mask"
+                data-wipe
+                aria-hidden="true"
+                style={`-webkit-mask-image:url(${asset(s.mask)}); mask-image:url(${asset(s.mask)})`}
+              >
+                <span class="sim-wipe__band"></span>
+              </div>
               <!-- Divisores del modo dos/tres colores: línea + asa arrastrable -->
               <div class="sim-divisor" hidden>
                 <span class="sim-divisor__linea" aria-hidden="true"></span>
@@ -500,9 +509,29 @@ const SUPERFICIES = [
     return r > 130 && r > g * 1.4 && r > b * 1.4 ? 'blanco' : 'rojo';
   };
 
+  // Pasada de pintura: al aplicar un color, un barrido de luz cruza la pared
+  // (recortado a la máscara), como una mano de rodillo. Solo el panel visible.
+  const lanzarWipe = () => {
+    if (reduce) return;
+    const panel = document.querySelector('.sim-panel:not(.hidden)');
+    const w = panel && panel.querySelector('.sim-wipe');
+    const band = w && w.querySelector('.sim-wipe__band');
+    if (!band) return;
+    band.getAnimations().forEach((a) => a.cancel());
+    w.style.opacity = '1';
+    const anim = band.animate(
+      [{ transform: 'translateX(-120%)' }, { transform: 'translateX(120%)' }],
+      { duration: 520, easing: 'cubic-bezier(.4,0,.2,1)' }
+    );
+    anim.onfinish = () => {
+      w.style.opacity = '0';
+    };
+  };
+
   const pintar = (color) => {
     colores[lado] = color;
     capas[lado].forEach((c) => (c.style.backgroundColor = color.h));
+    lanzarWipe();
     refrescarNombre();
     marcarFavActivo();
     actualizarBotonGuardar();

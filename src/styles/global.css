@@ -46,6 +46,22 @@
 }
 
 /* ===========================================================================
+   MARCA "EL MOSTRADOR DEL COLOR" — nombres semánticos (--brand-*).
+   Alias del sistema existente (un ÚNICO rojo maestro + neutros de tienda), para
+   usar --brand-* en todo PaintLab sin refactor. Cambiar aquí propaga a la web.
+   =========================================================================== */
+:root {
+  --brand-red: var(--color-rojo); /* #d2262b maestro */
+  --brand-red-dark: var(--color-rojo-700);
+  --brand-red-deep: var(--color-rojo-900);
+  --brand-paper: var(--color-papel);
+  --brand-cream: var(--color-crema);
+  --brand-ink: var(--color-tinta);
+  --brand-border: rgba(120, 90, 70, 0.34);
+  --brand-white: #fffdf9;
+}
+
+/* ===========================================================================
    VOCABULARIO DE MOVIMIENTO Y SUPERFICIE (tokens centralizados)
    =========================================================================== */
 :root {
@@ -1820,6 +1836,100 @@ body::after {
   .wa-float {
     right: 1.6rem;
     bottom: 1.6rem;
+  }
+}
+
+/* ===========================================================================
+   PAINT SURFACES — fondos con materialidad (pared / pigmento / papel), no planos.
+   Sistema reutilizable: grano fino + veladura + gradiente derivado del rojo.
+   Nada de blobs, neón, glass exagerado ni humo.
+   =========================================================================== */
+.paint-surface {
+  position: relative;
+  isolation: isolate;
+}
+/* Grano fino compartido (pared/papel). */
+.paint-surface::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+/* Pared pintada de rojo de marca (luz cálida arriba-dcha, granate abajo-izq). */
+.paint-surface--red {
+  background:
+    radial-gradient(115% 90% at 82% -8%, rgba(255, 250, 245, 0.12) 0%, transparent 46%),
+    radial-gradient(130% 115% at -12% 115%, var(--brand-red-deep) 0%, transparent 50%),
+    var(--brand-red);
+}
+/* Negro cálido de mostrador con veladura roja muy tenue. */
+.paint-surface--dark {
+  background:
+    radial-gradient(80% 60% at 50% -10%, rgba(60, 42, 40, 0.6), transparent 60%),
+    radial-gradient(60% 50% at 90% 80%, rgba(210, 38, 43, 0.06), transparent 60%),
+    var(--color-negro);
+}
+/* Papel técnico crema (para notas y fichas). Texto en tinta. */
+.paint-surface--paper {
+  color: var(--brand-ink);
+  background:
+    repeating-linear-gradient(0deg, rgba(23, 17, 17, 0.014) 0 2px, transparent 2px 6px),
+    linear-gradient(180deg, var(--color-crema-200), var(--brand-cream));
+}
+
+/* ===========================================================================
+   PASADA DE PINTURA — al aplicar un color en "Imagina tu pared", un barrido de
+   luz cruza la pared (recortado a la máscara), como una mano de rodillo.
+   =========================================================================== */
+.sim-wipe {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0;
+}
+.sim-wipe__band {
+  position: absolute;
+  inset: -2% 0;
+  background: linear-gradient(105deg, transparent 38%, rgba(255, 255, 255, 0.5) 50%, transparent 62%);
+  mix-blend-mode: soft-light;
+  transform: translateX(-120%);
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sim-wipe {
+    display: none;
+  }
+}
+
+/* ===========================================================================
+   ESCAPARATE — pincelada de marca que se "pinta" bajo cada ficha al pasar.
+   =========================================================================== */
+.pieza__media::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  z-index: 3;
+  background: linear-gradient(90deg, var(--brand-red), var(--brand-red-dark));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.pieza:hover .pieza__media::before,
+.pieza:focus-visible .pieza__media::before {
+  transform: scaleX(1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .pieza__media::before {
+    transition: none;
   }
 }
 
