@@ -61,6 +61,11 @@ const MEDIA = [
                 <p class="kicker-xs text-white/80">{c.acabado}</p>
                 <h3 class="font-display mt-1 text-2xl font-bold text-white">{c.nombre}</h3>
                 <p class="mt-1.5 max-w-sm text-[13.5px] leading-relaxed text-white/75">{c.desc}</p>
+                <div class="gama-tira mt-3 flex items-center gap-1" aria-hidden="true">
+                  {c.productos.slice(0, 5).map((p) => (
+                    <span class="gama-chip" style={`background:${p.swatch}`} />
+                  ))}
+                </div>
                 <span class="pieza__cta mt-3 inline-flex items-center gap-1.5 text-[13px] font-bold text-white">
                   Ver la gama
                   <svg viewBox="0 0 16 16" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round" /></svg>
@@ -74,6 +79,11 @@ const MEDIA = [
                   <svg viewBox="0 0 16 16" class="pieza__arrow h-3.5 w-3.5 text-rojo" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round" /></svg>
                 </h3>
                 <p class="mt-1 text-[13.5px] leading-relaxed text-papel/60">{c.desc}</p>
+                <div class="gama-tira mt-3 flex items-center gap-1" aria-hidden="true">
+                  {c.productos.slice(0, 5).map((p) => (
+                    <span class="gama-chip" style={`background:${p.swatch}`} />
+                  ))}
+                </div>
               </div>
             )}
           </a>
