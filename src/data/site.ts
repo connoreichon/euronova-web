@@ -202,6 +202,35 @@ export const coloresTinto = [
   { nombre: 'Pardo grisáceo', codigo: 'NCS S 7005-Y20R', hex: '#4b443c' }
 ];
 
+// --- Opiniones (Google) -------------------------------------------------------
+// `nota` y `total` son los REALES de la ficha de Google (4,8★ · 98 reseñas).
+// ⚠️ Las reseñas de abajo son de MUESTRA (PENDIENTE: sustituir por 3 reales de
+// la ficha de Google — copiar texto y nombre tal cual). Ver ASSETS_NEEDED.md.
+export const opiniones = {
+  nota: '4,8',
+  total: 98,
+  resenas: [
+    {
+      texto:
+        'Les llevé un trozo de pared antigua y me sacaron el color clavado con la tintométrica. Ni se nota dónde acaba lo viejo y empieza lo nuevo.',
+      autor: 'M. Sánchez',
+      detalle: 'Reforma en Las Lagunas'
+    },
+    {
+      texto:
+        'Fui sin tener ni idea de qué comprar para la fachada. Me preguntaron cómo estaba la pared, me recomendaron el producto justo y cuánta necesitaba. Ni un bote de más.',
+      autor: 'J. Moreno',
+      detalle: 'Fachada en Mijas Costa'
+    },
+    {
+      texto:
+        'Abren a las 7:30 y eso para los que trabajamos en obra se agradece. Tienen de todo y el color te lo mezclan al momento.',
+      autor: 'A. Jiménez',
+      detalle: 'Pintor profesional'
+    }
+  ]
+};
+
 // --- Servicios (numerados, editorial) ----------------------------------------
 export const servicios = [
   {

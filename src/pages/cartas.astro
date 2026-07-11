@@ -209,11 +209,8 @@ const SYS: Record<string, string> = {
                           aria-pressed="false"
                           aria-label={`Guardar ${color.c} en tus colores`}
                         >
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                            <path d="M12 20.6C8.4 17.8 4.6 14.6 3.9 10.9 3.4 8 5.4 5.4 8.1 5.4c1.6 0 3.1.9 3.9 2.3.8-1.4 2.3-2.3 3.9-2.3 2.7 0 4.7 2.6 4.2 5.5-.7 3.7-4.5 6.9-8.1 9.7Z" stroke-linejoin="round" />
-                            <path class="fav-drip" stroke="none" d="M12 20.6c-.5 1.1-.8 1.8-.8 2.4a.8.8 0 0 0 1.6 0c0-.6-.3-1.3-.8-2.4Z" />
-                            <path class="fav-drip" stroke="none" d="M6.9 16.2c-.4.8-.6 1.3-.6 1.7a.7.7 0 0 0 1.4 0c0-.4-.2-.9-.8-1.7Z" />
-                            <path class="fav-brillo" d="M7.1 8.9c.3-1.1 1.2-1.9 2.3-2.1" stroke="#fff" stroke-width="1.6" stroke-linecap="round" fill="none" />
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
                           </svg>
                         </button>
                       </div>
@@ -298,9 +295,7 @@ const SYS: Record<string, string> = {
         class="fav-bar btn-pintura pointer-events-auto inline-flex items-center gap-2 rounded-full bg-rojo px-5 py-3 text-[13px] font-bold text-white shadow-lg shadow-black/50 transition-transform hover:-translate-y-0.5 sm:gap-2.5"
       >
         <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4" aria-hidden="true">
-          <path d="M12 20.6C8.4 17.8 4.6 14.6 3.9 10.9 3.4 8 5.4 5.4 8.1 5.4c1.6 0 3.1.9 3.9 2.3.8-1.4 2.3-2.3 3.9-2.3 2.7 0 4.7 2.6 4.2 5.5-.7 3.7-4.5 6.9-8.1 9.7Z" />
-          <path d="M12 20.6c-.5 1.1-.8 1.8-.8 2.4a.8.8 0 0 0 1.6 0c0-.6-.3-1.3-.8-2.4Z" />
-          <path d="M6.9 16.2c-.4.8-.6 1.3-.6 1.7a.7.7 0 0 0 1.4 0c0-.4-.2-.9-.8-1.7Z" />
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
         </svg>
         <span id="fav-bar-txt">0 colores guardados</span>
         <span class="hidden opacity-85 sm:inline">· Pruébalos en la pared →</span>
@@ -342,11 +337,8 @@ const SYS: Record<string, string> = {
             aria-pressed="false"
             aria-label="Guardar este color en tus colores"
           >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-              <path d="M12 20.6C8.4 17.8 4.6 14.6 3.9 10.9 3.4 8 5.4 5.4 8.1 5.4c1.6 0 3.1.9 3.9 2.3.8-1.4 2.3-2.3 3.9-2.3 2.7 0 4.7 2.6 4.2 5.5-.7 3.7-4.5 6.9-8.1 9.7Z" stroke-linejoin="round" />
-              <path class="fav-drip" stroke="none" d="M12 20.6c-.5 1.1-.8 1.8-.8 2.4a.8.8 0 0 0 1.6 0c0-.6-.3-1.3-.8-2.4Z" />
-              <path class="fav-drip" stroke="none" d="M6.9 16.2c-.4.8-.6 1.3-.6 1.7a.7.7 0 0 0 1.4 0c0-.4-.2-.9-.8-1.7Z" />
-              <path class="fav-brillo" d="M7.1 8.9c.3-1.1 1.2-1.9 2.3-2.1" stroke="#fff" stroke-width="1.6" stroke-linecap="round" fill="none" />
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
             </svg>
           </button>
         </div>
@@ -456,7 +448,7 @@ const SYS: Record<string, string> = {
 
   // Constructor de muestra reutilizable (con corazón de favorito), para las
   // cartas generadas (NCS y RAL Design).
-  const HEART = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 20.6C8.4 17.8 4.6 14.6 3.9 10.9 3.4 8 5.4 5.4 8.1 5.4c1.6 0 3.1.9 3.9 2.3.8-1.4 2.3-2.3 3.9-2.3 2.7 0 4.7 2.6 4.2 5.5-.7 3.7-4.5 6.9-8.1 9.7Z" stroke-linejoin="round"/><path class="fav-drip" stroke="none" d="M12 20.6c-.5 1.1-.8 1.8-.8 2.4a.8.8 0 0 0 1.6 0c0-.6-.3-1.3-.8-2.4Z"/><path class="fav-drip" stroke="none" d="M6.9 16.2c-.4.8-.6 1.3-.6 1.7a.7.7 0 0 0 1.4 0c0-.4-.2-.9-.8-1.7Z"/><path class="fav-brillo" d="M7.1 8.9c.3-1.1 1.2-1.9 2.3-2.1" stroke="#fff" stroke-width="1.6" stroke-linecap="round" fill="none"/></svg>`;
+  const HEART = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`;
   const crearItemColor = (codigo: string, hex: string) => {
     const el = document.createElement('div');
     el.className = 'color-item panel panel-i cursor-pointer overflow-hidden';

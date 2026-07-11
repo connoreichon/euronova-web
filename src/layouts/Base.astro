@@ -69,6 +69,11 @@ const {
           addressCountry: 'ES'
         },
         areaServed: ['Mijas', 'Fuengirola', 'Costa del Sol'],
+        aggregateRating: {
+          '@type': 'AggregateRating',
+          ratingValue: '4.8',
+          reviewCount: '98'
+        },
         sameAs: [site.redes.instagram, site.redes.facebook],
         openingHoursSpecification: {
           '@type': 'OpeningHoursSpecification',
@@ -219,120 +224,50 @@ const {
       };
 
       // Splash CARTOON reutilizable (corazones de favoritos, etc.): anillo de
-      // impacto + mancha que revienta con rebote y "mancha" un instante + gotas
-      // con gravedad + un goterón que chorrea. Se limpia sola (no molesta).
+      // SUTIL: un pequeño estallido de gotitas que NACE del propio corazón al
+      // guardar (parte de su animación) + un anillo suave. Rápido y discreto.
       (window as any).euronovaSplash = (x: number, y: number, color?: string) => {
         if (reduceMov) return;
-        const tinta = color || 'rojo';
-        const gotaColor = tinta === 'blanco' ? '#f6f1e7' : '#d2262b';
-        const gotaLuz = tinta === 'blanco' ? '#fffdf8' : '#f06a66';
-        const keyline = tinta === 'blanco' ? 'rgba(28,21,21,0.9)' : 'rgba(255,255,255,0.9)';
+        const claro = (color || 'rojo') === 'blanco';
+        const base = claro ? '#f6f1e7' : '#d2262b';
+        const luz = claro ? '#fffdf8' : '#f0736f';
 
-        // 1) Anillo de impacto (pop)
+        // Anillo suave que emana del corazón
         const ring = document.createElement('span');
         ring.className = 'mancha-click';
-        ring.style.cssText = `left:${x}px;top:${y}px;width:16px;height:16px;border-radius:9999px;border:3px solid ${gotaColor};`;
+        ring.style.cssText = `left:${x}px;top:${y}px;width:26px;height:26px;border-radius:9999px;border:2px solid ${base};opacity:0;`;
         document.body.appendChild(ring);
         ring.animate(
           [
-            { transform: 'translate(-50%,-50%) scale(0.4)', opacity: 0.9 },
-            { transform: 'translate(-50%,-50%) scale(3.2)', opacity: 0 }
+            { transform: 'translate(-50%,-50%) scale(0.55)', opacity: 0.5 },
+            { transform: 'translate(-50%,-50%) scale(1.55)', opacity: 0 }
           ],
-          { duration: 380, easing: 'cubic-bezier(.2,.7,.3,1)', fill: 'forwards' }
+          { duration: 360, easing: 'cubic-bezier(.2,.7,.3,1)', fill: 'forwards' }
         );
-        setTimeout(() => ring.remove(), 420);
+        setTimeout(() => ring.remove(), 400);
 
-        // 2) La MANCHA cartoon: revienta con rebote ELÁSTICO y giro que se asienta,
-        //    mancha un instante y se disuelve.
-        const splat = document.createElement('img');
-        splat.className = 'mancha-click';
-        splat.src = `${BASE_URL}/assets/manchas/cartoon${Math.random() < 0.5 ? 1 : 2}-${tinta}.png`;
-        splat.alt = '';
-        const w = 96 + Math.random() * 26;
-        const rot = (Math.random() * 360) | 0;
-        splat.style.cssText = `left:${x}px;top:${y}px;width:${w.toFixed(0)}px;`;
-        document.body.appendChild(splat);
-        const R = (d: number) => `translate(-50%,-50%) rotate(${rot + d}deg)`;
-        splat.animate(
-          [
-            { transform: R(-16) + ' scale(0.15)', opacity: 0, offset: 0 },
-            { transform: R(-5) + ' scale(1.16)', opacity: 1, offset: 0.12 },
-            { transform: R(2) + ' scale(0.94)', opacity: 1, offset: 0.22 },
-            { transform: R(0) + ' scale(1.04)', opacity: 1, offset: 0.32 },
-            { transform: R(0) + ' scale(1)', opacity: 1, offset: 0.42 },
-            { transform: R(0) + ' scale(1)', opacity: 1, offset: 0.76 },
-            { transform: R(0) + ' scale(1.06)', opacity: 0, offset: 1 }
-          ],
-          { duration: 1250, easing: 'cubic-bezier(.3,.6,.3,1)', fill: 'forwards' }
-        );
-        setTimeout(() => splat.remove(), 1310);
-
-        // 3) Gotas LÁGRIMA direccionales (cola hacia el centro), en dos tandas,
-        //    con gravedad: vuelan, caen y se encogen.
-        const n = 7;
+        // Gotitas pequeñas que saltan del corazón y caen con una pizca de gravedad
+        const n = 6;
         for (let i = 0; i < n; i++) {
           const g = document.createElement('span');
           g.className = 'mancha-click';
-          const s = 6 + Math.random() * 6;
-          const ang = (i / n) * Math.PI * 2 + Math.random() * 0.7;
-          const grados = ((ang * 180) / Math.PI - 45).toFixed(0); // cola apuntando al centro
-          g.style.cssText = `left:${x}px;top:${y}px;width:${s.toFixed(0)}px;height:${s.toFixed(0)}px;border-radius:50% 50% 50% 0;background:radial-gradient(circle at 32% 30%, ${gotaLuz}, ${gotaColor} 64%);box-shadow:0 0 0 1.5px ${keyline};`;
+          const s = 3 + Math.random() * 2.5;
+          const ang = (i / n) * Math.PI * 2 + Math.random() * 0.6 - Math.PI / 2;
+          g.style.cssText = `left:${x}px;top:${y}px;width:${s.toFixed(1)}px;height:${s.toFixed(1)}px;border-radius:9999px;background:${i % 3 === 0 ? luz : base};`;
           document.body.appendChild(g);
-          const dist = 38 + Math.random() * 34;
+          const dist = 16 + Math.random() * 12;
           const dx = Math.cos(ang) * dist;
-          const dyA = Math.sin(ang) * dist * 0.75 - 12;
-          const dyB = dyA + 34 + Math.random() * 20;
-          const rg = `rotate(${grados}deg)`;
+          const dy = Math.sin(ang) * dist;
           g.animate(
             [
-              { transform: `translate(-50%,-50%) ${rg} scale(0.5)`, opacity: 1, offset: 0 },
-              { transform: `translate(calc(-50% + ${(dx * 0.72).toFixed(0)}px), calc(-50% + ${dyA.toFixed(0)}px)) ${rg} scale(1.05)`, opacity: 1, offset: 0.4 },
-              { transform: `translate(calc(-50% + ${dx.toFixed(0)}px), calc(-50% + ${dyB.toFixed(0)}px)) ${rg} scale(0.3)`, opacity: 0, offset: 1 }
+              { transform: 'translate(-50%,-50%) scale(0.4)', opacity: 0.95, offset: 0 },
+              { transform: `translate(calc(-50% + ${(dx * 0.8).toFixed(0)}px), calc(-50% + ${dy.toFixed(0)}px)) scale(1)`, opacity: 0.9, offset: 0.55 },
+              { transform: `translate(calc(-50% + ${dx.toFixed(0)}px), calc(-50% + ${(dy + 6).toFixed(0)}px)) scale(0.35)`, opacity: 0, offset: 1 }
             ],
-            {
-              duration: 560 + Math.random() * 170,
-              delay: i % 2 === 0 ? 0 : 55, // dos tandas: más orgánico
-              easing: 'cubic-bezier(.3,.55,.45,1)',
-              fill: 'both'
-            }
+            { duration: 420 + Math.random() * 90, easing: 'cubic-bezier(.25,.6,.4,1)', fill: 'forwards' }
           );
-          setTimeout(() => g.remove(), 850);
+          setTimeout(() => g.remove(), 560);
         }
-
-        // 4) Motitas finas (chispas de pintura, se van rápido)
-        for (let i = 0; i < 4; i++) {
-          const m = document.createElement('span');
-          m.className = 'mancha-click';
-          const s = 2 + Math.random() * 2.5;
-          m.style.cssText = `left:${x}px;top:${y}px;width:${s.toFixed(1)}px;height:${s.toFixed(1)}px;border-radius:9999px;background:${gotaColor};`;
-          document.body.appendChild(m);
-          const ang = Math.random() * Math.PI * 2;
-          const dist = 20 + Math.random() * 26;
-          m.animate(
-            [
-              { transform: 'translate(-50%,-50%)', opacity: 0.95 },
-              { transform: `translate(calc(-50% + ${(Math.cos(ang) * dist).toFixed(0)}px), calc(-50% + ${(Math.sin(ang) * dist + 8).toFixed(0)}px))`, opacity: 0 }
-            ],
-            { duration: 300 + Math.random() * 120, easing: 'ease-out', fill: 'forwards' }
-          );
-          setTimeout(() => m.remove(), 450);
-        }
-
-        // 5) Un goterón que CHORREA desde la mancha (y desaparece con ella)
-        const drip = document.createElement('span');
-        drip.className = 'mancha-click';
-        drip.style.cssText = `left:${(x + (Math.random() * 18 - 9)).toFixed(0)}px;top:${(y + w * 0.24).toFixed(0)}px;width:7px;height:10px;border-radius:9999px;background:${gotaColor};box-shadow:0 0 0 1.5px ${keyline};`;
-        document.body.appendChild(drip);
-        drip.animate(
-          [
-            { transform: 'translate(-50%,-50%) scaleY(1)', opacity: 0, offset: 0 },
-            { transform: 'translate(-50%,-50%) scaleY(1.2)', opacity: 1, offset: 0.3 },
-            { transform: 'translate(-50%, calc(-50% + 26px)) scaleY(1.5)', opacity: 1, offset: 0.75 },
-            { transform: 'translate(-50%, calc(-50% + 40px)) scaleY(1.2)', opacity: 0, offset: 1 }
-          ],
-          { duration: 780, delay: 220, easing: 'cubic-bezier(.4,.1,.7,1)', fill: 'both' }
-        );
-        setTimeout(() => drip.remove(), 1060);
       };
 
       // Al clicar, se PINTA un trazo de brocha (textura real) donde pinchas: el
@@ -347,7 +282,7 @@ const {
           if (!e.detail || vivas > 2) return; // e.detail===0 = teclado → se ignora
           // Nunca sobre controles/UI: la pincelada es un gesto sobre el contenido.
           const t = e.target as HTMLElement;
-          if (t.closest('a,button,input,textarea,select,label,[role="tab"],[role="option"]')) return;
+          if (t.closest('a,button,input,textarea,select,label,[role="tab"],[role="option"],[role="button"],[role="dialog"]')) return;
           vivas++;
           const img = document.createElement('img');
           img.className = 'mancha-click';

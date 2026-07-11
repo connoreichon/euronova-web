@@ -641,10 +641,28 @@ body::after {
 .sim-color--b {
   clip-path: inset(0 0 0 var(--split));
 }
-/* En modo dos colores, la capa A se recorta a SU mitad (si cubriera toda la
-   pared, la derecha multiplicaría A×B y saldría más oscura de lo elegido). */
+/* En modo dos/tres colores, cada capa se recorta a SU franja (si se solaparan,
+   multiplicarían entre sí y saldrían más oscuras de lo elegido). */
 .sim-estancia.split-on .sim-color--a {
   clip-path: inset(0 calc(100% - var(--split)) 0 0);
+}
+.sim-estancia.split3 .sim-color--b {
+  clip-path: inset(0 calc(100% - var(--split2, 66.7%)) 0 var(--split));
+}
+.sim-color--c {
+  clip-path: inset(0 0 0 var(--split2, 66.7%));
+}
+.sim-divisor--2 {
+  left: var(--split2, 66.7%);
+}
+
+/* Segmentado del panel (número de colores): pastilla activa en blanco */
+.sim-seg {
+  color: rgba(250, 247, 242, 0.65);
+}
+.sim-seg[aria-pressed='true'] {
+  background: #fff;
+  color: #171111;
 }
 .sim-divisor {
   position: absolute;
@@ -1158,23 +1176,6 @@ body::after {
 }
 /* Gota de pintura del corazón: aparece solo al GUARDAR (queda "goteando" el
    color de marca) — guiño a la tienda de pintura, sin ensuciar el estado normal. */
-.fav-drip {
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-.fav-btn[aria-pressed='true'] .fav-drip,
-.sim-guardar[aria-pressed='true'] .fav-drip {
-  opacity: 1;
-}
-/* Brillo del corazón "pintado": solo aparece al guardar */
-.fav-brillo {
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-.fav-btn[aria-pressed='true'] .fav-brillo,
-.sim-guardar[aria-pressed='true'] .fav-brillo {
-  opacity: 0.6;
-}
 
 /* Cartas de colores: hay miles de muestras (RAL Design + NCS generadas).
    content-visibility salta layout/paint de las que están fuera de pantalla:
@@ -1224,6 +1225,10 @@ body::after {
   .kicker-brocha {
     font-size: 2.5rem;
   }
+}
+/* Solo la CALIGRAFÍA a brocha, sin el revelado por clip (avatares, adornos). */
+.letra-brocha {
+  font-family: 'Nanum Brush Script', 'Segoe Script', cursive;
 }
 /* Sub-sección: mismo rótulo a brocha, un punto más pequeño (sin font-size inline). */
 .kicker-brocha--sm {

@@ -1,0 +1,89 @@
+---
+// Opiniones: prueba social con la valoración REAL de Google (4,8★ · 98) y tres
+// reseñas destacadas. Decorado con la lengua de la casa: comilla a brocha,
+// avatar "pintado" con la inicial y estrellas en albero. Los textos son de
+// muestra hasta copiar 3 reseñas reales de la ficha (ver site.ts).
+import { site, opiniones } from '../data/site';
+
+const estrella =
+  'M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4l-5.8 3.1 1.1-6.5L2.6 9.4l6.5-.9z';
+---
+
+<section id="opiniones" class="costura sec-alt py-20 text-papel md:py-32">
+  <div class="container-x">
+    <div class="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+      <div class="reveal max-w-xl">
+        <p class="kicker-brocha text-rojo">Opiniones</p>
+        <h2 class="display mt-2 text-3xl text-white md:text-5xl">
+          Quien pinta con nosotros, repite.
+        </h2>
+      </div>
+
+      <!-- Valoración real de Google -->
+      <a
+        href={site.mapsLink}
+        target="_blank"
+        rel="noopener"
+        class="reveal panel panel-i group flex items-center gap-4 self-start p-4 pr-5 md:self-auto"
+        aria-label={`Valoración ${opiniones.nota} sobre 5 en Google, ${opiniones.total} reseñas — ver la ficha`}
+      >
+        <span class="font-display text-4xl leading-none font-extrabold text-white">{opiniones.nota}</span>
+        <span>
+          <span class="flex gap-0.5" aria-hidden="true">
+            {[1, 2, 3, 4, 5].map(() => (
+              <svg viewBox="0 0 24 24" class="h-4 w-4 fill-albero" aria-hidden="true">
+                <path d={estrella} />
+              </svg>
+            ))}
+          </span>
+          <span class="mt-1 block text-[12px] font-semibold text-papel/70">
+            {opiniones.total} reseñas en Google
+            <span class="text-papel/45 transition-colors group-hover:text-white"> · ver ficha →</span>
+          </span>
+        </span>
+      </a>
+    </div>
+
+    <div class="mt-10 grid gap-5 md:grid-cols-3">
+      {
+        opiniones.resenas.map((r) => (
+          <figure class="panel panel-i reveal relative flex flex-col overflow-hidden p-6">
+            <span class="letra-brocha pointer-events-none absolute -top-3 right-3 text-[5.5rem] leading-none text-rojo/10" aria-hidden="true">
+              “
+            </span>
+            <span class="flex gap-0.5" aria-hidden="true">
+              {[1, 2, 3, 4, 5].map(() => (
+                <svg viewBox="0 0 24 24" class="h-3.5 w-3.5 fill-albero" aria-hidden="true">
+                  <path d={estrella} />
+                </svg>
+              ))}
+            </span>
+            <blockquote class="relative mt-3.5 mb-5 text-[14px] leading-relaxed text-papel/85">
+              “{r.texto}”
+            </blockquote>
+            <figcaption class="mt-auto flex items-center gap-3 border-t border-white/[0.07] pt-4">
+              <span
+                class="seccion-roja letra-brocha grid h-10 w-10 shrink-0 place-items-center rounded-full pt-1 text-[1.3rem] text-white shadow-md shadow-rojo-900/40"
+                aria-hidden="true"
+              >
+                {r.autor.charAt(0)}
+              </span>
+              <span class="leading-tight">
+                <span class="block text-[13px] font-bold text-white">{r.autor}</span>
+                <span class="mt-0.5 block text-[11.5px] text-papel/55">{r.detalle} · Reseña de Google</span>
+              </span>
+            </figcaption>
+          </figure>
+        ))
+      }
+    </div>
+
+    <p class="reveal mt-7 text-[13px] text-papel/70">
+      ¿Te hemos ayudado a acertar con tu color?
+      <a href={site.mapsLink} target="_blank" rel="noopener" class="font-semibold text-white underline underline-offset-4 transition-colors hover:text-rojo-400">
+        Déjanos tu reseña en Google
+      </a>
+      — a una tienda de barrio le vale oro.
+    </p>
+  </div>
+</section>
