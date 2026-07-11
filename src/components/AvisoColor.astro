@@ -16,18 +16,18 @@ const { variant = 'full', class: className = '' } = Astro.props;
       Para acertar, ven con una muestra real o consulta la carta física en tienda.
     </p>
   ) : (
-    <div class={`nota-mostrador flex items-start gap-3.5 py-4 pr-5 pl-4 ${className}`}>
+    <div class={`nota-mostrador nota-mostrador--salpicada flex items-start gap-3.5 py-4 pr-5 pl-4 ${className}`}>
       <span
-        class="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-rojo/12 text-rojo ring-1 ring-rojo/25"
+        class="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-full bg-rojo text-white shadow-[0_5px_12px_-4px_rgba(168,27,31,0.7)] ring-[3px] ring-white/70"
         aria-hidden="true"
       >
-        <svg viewBox="0 0 24 24" class="h-4.5 w-4.5" fill="none" stroke="currentColor" stroke-width="1.9">
+        <svg viewBox="0 0 24 24" class="h-4.5 w-4.5" fill="none" stroke="currentColor" stroke-width="2">
           <rect x="4" y="4" width="16" height="16" rx="3" />
           <path d="M4 14l4-4 3 3 4-5 5 6" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
       </span>
       <div>
-        <p class="text-[12.5px] font-extrabold tracking-wide text-rojo uppercase">Nota del mostrador</p>
+        <p class="text-[12.5px] font-extrabold tracking-[0.14em] text-rojo uppercase">Nota del mostrador</p>
         <p class="mt-1 text-[13px] leading-relaxed text-tinta/85">
           El color en pantalla es <span class="font-semibold">orientativo</span>: cada
           dispositivo, brillo y luz alteran el tono. Para acertar, ven con una
