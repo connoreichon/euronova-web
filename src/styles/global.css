@@ -928,47 +928,25 @@ body::after {
 }
 /* la cinta: papel crema con grano, sombra a los lados (posada sobre la pared) y
    FILO ROJO mojado a un lado (wet-edge). */
-/* La cinta es una REGLA DE HUESO de 22px: cuerpo crema con ticks de medición
-   grabados a ambos lados (marcas cada 9px + mayores cada 45px), cantos curvados
-   por sombra interior y DOBLE sombra lateral que la despega del muro (sin
-   clip-path, que recortaría su propia sombra). El filo derecho es la línea de
-   índice roja "mojada". */
+/* DIVISOR fino y elegante (lenguaje de comparador antes/después): una costura de
+   luz delgada de 4px con sombra a los lados que la separa del muro (tiene cuerpo,
+   no es una línea plana). El acento de marca lo lleva el tirador, no la línea. */
 .sim-divisor__linea {
   position: absolute;
   top: 0;
   bottom: 0;
-  left: -11px;
-  width: 22px;
+  left: -2px;
+  width: 4px;
   border-radius: 2px;
-  background:
-    repeating-linear-gradient(180deg, rgba(32, 23, 23, 0.34) 0 1px, transparent 1px 9px) left 2.5px top / 5px 100% no-repeat,
-    repeating-linear-gradient(180deg, rgba(32, 23, 23, 0.34) 0 1px, transparent 1px 9px) right 2.5px top / 5px 100% no-repeat,
-    repeating-linear-gradient(180deg, rgba(32, 23, 23, 0.5) 0 1px, transparent 1px 45px) right 2.5px top / 9px 100% no-repeat,
-    linear-gradient(90deg, rgba(32, 23, 23, 0.22), transparent 24%, transparent 76%, rgba(32, 23, 23, 0.22)),
-    linear-gradient(90deg, var(--color-crema-200), var(--color-crema) 46%, #e3d6bc);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.4), #fffdf9 45%, rgba(255, 255, 255, 0.7));
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.6),
-    inset 1px 0 0 rgba(255, 255, 255, 0.45),
-    inset -1px 0 0 rgba(32, 23, 23, 0.14),
-    6px 0 16px -4px rgba(0, 0, 0, 0.42),
-    -6px 0 16px -4px rgba(0, 0, 0, 0.42);
-}
-.sim-divisor__linea::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: -1px;
-  width: 2.5px;
-  border-radius: 0 2px 2px 0;
-  background: linear-gradient(180deg, var(--color-rojo) 0 62%, var(--color-rojo-700));
-  opacity: 0.92;
-  box-shadow: 0 0 7px rgba(210, 38, 43, 0.55), -1px 0 2px rgba(109, 16, 19, 0.4);
+    0 0 0 0.5px rgba(23, 17, 17, 0.22),
+    3px 0 12px -3px rgba(0, 0, 0, 0.4),
+    -3px 0 12px -3px rgba(0, 0, 0, 0.4);
 }
 /* TIRADOR: cápsula tipo "lengüeta de herramienta" con flechas rojas y grip. */
-/* TIRADOR mecanizado (32×62) con grip moleteado (microrayas) y cuerpo hueso.
-   Conserva su SVG de chevrons por encima (> svg z-index:1) y su ::after de
-   área de toque ampliada (NO se toca). */
+/* TIRADOR circular limpio (36px) con flechas rojas de marca. Conserva su SVG por
+   encima (> svg z-index:1) y su ::after de área de toque ampliada (NO se toca). */
 .sim-divisor__asa {
   position: absolute;
   top: 50%;
@@ -976,18 +954,15 @@ body::after {
   transform: translate(-50%, -50%);
   display: grid;
   place-items: center;
-  width: 32px;
-  height: 62px;
-  border-radius: 9px;
-  color: var(--color-rojo-700);
-  background:
-    repeating-linear-gradient(180deg, rgba(32, 23, 23, 0.11) 0 1px, transparent 1px 5px),
-    linear-gradient(180deg, #fffdf8, var(--color-crema) 52%, #ddceb2);
+  width: 36px;
+  height: 36px;
+  border-radius: 9999px;
+  color: var(--color-rojo);
+  background: linear-gradient(180deg, #ffffff, #fbf6ec);
   box-shadow:
+    0 3px 12px -2px rgba(0, 0, 0, 0.45),
     inset 0 1px 0 rgba(255, 255, 255, 0.9),
-    inset 0 -2px 4px rgba(32, 23, 23, 0.12),
-    inset 0 0 0 1px rgba(32, 23, 23, 0.1),
-    0 8px 20px -6px rgba(0, 0, 0, 0.55);
+    inset 0 0 0 1px rgba(23, 17, 17, 0.08);
   cursor: ew-resize;
   touch-action: none;
   transition:
@@ -997,7 +972,6 @@ body::after {
 .sim-divisor__asa > svg {
   position: relative;
   z-index: 1;
-  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.7));
 }
 .sim-divisor__asa::after {
   content: '';
@@ -1006,15 +980,15 @@ body::after {
   border-radius: 9999px;
 }
 .sim-divisor__asa:hover {
-  transform: translate(-50%, -50%) scale(1.06);
+  transform: translate(-50%, -50%) scale(1.08);
   box-shadow:
+    0 4px 16px -2px rgba(0, 0, 0, 0.5),
+    0 0 0 4px rgba(210, 38, 43, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.9),
-    inset 0 0 0 1px rgba(32, 23, 23, 0.1),
-    0 0 0 3px rgba(210, 38, 43, 0.28),
-    0 10px 24px -6px rgba(0, 0, 0, 0.6);
+    inset 0 0 0 1px rgba(23, 17, 17, 0.08);
 }
 .sim-divisor__asa:active {
-  transform: translate(-50%, -50%) scale(1.02);
+  transform: translate(-50%, -50%) scale(1.03);
 }
 
 /* ETIQUETA DE ZONA: mini pastilla con el código, centrada sobre cada franja. */
@@ -1879,12 +1853,12 @@ body::after {
   }
   /* Piezas del escenario ajustadas para que nada se corte a 360–390px. */
   .sim-divisor__linea {
-    width: 17px;
-    left: -8.5px;
+    width: 3px;
+    left: -1.5px;
   }
   .sim-divisor__asa {
-    width: 28px;
-    height: 54px;
+    width: 32px;
+    height: 32px;
   }
   .sim-zona-label {
     font-size: 9.5px;
