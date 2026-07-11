@@ -4,8 +4,17 @@
 // copy de mostrador → 2 CTAs → banda de confianza. El logo vive en la
 // navegación; aquí manda el titular. La foto se trata como pieza hero (losa
 // granate desplazada + chip de "color a medida"), no como card.
-import { site } from '../data/site';
+import { site, opiniones } from '../data/site';
 import { asset } from '../lib/asset';
+
+// Tira de "carta de colores" del hero: paleta curada (cálidos → tierra → verdes
+// → azules → neutros), como un muestrario desplegado. Decorativa.
+const CARTA = [
+  '#efe7d6', '#e6d2a8', '#d9a441', '#c8763e', '#a83f36', '#6d2c34', '#7a5a3a',
+  '#8a8f6a', '#5f7a55', '#3f6f6b', '#2f5f6b', '#2b3a4a', '#6b625a', '#c9c2b4'
+];
+const estrella =
+  'M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4l-5.8 3.1 1.1-6.5L2.6 9.4l6.5-.9z';
 ---
 
 <section id="top" class="hero-fondo pt-28 pb-20 text-white md:pt-36 md:pb-24">
@@ -38,6 +47,23 @@ import { asset } from '../lib/asset';
           Ver cartas de colores
         </a>
       </div>
+
+      <!-- Prueba social: valoración REAL de Google -->
+      <a
+        href={site.mapsLink}
+        target="_blank"
+        rel="noopener"
+        class="mt-4 inline-flex items-center gap-2 text-[13px] text-white/90 transition-colors hover:text-white"
+        aria-label={`Valoración ${opiniones.nota} sobre 5 en Google con ${opiniones.total} reseñas`}
+      >
+        <span class="flex gap-0.5" aria-hidden="true">
+          {[1, 2, 3, 4, 5].map(() => (
+            <svg viewBox="0 0 24 24" class="h-3.5 w-3.5 fill-albero"><path d={estrella} /></svg>
+          ))}
+        </span>
+        <span class="font-bold text-white">{opiniones.nota}</span>
+        <span class="text-white/75">· {opiniones.total} reseñas en Google</span>
+      </a>
       <!-- Aviso de color: panel CLARO (no rojo sobre rojo), acento de muestra -->
       <div class="mt-5 flex max-w-[520px] items-center gap-3 rounded-xl border border-white/20 bg-white/[0.12] px-4 py-3 backdrop-blur-sm">
         <span class="flex shrink-0 gap-0.5" aria-hidden="true">
@@ -94,6 +120,32 @@ import { asset } from '../lib/asset';
           </span>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Tira de color: muro de color real — cualquier tono, a medida en tienda -->
+  <div class="container-x mt-12 md:mt-16">
+    <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 border-t border-white/20 pt-5">
+      <p class="text-[12.5px] font-semibold text-white/90">
+        Cualquier color RAL o NCS, mezclado a medida en tienda.
+      </p>
+      <a
+        href={asset('/cartas/')}
+        class="text-[12.5px] font-bold text-white underline-offset-4 hover:underline"
+      >
+        Ver las cartas de colores →
+      </a>
+    </div>
+    <div class="mt-3 flex gap-1.5">
+      {
+        CARTA.map((c) => (
+          <span
+            class="hero-swatch h-9 flex-1 rounded-[3px] ring-1 ring-black/10 md:h-11"
+            style={`background:${c}`}
+            aria-hidden="true"
+          />
+        ))
+      }
     </div>
   </div>
 </section>
