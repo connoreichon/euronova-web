@@ -45,12 +45,13 @@ const waHref = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent('Hola, 
         <h1 class="display mt-1 max-w-2xl text-4xl text-white md:text-6xl">{categoria.nombre}</h1>
         <p class="mt-5 max-w-xl text-[15px] leading-relaxed text-papel/75">{categoria.intro}</p>
         <div class="mt-7 flex flex-wrap items-center gap-3">
-          <a href={waHref} target="_blank" rel="noopener" class="btn-pintura inline-flex items-center gap-2 rounded-full bg-rojo px-6 py-3.5 text-[14px] font-bold text-white transition-transform hover:-translate-y-0.5">
-            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-1.7-.1-.4-.1-.9-.3-1.6-.6-2.8-1.2-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8 0-1.3.7-2 .9-2.2.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.3 0 .5l-.4.6c-.2.2-.3.4-.1.7.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.2.1.4.1.6-.1l.7-.9c.2-.2.4-.2.6-.1l1.9.9c.3.1.4.2.5.3.1.3.1.6-.1 1.1Z" /></svg>
-            Pregúntanos por WhatsApp
-          </a>
-          <a href={site.mapsLink} target="_blank" rel="noopener" class="rounded-full border border-white/25 px-6 py-3.5 text-[14px] font-semibold text-white transition-colors hover:border-white/60">
+          <a href={site.mapsLink} target="_blank" rel="noopener" class="btn-pintura inline-flex items-center gap-2 rounded-full bg-rojo px-6 py-3.5 text-[14px] font-bold text-white transition-transform hover:-translate-y-0.5">
+            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="M12 21s7-5.1 7-11a7 7 0 1 0-14 0c0 5.9 7 11 7 11Z" stroke-linejoin="round" /><circle cx="12" cy="10" r="2.6" /></svg>
             Cómo llegar a la tienda
+          </a>
+          <a href={waHref} target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-full border border-white/25 px-6 py-3.5 text-[14px] font-semibold text-white transition-colors hover:border-white/60">
+            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-1.7-.1-.4-.1-.9-.3-1.6-.6-2.8-1.2-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8 0-1.3.7-2 .9-2.2.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.3 0 .5l-.4.6c-.2.2-.3.4-.1.7.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.2.1.4.1.6-.1l.7-.9c.2-.2.4-.2.6-.1l1.9.9c.3.1.4.2.5.3.1.3.1.6-.1 1.1Z" /></svg>
+            Consúltanos por WhatsApp
           </a>
         </div>
       </div>
@@ -127,11 +128,12 @@ const waHref = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent('Hola, 
           </p>
         </div>
         <div class="reveal flex flex-wrap items-center gap-3">
-          <a href={waHref} target="_blank" rel="noopener" class="rounded-full bg-white px-6 py-3 text-[14px] font-bold text-rojo transition-transform hover:-translate-y-0.5">
-            Escríbenos por WhatsApp
+          <a href={site.mapsLink} target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-[14px] font-bold text-rojo transition-transform hover:-translate-y-0.5">
+            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="M12 21s7-5.1 7-11a7 7 0 1 0-14 0c0 5.9 7 11 7 11Z" stroke-linejoin="round" /><circle cx="12" cy="10" r="2.6" /></svg>
+            Cómo llegar a la tienda
           </a>
           <a href={`tel:${site.telefonoLink}`} class="rounded-full border border-white/50 px-6 py-3 text-[14px] font-semibold text-white transition-colors hover:border-white hover:bg-white/10">
-            {site.telefono}
+            Llámanos · {site.telefono}
           </a>
         </div>
       </div>

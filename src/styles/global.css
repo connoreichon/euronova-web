@@ -928,37 +928,25 @@ body::after {
 }
 /* la cinta: papel crema con grano, sombra a los lados (posada sobre la pared) y
    FILO ROJO mojado a un lado (wet-edge). */
-/* CINTA DE PINTOR fina (11px): cuerpo crema mate, casi pegada a la pared. Sombra
-   muy leve (no rail), sin marcas de regla. Único acento: hairline roja de 1px. */
+/* CORTE LIMPIO DE MUESTRARIO: la pared se separa por un corte finísimo (2px), como
+   dos cartas de color perfectamente cortadas — un filo oscuro + un highlight claro,
+   con una sombra mínima. La separación casi no pesa: mandan los colores. */
 .sim-divisor__linea {
   position: absolute;
   top: 0;
   bottom: 0;
-  left: -5.5px;
-  width: 11px;
-  border-radius: 1.5px;
-  background: linear-gradient(90deg, rgba(239, 228, 207, 0.72), var(--color-crema) 55%, #e6dbc4);
-  box-shadow:
-    inset 0.5px 0 0 rgba(255, 255, 255, 0.32),
-    inset -0.5px 0 0 rgba(23, 17, 17, 0.06),
-    1px 0 4px -2px rgba(0, 0, 0, 0.16),
-    -1px 0 4px -2px rgba(0, 0, 0, 0.12);
-}
-/* acento Euronova: hairline roja de 1px en el filo derecho (nada más de rojo). */
-.sim-divisor__linea::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  width: 1px;
-  background: var(--color-rojo);
-  opacity: 0.45;
+  left: -1px;
+  width: 2px;
+  background: linear-gradient(90deg, rgba(15, 10, 10, 0.3), rgba(255, 255, 255, 0.34) 62%);
+  box-shadow: -2px 0 4px -2px rgba(0, 0, 0, 0.22);
 }
 /* TIRADOR: cápsula tipo "lengüeta de herramienta" con flechas rojas y grip. */
 /* TIRADOR mínimo: cápsula fina crema (16×30) atenuada por defecto, con un grip
    sutil de 3 rayitas (sin flechas ni rojo grande). Conserva su ::after de área de
    toque ampliada (NO se toca). El SVG de flechas se oculta. */
+/* TIRADOR discreto: un pequeño círculo casi invisible por defecto; se resalta al
+   pasar el ratón por la pared o al enfocarlo. En táctil queda tenue pero agarrable.
+   Sin icono. Conserva su ::after de área de toque ampliada (NO se toca). */
 .sim-divisor__asa {
   position: absolute;
   top: 50%;
@@ -966,40 +954,28 @@ body::after {
   transform: translate(-50%, -50%);
   display: grid;
   place-items: center;
-  width: 13px;
-  height: 26px;
+  width: 20px;
+  height: 20px;
   border-radius: 9999px;
-  background: linear-gradient(180deg, #f8f1e4, var(--color-crema));
+  background: rgba(255, 253, 249, 0.9);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.6),
-    inset 0 0 0 1px rgba(23, 17, 17, 0.09),
-    0 1px 4px -1px rgba(0, 0, 0, 0.25);
+    0 1px 4px -1px rgba(0, 0, 0, 0.35),
+    inset 0 0 0 1px rgba(23, 17, 17, 0.1);
   cursor: ew-resize;
   touch-action: none;
-  opacity: 0.72;
+  opacity: 0.5;
   transition:
+    opacity 0.2s ease,
     transform 0.18s var(--ease-suave),
-    box-shadow 0.18s ease,
-    opacity 0.18s ease;
+    box-shadow 0.18s ease;
 }
 .sim-divisor__asa > svg {
   display: none;
 }
-/* grip mínimo: 3 rayitas verticales muy finas y muy tenues (afordancia de
-   arrastre sin icono). */
-.sim-divisor__asa::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 1px;
-  height: 10px;
-  border-radius: 1px;
-  background: rgba(23, 17, 17, 0.2);
-  box-shadow:
-    2.5px 0 0 rgba(23, 17, 17, 0.2),
-    -2.5px 0 0 rgba(23, 17, 17, 0.2);
+/* Al pasar el ratón por la pared, el tirador asoma un poco (pista de que se puede
+   arrastrar); sin ratón (móvil) se queda tenue. */
+.sim-estancia:hover .sim-divisor__asa {
+  opacity: 0.85;
 }
 .sim-divisor__asa::after {
   content: '';
@@ -1010,15 +986,14 @@ body::after {
 .sim-divisor__asa:hover,
 .sim-divisor__asa:focus-visible {
   opacity: 1;
-  transform: translate(-50%, -50%) scale(1.04);
+  transform: translate(-50%, -50%) scale(1.1);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.6),
-    inset 0 0 0 1px rgba(23, 17, 17, 0.12),
-    0 2px 7px -2px rgba(0, 0, 0, 0.3),
-    0 0 0 2.5px rgba(210, 38, 43, 0.12);
+    0 2px 7px -1px rgba(0, 0, 0, 0.4),
+    0 0 0 3px rgba(210, 38, 43, 0.14),
+    inset 0 0 0 1px rgba(23, 17, 17, 0.1);
 }
 .sim-divisor__asa:active {
-  transform: translate(-50%, -50%) scale(1.01);
+  transform: translate(-50%, -50%) scale(1.04);
 }
 
 /* ETIQUETA DE ZONA: mini pastilla con el código, centrada sobre cada franja. */
@@ -1896,6 +1871,51 @@ body::after {
     repeating-linear-gradient(0deg, rgba(23, 17, 17, 0.014) 0 2px, transparent 2px 6px),
     linear-gradient(180deg, var(--color-crema-200), var(--brand-cream));
 }
+/* Pared pintada cálida (muy suave); combinar con el grano de .paint-surface. */
+.paint-surface--wall {
+  background:
+    radial-gradient(120% 90% at 50% 0%, rgba(255, 255, 255, 0.03), transparent 60%),
+    linear-gradient(180deg, #241a17, #1b1312);
+}
+
+/* ===========================================================================
+   PROCESO "Así acertamos el color" — número técnico rojo + conector sutil.
+   =========================================================================== */
+.proceso-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  min-width: 2.15rem;
+  height: 2.15rem;
+  padding: 0 0.4rem;
+  border-radius: 0.6rem;
+  background: var(--brand-red);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.95rem;
+  letter-spacing: -0.02em;
+  box-shadow:
+    0 3px 8px -3px rgba(210, 38, 43, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+.proceso-paso {
+  position: relative;
+}
+/* Conector fino entre pasos (solo escritorio, cruzando el gap entre columnas). */
+@media (min-width: 1024px) {
+  .proceso-paso:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 2.3rem;
+    right: -1.25rem;
+    width: 1.25rem;
+    height: 2px;
+    transform: translateY(-1px);
+    background: linear-gradient(90deg, rgba(210, 38, 43, 0.5), transparent);
+  }
+}
 
 /* ===========================================================================
    PASADA DE PINTURA — al aplicar un color en "Imagina tu pared", un barrido de
@@ -1970,12 +1990,12 @@ body::after {
   }
   /* Piezas del escenario ajustadas para que nada se corte a 360–390px. */
   .sim-divisor__linea {
-    width: 9px;
-    left: -4.5px;
+    width: 1px;
+    left: 0;
   }
   .sim-divisor__asa {
-    width: 12px;
-    height: 24px;
+    width: 18px;
+    height: 18px;
   }
   .sim-zona-label {
     font-size: 9.5px;

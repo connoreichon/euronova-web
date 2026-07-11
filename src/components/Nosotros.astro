@@ -4,7 +4,6 @@
 import { site } from '../data/site';
 import { asset } from '../lib/asset';
 
-const wa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(site.whatsappMensaje)}`;
 const confianza = [
   {
     dato: '+20 años',
@@ -15,9 +14,9 @@ const confianza = [
     texto: 'trae una muestra o dinos el tono que buscas.'
   },
   {
-    dato: 'WhatsApp directo',
-    texto: 'pregunta stock, precio o qué producto usar.',
-    href: wa
+    dato: 'Carta física',
+    texto: 'RAL y NCS en mano para ver el tono real, no en pantalla.',
+    href: asset('/cartas/')
   }
 ];
 ---
