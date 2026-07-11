@@ -60,26 +60,25 @@ export const site = {
   anioActual: new Date().getFullYear()
 };
 
-// --- Marcas distribuidas -----------------------------------------------------
-// Los logos son los oficiales descargados de las webs de cada fabricante.
-// AVISO: confirmar con el cliente que tiene conformidad de las marcas para
-// usarlos como distribuidor (uso habitual, pero mejor por escrito).
+// --- Marcas con las que trabaja la tienda ------------------------------------
+// LISTA facilitada por el cliente (nota manuscrita, 2026). Se muestran SOLO como
+// muro de marcas, SIN enlaces externos ni descripciones.
+// Mientras no haya logos oficiales, cada tile muestra el NOMBRE como wordmark;
+// en cuanto se añada `logo` (PNG/SVG en public/assets/marcas/) se pinta la imagen.
+// TODO(cliente): aportar los LOGOS oficiales y confirmar el SPELLING de las
+//   marcas marcadas abajo. Los logos de Bupisa/Rugoplast siguen en la carpeta
+//   por si el cliente también los trabaja (no estaban en la nota → confirmar).
 export const marcas = [
-  {
-    nombre: 'Bupisa Pinturas',
-    logo: '/assets/marcas/bupisa.png',
-    claim: 'Fabricante de Burgos. Plásticas, esmaltes, fachadas, impermeabilizantes y protección de madera.',
-    web: 'https://www.bupisa.com/',
-    tema: 'claro' // el logo (azul marino/rojo) necesita fondo claro
-  },
-  {
-    nombre: 'Rugoplast · Pinturas Cabello',
-    logo: '/assets/marcas/rugoplast.webp',
-    claim: 'Fabricante de Granada, +40 años. Esmaltes, barnices, suelos y bases tintométricas.',
-    web: 'https://www.rugoplast.com/',
-    tema: 'oscuro' // el logo oficial es blanco: necesita fondo oscuro
-  }
-];
+  { nombre: 'Barpimo', logo: null }, // confirmada
+  { nombre: 'Cover', logo: null }, // TODO spelling: ¿"Alber Cover" / "Alben Cover"?
+  { nombre: 'Sifra', logo: null }, // confirmada (italiana)
+  { nombre: 'Rodapin', logo: null }, // confirmada
+  { nombre: 'Weku', logo: null }, // TODO spelling: ¿"Wenku"?
+  { nombre: 'Revetón', logo: null }, // TODO: confirmar acento ("Reveton"/"Revetón")
+  { nombre: 'Tixol', logo: null }, // TODO spelling: ¿"Titxol"?
+  { nombre: 'Jeivsa', logo: null }, // TODO spelling: ¿"Geivsa"/"Jeiusa"?
+  { nombre: 'Drocasa', logo: null } // TODO spelling: ¿"Drocusa"?
+] as { nombre: string; logo: string | null }[];
 
 // --- Categorías de producto (escaparate por categorías) ----------------------
 // Cada categoría abre su ESCAPARATE en /productos/[slug]/ con sus productos.

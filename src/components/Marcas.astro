@@ -1,58 +1,38 @@
 ---
+// Muro de marcas: sección CLARA (papel/crema) para descansar del rojo. Solo
+// logos/wordmarks, sin enlaces externos ni descripciones. Data-driven (site.ts).
+// Mientras no haya logos, cada tile muestra el nombre como wordmark; al rellenar
+// `logo` en site.ts se pinta la imagen (mismo tile, misma altura visual).
 import { marcas } from '../data/site';
 import { asset } from '../lib/asset';
 ---
 
-<section id="marcas" class="costura py-20 text-papel md:py-32">
+<section id="marcas" class="paint-surface paint-surface--paper py-20 md:py-28">
   <div class="container-x">
-    <div class="reveal max-w-xl">
-      <p class="kicker-brocha text-rojo">Marcas</p>
-      <h2 class="display mt-2 text-3xl text-white md:text-5xl">
-        Fabricantes que rinden en la obra.
-      </h2>
+    <div class="reveal max-w-2xl">
+      <p class="kicker-brocha kicker-brocha--sm text-rojo">Nuestras marcas</p>
+      <h2 class="display mt-2 text-3xl text-tinta md:text-4xl">Marcas con las que trabajamos.</h2>
+      <p class="mt-3 text-[15px] leading-relaxed text-tinta/70">
+        En tienda encontrarás marcas con las que trabajamos a diario para interior,
+        exterior, decoración y profesional.
+      </p>
     </div>
 
-    <!-- Banda partida: cada logo sobre el fondo que le corresponde por marca -->
-    <div class="reveal mt-10 grid overflow-hidden rounded-panel ring-1 ring-white/10 md:grid-cols-2">
-      <a
-        href={marcas[0].web}
-        target="_blank"
-        rel="noopener"
-        class="group flex flex-col items-center justify-center gap-5 bg-papel px-8 py-14 transition-colors hover:bg-white"
-      >
-        <img
-          src={asset(marcas[0].logo)}
-          alt={`Logotipo de ${marcas[0].nombre}`}
-          class="h-14 w-auto transition-transform group-hover:-translate-y-0.5"
-          width="237"
-          height="60"
-          loading="lazy"
-        />
-        <p class="max-w-xs text-center text-[13px] leading-relaxed text-tinta-600">
-          {marcas[0].claim}
-        </p>
-      </a>
-      <a
-        href={marcas[1].web}
-        target="_blank"
-        rel="noopener"
-        class="group flex flex-col items-center justify-center gap-5 border-t border-white/12 bg-[linear-gradient(155deg,#2c2020,#1b1414)] px-8 py-14 transition-colors hover:bg-tinta-600 md:border-t-0 md:border-l md:border-white/15"
-      >
-        <img
-          src={asset(marcas[1].logo)}
-          alt={`Logotipo de ${marcas[1].nombre}`}
-          class="h-8 w-auto transition-transform group-hover:-translate-y-0.5"
-          width="520"
-          height="65"
-          loading="lazy"
-        />
-        <p class="max-w-xs text-center text-[13px] leading-relaxed text-papel/70">
-          {marcas[1].claim}
-        </p>
-      </a>
-    </div>
+    <ul class="mt-10 grid grid-cols-2 gap-3.5 sm:grid-cols-3 md:mt-12 md:gap-4">
+      {
+        marcas.map((m) => (
+          <li class="marca-tile reveal">
+            {m.logo ? (
+              <img src={asset(m.logo)} alt={`Logotipo de ${m.nombre}`} class="marca-logo" loading="lazy" />
+            ) : (
+              <span class="marca-wordmark">{m.nombre}</span>
+            )}
+          </li>
+        ))
+      }
+    </ul>
 
-    <p class="reveal mt-5 text-[13px] text-papel/75">
+    <p class="reveal mt-6 text-[12.5px] text-tinta/55">
       ¿Buscas otra marca o un producto concreto? Pregúntanos: si no lo tenemos, te lo conseguimos.
     </p>
   </div>
