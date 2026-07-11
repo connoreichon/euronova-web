@@ -17,15 +17,15 @@ import { asset } from '../lib/asset';
       </p>
     </div>
 
-    <ul class="mt-12 grid grid-cols-2 items-center gap-x-6 gap-y-9 sm:grid-cols-3 md:mt-14 md:gap-x-10 lg:grid-cols-4">
+    <ul class="mt-10 grid grid-cols-2 gap-3.5 sm:grid-cols-3 md:mt-12 md:gap-4 lg:grid-cols-4">
       {
         marcas.map((m) => (
-          <li class="marca-cell reveal">
+          <li class="marca-tile reveal">
             {m.logo ? (
               <img
                 src={asset(m.logo)}
                 alt={`Logotipo de ${m.nombre}`}
-                class={`marca-logo ${m.big ? 'marca-logo--big' : ''}`}
+                class={`marca-logo ${m.big ? 'marca-logo--big' : ''} ${m.inv ? 'marca-logo--inv' : ''}`}
                 loading="lazy"
               />
             ) : (

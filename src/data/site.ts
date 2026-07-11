@@ -69,18 +69,18 @@ export const site = {
 // mayor. `logo: null` → wordmark del nombre hasta tener logo.
 // TODO(cliente): logos de Tixol y Jeivsa (pendientes de localizar buen archivo).
 export const marcas = [
-  { nombre: 'Bupisa', logo: '/assets/marcas/bupisa.png' },
-  { nombre: 'Rugoplast', logo: '/assets/marcas/rugoplast.webp' },
-  { nombre: 'Barpimo', logo: '/assets/marcas/barpimo.svg' },
-  { nombre: 'Alber Cover', logo: '/assets/marcas/albercover.png' }, // "Cover" = Alber Cover (Pinturas Alber)
-  { nombre: 'Sifra', logo: '/assets/marcas/sifra.png', big: true }, // italiana (Colorificio Sifra)
-  { nombre: 'Rodapin', logo: '/assets/marcas/rodapin.png' },
-  { nombre: 'Werku', logo: '/assets/marcas/werku.png' },
-  { nombre: 'Revetón', logo: '/assets/marcas/reveton.svg' },
-  { nombre: 'Tixol', logo: '/assets/marcas/tixol.png' },
-  { nombre: 'Jeivsa', logo: '/assets/marcas/jeivsa.png' },
-  { nombre: 'Drocasa', logo: '/assets/marcas/drocasa.png' } // Pinturas Droca (Drocasa)
-] as { nombre: string; logo: string | null; big?: boolean }[];
+  { nombre: 'Bupisa', logo: '/assets/marcas/bupisa.png' }, // color
+  { nombre: 'Rugoplast', logo: '/assets/marcas/rugoplast.webp', inv: true }, // TODO color: solo tengo el blanco
+  { nombre: 'Barpimo', logo: '/assets/marcas/barpimo.svg', inv: true }, // TODO color: solo tengo el blanco
+  { nombre: 'Alber Cover', logo: '/assets/marcas/albercover.png' }, // color ("Cover" = Alber Cover)
+  { nombre: 'Sifra', logo: '/assets/marcas/sifra.png', big: true }, // color (Colorificio Sifra, italiana)
+  { nombre: 'Rodapin', logo: '/assets/marcas/rodapin.png', inv: true }, // TODO color: solo tengo el blanco
+  { nombre: 'Werku', logo: '/assets/marcas/werku.png', inv: true }, // TODO color: solo tengo el blanco
+  { nombre: 'Revetón', logo: '/assets/marcas/reveton.svg' }, // color
+  { nombre: 'Tixol', logo: '/assets/marcas/tixol.png', inv: true }, // TODO color: solo tengo el blanco
+  { nombre: 'Jeivsa', logo: '/assets/marcas/jeivsa.png', inv: true }, // TODO color: solo tengo el blanco
+  { nombre: 'Drocasa', logo: '/assets/marcas/drocasa.png' } // color (Pinturas Droca)
+] as { nombre: string; logo: string | null; big?: boolean; inv?: boolean }[];
 
 // --- Categorías de producto (escaparate por categorías) ----------------------
 // Cada categoría abre su ESCAPARATE en /productos/[slug]/ con sus productos.
