@@ -61,24 +61,27 @@ export const site = {
 };
 
 // --- Marcas con las que trabaja la tienda ------------------------------------
-// LISTA facilitada por el cliente (nota manuscrita, 2026). Se muestran SOLO como
-// muro de marcas, SIN enlaces externos ni descripciones.
-// Mientras no haya logos oficiales, cada tile muestra el NOMBRE como wordmark;
-// en cuanto se añada `logo` (PNG/SVG en public/assets/marcas/) se pinta la imagen.
-// TODO(cliente): aportar los LOGOS oficiales y confirmar el SPELLING de las
-//   marcas marcadas abajo. Los logos de Bupisa/Rugoplast siguen en la carpeta
-//   por si el cliente también los trabaja (no estaban en la nota → confirmar).
+// LISTA de la nota manuscrita del cliente (2026). Muro de marcas SIN enlaces ni
+// descripciones. Logos oficiales descargados de la web de cada fabricante (marcas
+// registradas de cada empresa; se muestran para identificar lo que distribuye la
+// tienda). `inv`: el logo oficial es BLANCO (hecho para fondo oscuro) → se invierte
+// a tinta oscura por CSS para verse sobre el tile crema (si el fabricante tiene
+// versión a color, se sustituye y se quita `inv`). `logo: null` → wordmark del
+// nombre hasta tener logo.
+// TODO(cliente): Tixol (web tixol.es caída) y Jeivsa (logo SVG embebido) → aportar
+//   logo. Bupisa/Rugoplast salieron del muro (no estaban en la nota; ficheros
+//   conservados en la carpeta por si procede).
 export const marcas = [
-  { nombre: 'Barpimo', logo: null }, // confirmada
-  { nombre: 'Cover', logo: null }, // TODO spelling: ¿"Alber Cover" / "Alben Cover"?
-  { nombre: 'Sifra', logo: null }, // confirmada (italiana)
-  { nombre: 'Rodapin', logo: null }, // confirmada
-  { nombre: 'Weku', logo: null }, // TODO spelling: ¿"Wenku"?
-  { nombre: 'Revetón', logo: null }, // TODO: confirmar acento ("Reveton"/"Revetón")
-  { nombre: 'Tixol', logo: null }, // TODO spelling: ¿"Titxol"?
-  { nombre: 'Jeivsa', logo: null }, // TODO spelling: ¿"Geivsa"/"Jeiusa"?
-  { nombre: 'Drocasa', logo: null } // TODO spelling: ¿"Drocusa"?
-] as { nombre: string; logo: string | null }[];
+  { nombre: 'Barpimo', logo: '/assets/marcas/barpimo.svg', inv: true }, // logo oficial blanco
+  { nombre: 'Alber Cover', logo: '/assets/marcas/albercover.png' }, // "Cover" = Alber Cover (Pinturas Alber)
+  { nombre: 'Sifra', logo: '/assets/marcas/sifra.jpg' }, // italiana (Colorificio Sifra)
+  { nombre: 'Rodapin', logo: '/assets/marcas/rodapin.png', inv: true }, // logo oficial blanco
+  { nombre: 'Werku', logo: '/assets/marcas/werku.png', inv: true }, // logo oficial blanco
+  { nombre: 'Revetón', logo: '/assets/marcas/reveton.svg' },
+  { nombre: 'Tixol', logo: null }, // TODO: web tixol.es no responde
+  { nombre: 'Jeivsa', logo: null }, // TODO: logo SVG embebido en jeivsa.com
+  { nombre: 'Drocasa', logo: '/assets/marcas/drocasa.png' } // Pinturas Droca (Drocasa)
+] as { nombre: string; logo: string | null; inv?: boolean }[];
 
 // --- Categorías de producto (escaparate por categorías) ----------------------
 // Cada categoría abre su ESCAPARATE en /productos/[slug]/ con sus productos.

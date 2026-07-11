@@ -2136,6 +2136,13 @@ body::after {
   height: auto;
   object-fit: contain;
 }
+/* Logo oficial BLANCO invertido a tinta oscura para leerse sobre el tile crema
+   (monocromo del propio logo; se sustituye por versión a color si el fabricante
+   la aporta). */
+.marca-logo--inv {
+  filter: brightness(0);
+  opacity: 0.78;
+}
 .marca-wordmark {
   font-family: var(--font-display);
   font-weight: 800;
