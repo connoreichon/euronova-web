@@ -415,25 +415,35 @@ body::after {
   position: relative;
   isolation: isolate;
   background:
-    linear-gradient(180deg, transparent 85%, var(--color-rojo) 99%),
-    radial-gradient(120% 78% at 50% 120%, var(--color-rojo-900) 0%, transparent 52%),
-    radial-gradient(120% 66% at 8% 8%, var(--color-rojo-800) 0%, transparent 46%),
-    radial-gradient(145% 130% at 50% 44%, transparent 55%, rgba(58, 7, 9, 0.5) 100%),
+    /* Convergencia inferior: el rojo se asienta en granate profundo para enlazar
+       con la transición limpia hacia la sección oscura (sin goteo). */
+    linear-gradient(180deg, transparent 82%, #4a0c0f 100%),
+    /* Luz cálida sobre la superficie: foco suave arriba-derecha (luz sobre pared). */
+    radial-gradient(76% 56% at 74% -8%, rgba(255, 247, 238, 0.16) 0%, transparent 52%),
+    /* Veladura granate profunda abajo-izquierda: peso y profundidad. */
+    radial-gradient(82% 70% at 1% 112%, var(--color-rojo-900) 0%, transparent 56%),
+    /* Nube de pigmento granate arriba-izquierda (muy suave). */
+    radial-gradient(54% 50% at 15% 18%, var(--color-rojo-800) 0%, transparent 54%),
+    /* Nube cálida profunda derecha-media (veladura). */
+    radial-gradient(48% 54% at 98% 56%, rgba(86, 12, 16, 0.5) 0%, transparent 55%),
+    /* Viñeta cálida general: enmarca la composición y calma el rojo (comodidad). */
+    radial-gradient(150% 125% at 50% 38%, transparent 48%, rgba(40, 6, 8, 0.58) 100%),
+    /* Base: rojo maestro, único y consistente. */
     var(--color-rojo);
 }
-/* Pigmento: grano finísimo de pared pintada (se nota por cómo eleva, no se ve) */
+/* Pigmento: grano finísimo de pared pintada (se nota por cómo eleva, no se ve). */
 .hero-fondo::before {
   content: '';
   position: absolute;
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  opacity: 0.06;
+  opacity: 0.07;
   mix-blend-mode: soft-light;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23p)'/%3E%3C/svg%3E");
 }
-/* Veladura de luz cálida que "respira" sobre la pared roja: MUY sutil, blanca
-   cálida (no desplaza el rojo), movimiento lento de 22s. */
+/* Pigmento que "respira": tres nubes (dos de luz cálida + una veladura granate)
+   que se desplazan lentísimamente (30s). MUY sutil; no desplaza el rojo. */
 .hero-fondo::after {
   content: '';
   position: absolute;
@@ -441,17 +451,19 @@ body::after {
   z-index: -1;
   pointer-events: none;
   background:
-    radial-gradient(52% 48% at 26% 26%, rgba(255, 248, 242, 0.11) 0%, transparent 60%),
-    radial-gradient(42% 42% at 80% 68%, rgba(255, 244, 236, 0.07) 0%, transparent 62%);
-  /* size >100% para poder "pasear" la luz con background-position sin que la
-     caja crezca (nada de overflow horizontal). */
+    radial-gradient(46% 44% at 24% 28%, rgba(255, 248, 240, 0.12) 0%, transparent 60%),
+    radial-gradient(40% 40% at 82% 64%, rgba(255, 243, 233, 0.08) 0%, transparent 62%),
+    radial-gradient(52% 48% at 58% 42%, rgba(118, 14, 18, 0.3) 0%, transparent 60%);
+  /* size >100% para "pasear" las nubes con background-position sin overflow. */
   background-size:
-    170% 170%,
-    150% 150%;
+    175% 175%,
+    155% 155%,
+    195% 195%;
   background-position:
     18% 28%,
-    78% 64%;
-  animation: pigment-breath 22s ease-in-out infinite;
+    78% 64%,
+    48% 42%;
+  animation: pigment-breath 30s ease-in-out infinite;
   will-change: background-position, opacity;
 }
 @keyframes pigment-breath {
@@ -459,13 +471,15 @@ body::after {
   100% {
     background-position:
       18% 28%,
-      78% 64%;
-    opacity: 0.82;
+      78% 64%,
+      48% 42%;
+    opacity: 0.85;
   }
   50% {
     background-position:
-      31% 19%,
-      67% 55%;
+      29% 20%,
+      67% 55%,
+      57% 34%;
     opacity: 1;
   }
 }
@@ -1783,12 +1797,23 @@ body::after {
   }
 }
 
-/* Goteo del borde inferior del hero (rojo sobre la sección siguiente) */
-.drip-divider {
+/* Transición limpia y premium: el rojo del hero (y del cierre) se ASIENTA en la
+   sombra hasta la sección oscura. Sin goteo, sin bultos — un degradado sobrio. */
+.hero-seam {
   display: block;
   width: 100%;
-  height: 34px;
+  height: 92px;
   margin-top: -1px;
+  background: linear-gradient(180deg, #4a0c0f 0%, #2c1210 46%, #171111 100%);
+}
+/* Variante para cierres que NO convergen a granate (arranca del rojo de marca). */
+.hero-seam--rojo {
+  background: linear-gradient(180deg, var(--color-rojo) 0%, #4a0c0f 44%, #171111 100%);
+}
+@media (min-width: 768px) {
+  .hero-seam {
+    height: 112px;
+  }
 }
 
 /* Botón flotante de WhatsApp */

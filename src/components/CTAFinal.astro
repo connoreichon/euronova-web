@@ -42,10 +42,5 @@ const wa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(site.whatsa
   </div>
 </section>
 
-<!-- Goteo rojo hacia el footer: rima el cierre con la apertura del hero -->
-<svg class="drip-divider text-rojo" viewBox="0 0 1200 34" preserveAspectRatio="none" aria-hidden="true">
-  <path
-    fill="currentColor"
-    d="M0 0h1200v6h-140q-8 22-16 0H840q-9 28-18 0H620q-7 18-14 0H380q-9 24-18 0H160q-7 16-14 0H0Z"
-  ></path>
-</svg>
+<!-- Transición limpia hacia el footer (el rojo del cierre se asienta en sombra) -->
+<div class="hero-seam hero-seam--rojo" aria-hidden="true"></div>

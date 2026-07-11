@@ -65,7 +65,7 @@ const estrella =
         <span class="text-white/75">· {opiniones.total} reseñas en Google</span>
       </a>
       <!-- Aviso de color: panel CLARO (no rojo sobre rojo), acento de muestra -->
-      <div class="mt-5 flex max-w-[520px] items-center gap-3 rounded-xl border border-white/20 bg-white/[0.12] px-4 py-3 backdrop-blur-sm">
+      <div class="mt-5 flex max-w-[520px] items-center gap-3 rounded-xl border border-white/20 bg-white/[0.12] px-4 py-3 shadow-[0_12px_28px_-16px_rgba(30,4,6,0.85)] ring-1 ring-inset ring-white/10 backdrop-blur-sm">
         <span class="flex shrink-0 gap-0.5" aria-hidden="true">
           <span class="h-6 w-2.5 rounded-[2px] bg-[#f2e9d8]"></span>
           <span class="h-6 w-2.5 rounded-[2px] bg-[#d9a441]"></span>
@@ -78,15 +78,15 @@ const estrella =
 
       <!-- Confianza: tira de "muestras" (cuadrado de color + dato) -->
       <div class="mt-9 flex flex-wrap items-center gap-2.5 border-t border-white/20 pt-5">
-        <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1.5 text-[12.5px] font-semibold text-white ring-1 ring-white/15 backdrop-blur-sm">
+        <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1.5 text-[12.5px] font-semibold text-white shadow-[0_6px_16px_-12px_rgba(30,4,6,0.7)] ring-1 ring-white/15 backdrop-blur-sm transition-colors hover:bg-white/[0.16]">
           <span class="h-2.5 w-2.5 shrink-0 rounded-[2px] bg-[#f2e9d8]" aria-hidden="true"></span>
           +<span data-count="20">20</span> años asesorando
         </span>
-        <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1.5 text-[12.5px] font-semibold text-white ring-1 ring-white/15 backdrop-blur-sm">
+        <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1.5 text-[12.5px] font-semibold text-white shadow-[0_6px_16px_-12px_rgba(30,4,6,0.7)] ring-1 ring-white/15 backdrop-blur-sm transition-colors hover:bg-white/[0.16]">
           <span class="h-2.5 w-2.5 shrink-0 rounded-[2px] bg-[#d9a441]" aria-hidden="true"></span>
           Color a medida en tienda
         </span>
-        <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1.5 text-[12.5px] font-semibold text-white ring-1 ring-white/15 backdrop-blur-sm">
+        <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1.5 text-[12.5px] font-semibold text-white shadow-[0_6px_16px_-12px_rgba(30,4,6,0.7)] ring-1 ring-white/15 backdrop-blur-sm transition-colors hover:bg-white/[0.16]">
           <span class="h-2.5 w-2.5 shrink-0 rounded-[2px] bg-[#2a5cad]" aria-hidden="true"></span>
           Particulares y profesionales
         </span>
@@ -150,15 +150,5 @@ const estrella =
   </div>
 </section>
 
-<!-- Goteo de pintura roja hacia la sección siguiente -->
-<svg
-  class="drip-divider text-rojo"
-  viewBox="0 0 1200 34"
-  preserveAspectRatio="none"
-  aria-hidden="true"
->
-  <path
-    fill="currentColor"
-    d="M0 0h1200v6h-140q-8 22-16 0H840q-9 28-18 0H620q-7 18-14 0H380q-9 24-18 0H160q-7 16-14 0H0Z"
-  ></path>
-</svg>
+<!-- Transición limpia hacia la sección siguiente: el rojo se asienta en la sombra -->
+<div class="hero-seam" aria-hidden="true"></div>
