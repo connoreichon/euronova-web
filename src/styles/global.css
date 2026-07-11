@@ -658,10 +658,16 @@ body::after {
   position: absolute;
   top: 0;
   bottom: 0;
-  left: -1.5px;
-  width: 3px;
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+  left: -1px;
+  width: 2px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgba(255, 255, 255, 0.92) 10%,
+    rgba(255, 255, 255, 0.92) 90%,
+    transparent
+  );
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
 }
 .sim-divisor__asa {
   position: absolute;
@@ -670,14 +676,39 @@ body::after {
   transform: translate(-50%, -50%);
   display: grid;
   place-items: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 30px;
+  height: 30px;
   border-radius: 9999px;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.94);
   color: #171111;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow:
+    0 4px 14px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 #fff;
   cursor: ew-resize;
   touch-action: none;
+  transition:
+    transform 0.18s var(--ease-suave),
+    box-shadow 0.18s ease;
+}
+/* área táctil amplia sin engordar el pomo */
+.sim-divisor__asa::after {
+  content: '';
+  position: absolute;
+  inset: -11px;
+  border-radius: 9999px;
+}
+.sim-divisor__asa:hover {
+  transform: translate(-50%, -50%) scale(1.12);
+}
+.sim-divisor__asa:active {
+  transform: translate(-50%, -50%) scale(1.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+@media (prefers-reduced-motion: reduce) {
+  .sim-divisor__asa {
+    transition: none;
+  }
 }
 
 /* Píldoras de lado (Izquierda/Derecha) en el panel: solo son "elegibles" en
@@ -1134,6 +1165,15 @@ body::after {
 .fav-btn[aria-pressed='true'] .fav-drip,
 .sim-guardar[aria-pressed='true'] .fav-drip {
   opacity: 1;
+}
+/* Brillo del corazón "pintado": solo aparece al guardar */
+.fav-brillo {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.fav-btn[aria-pressed='true'] .fav-brillo,
+.sim-guardar[aria-pressed='true'] .fav-brillo {
+  opacity: 0.6;
 }
 
 /* Cartas de colores: hay miles de muestras (RAL Design + NCS generadas).

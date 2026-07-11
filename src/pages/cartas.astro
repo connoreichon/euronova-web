@@ -196,7 +196,7 @@ const SYS: Record<string, string> = {
                 <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
                   {carta.colores.map((color) => (
                     <div
-                      class="color-item panel panel-i overflow-hidden"
+                      class="color-item panel panel-i cursor-pointer overflow-hidden"
                       data-buscar={`${color.c} ${color.n}`.toLowerCase()}
                       data-hex={color.h}
                       data-codigo={color.c}
@@ -210,8 +210,10 @@ const SYS: Record<string, string> = {
                           aria-label={`Guardar ${color.c} en tus colores`}
                         >
                           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" stroke-linejoin="round" />
-                            <path class="fav-drip" stroke="none" d="M12 21.5c-.7.9-1.05 1.55-1.05 2.1a1.05 1.05 0 0 0 2.1 0c0-.55-.35-1.2-1.05-2.1z" />
+                            <path d="M12 20.6C8.4 17.8 4.6 14.6 3.9 10.9 3.4 8 5.4 5.4 8.1 5.4c1.6 0 3.1.9 3.9 2.3.8-1.4 2.3-2.3 3.9-2.3 2.7 0 4.7 2.6 4.2 5.5-.7 3.7-4.5 6.9-8.1 9.7Z" stroke-linejoin="round" />
+                            <path class="fav-drip" stroke="none" d="M12 20.6c-.5 1.1-.8 1.8-.8 2.4a.8.8 0 0 0 1.6 0c0-.6-.3-1.3-.8-2.4Z" />
+                            <path class="fav-drip" stroke="none" d="M6.9 16.2c-.4.8-.6 1.3-.6 1.7a.7.7 0 0 0 1.4 0c0-.4-.2-.9-.8-1.7Z" />
+                            <path class="fav-brillo" d="M7.1 8.9c.3-1.1 1.2-1.9 2.3-2.1" stroke="#fff" stroke-width="1.6" stroke-linecap="round" fill="none" />
                           </svg>
                         </button>
                       </div>
@@ -296,12 +298,62 @@ const SYS: Record<string, string> = {
         class="fav-bar btn-pintura pointer-events-auto inline-flex items-center gap-2 rounded-full bg-rojo px-5 py-3 text-[13px] font-bold text-white shadow-lg shadow-black/50 transition-transform hover:-translate-y-0.5 sm:gap-2.5"
       >
         <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4" aria-hidden="true">
-          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-          <path d="M12 21.5c-.7.9-1.05 1.55-1.05 2.1a1.05 1.05 0 0 0 2.1 0c0-.55-.35-1.2-1.05-2.1z" />
+          <path d="M12 20.6C8.4 17.8 4.6 14.6 3.9 10.9 3.4 8 5.4 5.4 8.1 5.4c1.6 0 3.1.9 3.9 2.3.8-1.4 2.3-2.3 3.9-2.3 2.7 0 4.7 2.6 4.2 5.5-.7 3.7-4.5 6.9-8.1 9.7Z" />
+          <path d="M12 20.6c-.5 1.1-.8 1.8-.8 2.4a.8.8 0 0 0 1.6 0c0-.6-.3-1.3-.8-2.4Z" />
+          <path d="M6.9 16.2c-.4.8-.6 1.3-.6 1.7a.7.7 0 0 0 1.4 0c0-.4-.2-.9-.8-1.7Z" />
         </svg>
         <span id="fav-bar-txt">0 colores guardados</span>
         <span class="hidden opacity-85 sm:inline">· Pruébalos en la pared →</span>
       </a>
+    </div>
+
+    <!-- FICHA grande de color: se abre al pulsar cualquier muestra (aquí mismo) -->
+    <div
+      id="ficha-color"
+      class="fixed inset-0 z-[80] hidden items-center justify-center p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Detalle del color"
+    >
+      <div id="ficha-fondo" class="absolute inset-0 bg-negro/70 backdrop-blur-sm"></div>
+      <div class="ficha-panel relative w-full max-w-md overflow-hidden rounded-3xl border border-white/15 bg-[#241b1b] shadow-2xl shadow-black/60">
+        <div id="ficha-swatch" class="relative h-60 w-full sm:h-72">
+          <button
+            type="button"
+            id="ficha-cerrar"
+            class="absolute top-3 right-3 grid h-10 w-10 cursor-pointer place-items-center rounded-full bg-black/45 text-[20px] leading-none text-white backdrop-blur-sm transition-colors hover:bg-black/65"
+            aria-label="Cerrar detalle"
+          >×</button>
+          <span
+            id="ficha-hex"
+            class="absolute bottom-3 left-3 rounded-full bg-black/45 px-2.5 py-1 font-mono text-[11px] font-semibold tracking-wide text-white backdrop-blur-sm"
+          ></span>
+        </div>
+        <div class="flex items-center justify-between gap-3 p-5">
+          <div class="min-w-0">
+            <p id="ficha-carta-tag" class="kicker-xs text-papel/55"></p>
+            <p id="ficha-cod" class="font-display mt-0.5 truncate text-xl font-bold text-white"></p>
+            <p id="ficha-nombre" class="mt-0.5 truncate text-[13px] text-papel/65"></p>
+          </div>
+          <button
+            type="button"
+            id="ficha-fav"
+            class="fav-btn grid h-12 w-12 shrink-0 cursor-pointer place-items-center rounded-full bg-white/10 text-white ring-1 ring-white/20 transition-colors hover:bg-white/20"
+            aria-pressed="false"
+            aria-label="Guardar este color en tus colores"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M12 20.6C8.4 17.8 4.6 14.6 3.9 10.9 3.4 8 5.4 5.4 8.1 5.4c1.6 0 3.1.9 3.9 2.3.8-1.4 2.3-2.3 3.9-2.3 2.7 0 4.7 2.6 4.2 5.5-.7 3.7-4.5 6.9-8.1 9.7Z" stroke-linejoin="round" />
+              <path class="fav-drip" stroke="none" d="M12 20.6c-.5 1.1-.8 1.8-.8 2.4a.8.8 0 0 0 1.6 0c0-.6-.3-1.3-.8-2.4Z" />
+              <path class="fav-drip" stroke="none" d="M6.9 16.2c-.4.8-.6 1.3-.6 1.7a.7.7 0 0 0 1.4 0c0-.4-.2-.9-.8-1.7Z" />
+              <path class="fav-brillo" d="M7.1 8.9c.3-1.1 1.2-1.9 2.3-2.1" stroke="#fff" stroke-width="1.6" stroke-linecap="round" fill="none" />
+            </svg>
+          </button>
+        </div>
+        <p class="border-t border-white/[0.07] px-5 py-3 text-[11.5px] text-papel/55">
+          Color en pantalla orientativo · pídelo con su código en tienda
+        </p>
+      </div>
     </div>
   </main>
   <Footer />
@@ -404,10 +456,10 @@ const SYS: Record<string, string> = {
 
   // Constructor de muestra reutilizable (con corazón de favorito), para las
   // cartas generadas (NCS y RAL Design).
-  const HEART = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" stroke-linejoin="round"/><path class="fav-drip" stroke="none" d="M12 21.5c-.7.9-1.05 1.55-1.05 2.1a1.05 1.05 0 0 0 2.1 0c0-.55-.35-1.2-1.05-2.1z"/></svg>`;
+  const HEART = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 20.6C8.4 17.8 4.6 14.6 3.9 10.9 3.4 8 5.4 5.4 8.1 5.4c1.6 0 3.1.9 3.9 2.3.8-1.4 2.3-2.3 3.9-2.3 2.7 0 4.7 2.6 4.2 5.5-.7 3.7-4.5 6.9-8.1 9.7Z" stroke-linejoin="round"/><path class="fav-drip" stroke="none" d="M12 20.6c-.5 1.1-.8 1.8-.8 2.4a.8.8 0 0 0 1.6 0c0-.6-.3-1.3-.8-2.4Z"/><path class="fav-drip" stroke="none" d="M6.9 16.2c-.4.8-.6 1.3-.6 1.7a.7.7 0 0 0 1.4 0c0-.4-.2-.9-.8-1.7Z"/><path class="fav-brillo" d="M7.1 8.9c.3-1.1 1.2-1.9 2.3-2.1" stroke="#fff" stroke-width="1.6" stroke-linecap="round" fill="none"/></svg>`;
   const crearItemColor = (codigo: string, hex: string) => {
     const el = document.createElement('div');
-    el.className = 'color-item panel panel-i overflow-hidden';
+    el.className = 'color-item panel panel-i cursor-pointer overflow-hidden';
     el.dataset.buscar = codigo.toLowerCase();
     el.dataset.hex = hex;
     el.dataset.codigo = codigo;
@@ -502,6 +554,22 @@ const SYS: Record<string, string> = {
       el.classList.toggle('hidden', !coincide);
       if (coincide) visibles++;
     });
+    // Búsqueda ENTRE CARTAS: si aquí no hay nada pero el código existe en otra
+    // carta (p. ej. buscas un NCS estando en RAL), cambiamos solos a esa carta.
+    if (q && visibles === 0) {
+      for (const p of paneles) {
+        if (p.dataset.panel === activa) continue;
+        const hay = [...p.querySelectorAll<HTMLElement>('.color-item')].some((el) =>
+          (el.dataset.buscar ?? '').includes(q)
+        );
+        if (hay) {
+          const destino = p.dataset.panel ?? 'ral';
+          if (info) info.textContent = `Está en la carta ${destino.toUpperCase()} — cambiando…`;
+          (document.getElementById('tab-' + destino) as HTMLButtonElement | null)?.click();
+          return; // el click re-ejecuta filtrar() ya en la carta correcta
+        }
+      }
+    }
     if (info) {
       info.textContent = q
         ? `${visibles} color${visibles === 1 ? '' : 'es'} en la carta ${activa.toUpperCase()}`
@@ -611,6 +679,13 @@ const SYS: Record<string, string> = {
       localStorage.setItem(FAV_KEY, JSON.stringify(a));
     } catch (e) {}
   };
+  // Tinta del splash con contraste: blanca si la muestra ya es rojiza
+  const tintaSegun = (hex: string) => {
+    const r = parseInt(hex.slice(1, 3), 16) || 0;
+    const g = parseInt(hex.slice(3, 5), 16) || 0;
+    const b = parseInt(hex.slice(5, 7), 16) || 0;
+    return r > 130 && r > g * 1.4 && r > b * 1.4 ? 'blanco' : 'rojo';
+  };
 
   const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const favBarWrap = document.getElementById('fav-bar-wrap');
@@ -666,13 +741,80 @@ const SYS: Record<string, string> = {
       }
       // …y salpica pintura (blanca si la muestra ya es rojiza, roja si no)
       const r = btn.getBoundingClientRect();
-      const hex = color.h || '';
-      const rr = parseInt(hex.slice(1, 3), 16) || 0;
-      const gg = parseInt(hex.slice(3, 5), 16) || 0;
-      const bb = parseInt(hex.slice(5, 7), 16) || 0;
-      const tinta = rr > 130 && rr > gg * 1.4 && rr > bb * 1.4 ? 'blanco' : 'rojo';
-      (window as any).euronovaSplash?.(r.left + r.width / 2, r.top + r.height / 2, tinta);
+      (window as any).euronovaSplash?.(r.left + r.width / 2, r.top + r.height / 2, tintaSegun(color.h || ''));
     }
+  });
+
+  // ------- FICHA grande de color: clic en una muestra la abre (aquí mismo) -------
+  const ficha = document.getElementById('ficha-color');
+  const fichaPanel = ficha?.querySelector<HTMLElement>('.ficha-panel');
+  const fichaSwatch = document.getElementById('ficha-swatch');
+  const fichaCod = document.getElementById('ficha-cod');
+  const fichaNombre = document.getElementById('ficha-nombre');
+  const fichaHex = document.getElementById('ficha-hex');
+  const fichaTag = document.getElementById('ficha-carta-tag');
+  const fichaFav = document.getElementById('ficha-fav');
+  let colorFicha: { h: string; c: string; n: string } | null = null;
+
+  const refrescarFavFicha = () => {
+    if (fichaFav && colorFicha)
+      fichaFav.setAttribute('aria-pressed', String(leerFavs().some((f) => f.c === colorFicha!.c)));
+  };
+  const abrirFicha = (c: { h: string; c: string; n: string }) => {
+    colorFicha = c;
+    if (fichaSwatch) fichaSwatch.style.backgroundColor = c.h;
+    if (fichaCod) fichaCod.textContent = c.c;
+    if (fichaNombre) fichaNombre.textContent = c.n || 'Pídelo con su código en tienda';
+    if (fichaHex) fichaHex.textContent = c.h.toUpperCase();
+    if (fichaTag)
+      fichaTag.textContent = c.c.startsWith('RAL') ? 'Carta RAL' : c.c.startsWith('NCS') ? 'Carta NCS' : 'Carta';
+    refrescarFavFicha();
+    ficha?.classList.remove('hidden');
+    ficha?.classList.add('flex');
+    if (!REDUCE && fichaPanel)
+      fichaPanel.animate(
+        [
+          { transform: 'scale(0.94) translateY(14px)', opacity: 0 },
+          { transform: 'none', opacity: 1 }
+        ],
+        { duration: 220, easing: 'cubic-bezier(.2,.9,.3,1)' }
+      );
+    (document.getElementById('ficha-cerrar') as HTMLElement | null)?.focus();
+  };
+  const cerrarFicha = () => {
+    ficha?.classList.add('hidden');
+    ficha?.classList.remove('flex');
+  };
+  document.getElementById('ficha-cerrar')?.addEventListener('click', cerrarFicha);
+  document.getElementById('ficha-fondo')?.addEventListener('click', cerrarFicha);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') cerrarFicha();
+  });
+  fichaFav?.addEventListener('click', () => {
+    if (!colorFicha) return;
+    let favsF = leerFavs();
+    const anadido = !favsF.some((f) => f.c === colorFicha!.c);
+    if (anadido) {
+      favsF.unshift(colorFicha!);
+      if (favsF.length > FAV_MAX) favsF = favsF.slice(0, FAV_MAX);
+    } else {
+      favsF = favsF.filter((f) => f.c !== colorFicha!.c);
+    }
+    escribirFavs(favsF);
+    marcarTodos();
+    refrescarFavFicha();
+    if (anadido && !REDUCE) {
+      const r = fichaFav.getBoundingClientRect();
+      (window as any).euronovaSplash?.(r.left + r.width / 2, r.top + r.height / 2, tintaSegun(colorFicha!.h));
+    }
+  });
+  // Abrir al pulsar la muestra (el corazón sigue guardando, no abre)
+  document.addEventListener('click', (e) => {
+    const t = e.target as HTMLElement;
+    if (t.closest('.fav-btn')) return;
+    const item = t.closest<HTMLElement>('.color-item');
+    if (!item || !item.dataset.hex) return;
+    abrirFicha({ h: item.dataset.hex, c: item.dataset.codigo ?? '', n: item.dataset.nombre ?? '' });
   });
 
   marcarTodos();
