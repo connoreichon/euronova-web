@@ -353,8 +353,7 @@ const {
       }
 
       // Cursor brocha (solo con puntero fino = ratón; en táctil no hay cursor).
-      // Dos capas: punta ROJA (fondos oscuros) y punta NEGRA (fondos rojos/claros),
-      // con fundido entre ambas según el fondo bajo el cursor.
+      // La punta es SIEMPRE roja de marca (decisión del cliente).
       if (window.matchMedia('(pointer: fine)').matches) {
         document.documentElement.classList.add('js-brush', 'pointer-fino');
         const cont = document.createElement('div');
@@ -362,15 +361,10 @@ const {
         const wrap = document.createElement('span');
         wrap.className = 'brocha-cursor__wrap';
         const imgA = document.createElement('img');
-        imgA.className = 'brocha-cursor__img brocha-cursor__img--roja';
+        imgA.className = 'brocha-cursor__img';
         imgA.src = `${BASE_URL}/assets/pincel/brocha-cursor.png`;
         imgA.alt = '';
-        const imgB = document.createElement('img');
-        imgB.className = 'brocha-cursor__img brocha-cursor__img--negra';
-        imgB.src = `${BASE_URL}/assets/pincel/brocha-cursor-negra.png`;
-        imgB.alt = '';
         wrap.appendChild(imgA);
-        wrap.appendChild(imgB);
         cont.appendChild(wrap);
         document.body.appendChild(cont);
         const TIPX = 0.01,
@@ -404,8 +398,6 @@ const {
           const t = e.target as HTMLElement;
           // Sobre campos de texto, oculta la brocha (ahí manda el I-beam).
           cont.classList.toggle('oculta', !!t.closest('input,textarea,select,[contenteditable]'));
-          // La punta cambia de tinta según el fondo (roja en oscuro, negra en rojo/claro).
-          cont.classList.toggle('tinta-negra', fondoClaro(t));
         });
       }
     </script>
