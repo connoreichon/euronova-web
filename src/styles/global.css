@@ -907,46 +907,55 @@ body::after {
 .sim-divisor.sim-divisor--2 {
   left: var(--split2, 66.7%);
 }
-/* entrada: la regla CAE desde arriba y se ASIENTA (rebote leve) al aparecer */
+/* entrada sutil: fade + leve scaleY, sin rebote (250-400ms). */
 .sim-divisor:not([hidden]) {
-  transform-origin: top center;
-  animation: tape-in 0.42s var(--ease-suave) both;
+  transform-origin: center;
+  animation: tape-in 0.32s var(--ease-suave) both;
 }
 @keyframes tape-in {
-  0% {
+  from {
     opacity: 0;
-    transform: translateY(-12px) scaleY(0.7);
+    transform: scaleY(0.96);
   }
-  62% {
+  to {
     opacity: 1;
-    transform: translateY(2px) scaleY(1.02);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scaleY(1);
+    transform: scaleY(1);
   }
 }
 /* la cinta: papel crema con grano, sombra a los lados (posada sobre la pared) y
    FILO ROJO mojado a un lado (wet-edge). */
-/* DIVISOR fino y elegante (lenguaje de comparador antes/después): una costura de
-   luz delgada de 4px con sombra a los lados que la separa del muro (tiene cuerpo,
-   no es una línea plana). El acento de marca lo lleva el tirador, no la línea. */
+/* CINTA DE PINTOR fina (13px): cuerpo crema mate, filo lateral fino y sombra muy
+   suave que la posa sobre la pared sin robar protagonismo. Sin marcas de regla.
+   El único acento de marca es una hairline roja de 1px en un lado. */
 .sim-divisor__linea {
   position: absolute;
   top: 0;
   bottom: 0;
-  left: -2px;
-  width: 4px;
+  left: -6.5px;
+  width: 13px;
   border-radius: 2px;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.4), #fffdf9 45%, rgba(255, 255, 255, 0.7));
+  background: linear-gradient(90deg, rgba(239, 228, 207, 0.82), var(--color-crema) 50%, #e7dcc6);
   box-shadow:
-    0 0 0 0.5px rgba(23, 17, 17, 0.22),
-    3px 0 12px -3px rgba(0, 0, 0, 0.4),
-    -3px 0 12px -3px rgba(0, 0, 0, 0.4);
+    inset 1px 0 0 rgba(255, 255, 255, 0.42),
+    inset -1px 0 0 rgba(23, 17, 17, 0.08),
+    2px 0 7px -3px rgba(0, 0, 0, 0.26),
+    -2px 0 7px -3px rgba(0, 0, 0, 0.2);
+}
+/* acento Euronova: hairline roja de 1px en el filo derecho (nada más de rojo). */
+.sim-divisor__linea::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 1px;
+  background: var(--color-rojo);
+  opacity: 0.5;
 }
 /* TIRADOR: cápsula tipo "lengüeta de herramienta" con flechas rojas y grip. */
-/* TIRADOR circular limpio (36px) con flechas rojas de marca. Conserva su SVG por
-   encima (> svg z-index:1) y su ::after de área de toque ampliada (NO se toca). */
+/* TIRADOR mínimo: cápsula fina crema (16×30) atenuada por defecto, con un grip
+   sutil de 3 rayitas (sin flechas ni rojo grande). Conserva su ::after de área de
+   toque ampliada (NO se toca). El SVG de flechas se oculta. */
 .sim-divisor__asa {
   position: absolute;
   top: 50%;
@@ -954,24 +963,40 @@ body::after {
   transform: translate(-50%, -50%);
   display: grid;
   place-items: center;
-  width: 36px;
-  height: 36px;
+  width: 16px;
+  height: 30px;
   border-radius: 9999px;
-  color: var(--color-rojo);
-  background: linear-gradient(180deg, #ffffff, #fbf6ec);
+  background: linear-gradient(180deg, #fbf5ea, var(--color-crema));
   box-shadow:
-    0 3px 12px -2px rgba(0, 0, 0, 0.45),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9),
-    inset 0 0 0 1px rgba(23, 17, 17, 0.08);
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    inset 0 0 0 1px rgba(23, 17, 17, 0.1),
+    0 2px 6px -2px rgba(0, 0, 0, 0.3);
   cursor: ew-resize;
   touch-action: none;
+  opacity: 0.9;
   transition:
     transform 0.18s var(--ease-suave),
-    box-shadow 0.18s ease;
+    box-shadow 0.18s ease,
+    opacity 0.18s ease;
 }
 .sim-divisor__asa > svg {
-  position: relative;
-  z-index: 1;
+  display: none;
+}
+/* grip discreto: 3 rayitas verticales muy finas en el centro (afordancia de
+   arrastre sin icono). */
+.sim-divisor__asa::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1px;
+  height: 12px;
+  border-radius: 1px;
+  background: rgba(23, 17, 17, 0.26);
+  box-shadow:
+    3px 0 0 rgba(23, 17, 17, 0.26),
+    -3px 0 0 rgba(23, 17, 17, 0.26);
 }
 .sim-divisor__asa::after {
   content: '';
@@ -979,16 +1004,18 @@ body::after {
   inset: -12px;
   border-radius: 9999px;
 }
-.sim-divisor__asa:hover {
-  transform: translate(-50%, -50%) scale(1.08);
+.sim-divisor__asa:hover,
+.sim-divisor__asa:focus-visible {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1.05);
   box-shadow:
-    0 4px 16px -2px rgba(0, 0, 0, 0.5),
-    0 0 0 4px rgba(210, 38, 43, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9),
-    inset 0 0 0 1px rgba(23, 17, 17, 0.08);
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    inset 0 0 0 1px rgba(23, 17, 17, 0.12),
+    0 3px 9px -2px rgba(0, 0, 0, 0.36),
+    0 0 0 3px rgba(210, 38, 43, 0.14);
 }
 .sim-divisor__asa:active {
-  transform: translate(-50%, -50%) scale(1.03);
+  transform: translate(-50%, -50%) scale(1.02);
 }
 
 /* ETIQUETA DE ZONA: mini pastilla con el código, centrada sobre cada franja. */
@@ -1647,11 +1674,10 @@ body::after {
   contain-intrinsic-size: 0 176px;
 }
 
-/* LÁMINA DE MUESTRARIO: cada carta RAL/NCS parece una cartulina pintada de un
-   abanico — chasis cálido, swatch con bisel, taladro del abanico DENTRO del
-   swatch (para no recortarlo con el overflow del contenedor), tira de etiqueta
-   de papel crema con el código en mono, y hover "card-pick" (se coge la lámina:
-   sube y micro-rota). Vale para las estáticas y las generadas por JS. */
+/* LÁMINA DE MUESTRARIO: cada carta RAL/NCS parece una cartulina pintada — chasis
+   cálido, swatch con bisel, tira de etiqueta de papel crema con el código en mono,
+   y hover "card-pick" (se coge la lámina: sube y micro-rota). Sin adornos en la
+   esquina. Vale para las estáticas y las generadas por JS. */
 .color-item,
 .blanco-item {
   background: linear-gradient(180deg, #241a17, #1b1413) !important;
@@ -1669,19 +1695,8 @@ body::after {
     inset 0 -14px 26px -20px rgba(0, 0, 0, 0.45),
     inset 0 0 0 1px rgba(23, 17, 17, 0.12);
 }
-.color-item .swatch::after,
-.blanco-item .swatch::after {
-  content: '';
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  z-index: 2;
-  width: 8px;
-  height: 8px;
-  border-radius: 9999px;
-  background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.4), rgba(23, 17, 17, 0.85) 70%);
-  box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.14);
-}
+/* (Sin adorno en la esquina del swatch: se retiró el antiguo "taladro" gris de la
+   esquina superior izquierda — la muestra queda limpia, con el color de protagonista.) */
 .color-item .border-t,
 .blanco-item .border-t {
   background: linear-gradient(180deg, var(--color-crema-200), var(--color-crema)) !important;
@@ -1853,12 +1868,12 @@ body::after {
   }
   /* Piezas del escenario ajustadas para que nada se corte a 360–390px. */
   .sim-divisor__linea {
-    width: 3px;
-    left: -1.5px;
+    width: 10px;
+    left: -5px;
   }
   .sim-divisor__asa {
-    width: 32px;
-    height: 32px;
+    width: 14px;
+    height: 26px;
   }
   .sim-zona-label {
     font-size: 9.5px;
