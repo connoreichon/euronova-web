@@ -35,6 +35,7 @@ const SUPERFICIES = [
 ---
 
 <section id="color" class="costura sec-alt py-20 text-papel md:py-32">
+  <div class="banco-fondo" aria-hidden="true"></div>
   <div class="container-x">
     <!-- Encabezado -->
     <div class="reveal halo-rojo halo-rojo--tenue mx-auto max-w-3xl">
@@ -106,7 +107,7 @@ const SUPERFICIES = [
 
     <!-- Escenario: una foto por superficie (solo la activa visible). Solo se
          pinta la superficie de su máscara; en "dos colores", en dos mitades. -->
-    <figure class="reveal sim-stage relative mx-auto mt-3 max-w-3xl overflow-hidden rounded-panel ring-1 ring-white/10 shadow-[0_26px_60px_-26px_rgba(0,0,0,0.8),0_0_90px_-28px_rgba(210,38,43,0.42)]">
+    <figure class="reveal sim-stage banco relative mx-auto mt-3 max-w-3xl overflow-hidden rounded-panel">
       {
         SUPERFICIES.map((s, i) => (
           <div
@@ -187,7 +188,8 @@ const SUPERFICIES = [
     </figure>
 
     <!-- Panel de control (dock premium bajo el escenario) -->
-    <div class="reveal panel mx-auto mt-5 max-w-3xl p-5 md:p-6">
+    <div class="reveal panel banco mx-auto mt-5 max-w-3xl p-5 md:p-6">
+      <p class="banco__placa">Banco de color · Igualación</p>
       <!-- Estado en vivo + modo "dos colores" (divide la pared en dos mitades) -->
       <div class="flex flex-wrap items-center justify-between gap-4">
         <div id="sim-lados" class="flex flex-wrap items-center gap-2">
@@ -578,6 +580,12 @@ const SUPERFICIES = [
   };
   const sugerencias = elegirAlAzar(SUGERENCIAS_POOL, 6);
 
+  // Interior de una muestra de abanico: campo de color + tira con el código en
+  // mono (RAL/NCS abreviados para que quepan en la tira).
+  const codigoCorto = (cod) => (cod || '').replace(/^NCS\s+S\s+/i, '').replace(/^RAL\s+/i, '');
+  const chipInterior = (f) =>
+    `<span class="sim-chip__color" style="background:${f.h}"></span><span class="sim-chip__code">${codigoCorto(f.c)}</span>`;
+
   const renderFavs = (nuevo) => {
     if (!favsEl) return;
     cerrarPop();
@@ -589,9 +597,8 @@ const SUPERFICIES = [
       sugerencias.forEach((f) => {
         const b = document.createElement('button');
         b.type = 'button';
-        b.className =
-          'sim-chip sim-fav-apply h-10 w-10 cursor-pointer rounded-full border-2 border-white/20 transition-transform hover:scale-110';
-        b.style.backgroundColor = f.h;
+        b.className = 'sim-chip sim-fav-apply cursor-pointer';
+        b.innerHTML = chipInterior(f);
         b.title = nombreColor(f);
         b.setAttribute('aria-label', 'Probar ' + nombreColor(f));
         b.setAttribute('aria-pressed', String(f.c === actual().c));
@@ -612,9 +619,8 @@ const SUPERFICIES = [
       if (nuevo && f.c === nuevo) wrap.classList.add('pop');
       const b = document.createElement('button');
       b.type = 'button';
-      b.className =
-        'sim-chip sim-fav-apply h-10 w-10 cursor-pointer rounded-full border-2 border-white/25 transition-transform hover:scale-110';
-      b.style.backgroundColor = f.h;
+      b.className = 'sim-chip sim-fav-apply cursor-pointer';
+      b.innerHTML = chipInterior(f);
       b.title = nombreColor(f);
       b.setAttribute('aria-label', 'Aplicar ' + nombreColor(f) + '. Mantén pulsado para reordenar o quitar');
       b.setAttribute('aria-pressed', String(f.c === actual().c));
