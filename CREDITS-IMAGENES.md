@@ -53,9 +53,12 @@ Siluetas de salpicadura reales de **Pixabay** (licencia Pixabay, uso comercial
 sin atribución), teñidas a los colores de marca con Python/PIL:
 paint-2174689 (splat1), paint-splatter-312092 (splat2), paint-2174687 (splat3),
 ink-5949451 (splat4/5), paint-2209578 (splat6 con goteo y splat7 masa),
-ink-303244 (splat8 pictórica densa). **EN USO (2026-07): splat2/splat3 (rojo y
-blanco)** para el "splash" al guardar un color en favoritos (helper
-`euronovaSplash` en `Base.astro`).
+ink-303244 (splat8 pictórica densa). Actualmente sin uso directo.
+- `cartoon1/2-rojo.png` y `cartoon1/2-blanco.png`: salpicaduras CARTOON
+  **GENERADAS con Python/PIL** (blob de puntas redondeadas + luz + keyline,
+  mismo lenguaje de dibujo que la brocha-cursor). Las usa el splash al guardar
+  un favorito (helper `euronovaSplash` en `Base.astro`: anillo de impacto +
+  mancha con rebote + gotas con gravedad + goterón; se limpia sola).
 
 ## Pincel: cursor y pinceladas (`public/assets/pincel/`)
 

@@ -14,11 +14,11 @@ const cartas = [
   { id: 'eurotrend', nombre: 'EUROTREND', sub: 'Muy pronto en la web', colores: EUROTREND }
 ];
 
-// Mini "abanico" de cada carta (hojas de color tras el distintivo; se abre al activar)
-const FAN: Record<string, string[]> = {
-  ral: ['#c1121c', '#e5be01', '#0e518d', '#3a7d44'],
-  ncs: ['#f4efe2', '#c9c4b8', '#8a8378', '#4b443c'],
-  eurotrend: ['#dfe8f4', '#a9c6ee', '#5c8fd6', '#1a4fa8']
+// Color distintivo de cada sistema (lengüeta y borde activo de su ficha)
+const SYS: Record<string, string> = {
+  ral: '#c1121c',
+  ncs: '#f4efe2',
+  eurotrend: '#1a4fa8'
 };
 ---
 
@@ -122,33 +122,24 @@ const FAN: Record<string, string[]> = {
                 aria-selected={i === 0 ? 'true' : 'false'}
                 aria-controls={`panel-${carta.id}`}
                 data-carta={carta.id}
-                class={`tab-carta flex cursor-pointer items-center gap-3 rounded-xl border px-4 py-2.5 text-left transition-all ${
-                  i === 0
-                    ? 'border-rojo/70 bg-rojo/10'
-                    : 'border-white/12 bg-white/[0.04] hover:border-white/30'
-                }`}
+                style={`--sys:${SYS[carta.id]}`}
+                class="tab-carta ficha-carta flex cursor-pointer items-center gap-2.5 py-3 pr-4 pl-7 text-left"
               >
-                <!-- Abanico de carta: hojas de color que se abren al activarse -->
-                <span class="carta-fan relative h-12 w-14 shrink-0" aria-hidden="true">
-                  {FAN[carta.id].map((f, j) => (
-                    <span class="carta-fan__hoja" style={`background:${f}; --rot:${((j - 1.5) * 14).toFixed(0)}deg;`} />
-                  ))}
-                  {carta.id === 'ral' && (
-                    <span class="absolute bottom-0 left-1/2 z-10 grid h-8 w-8 -translate-x-1/2 place-items-center rounded-md bg-[#c1121c] font-display text-[11.5px] font-extrabold text-white shadow-md shadow-black/40">
-                      RAL
-                    </span>
-                  )}
-                  {carta.id === 'ncs' && (
-                    <span class="absolute bottom-0 left-1/2 z-10 grid h-8 w-8 -translate-x-1/2 place-items-center rounded-md bg-white font-display text-[11.5px] font-extrabold text-[#111] shadow-md shadow-black/40">
-                      NCS<span class="-mt-2 text-[6px]">®</span>
-                    </span>
-                  )}
-                  {carta.id === 'eurotrend' && (
-                    <span class="absolute bottom-0 left-1/2 z-10 grid h-8 w-14 -translate-x-1/2 place-items-center rounded-md bg-white px-1 font-display text-[8px] font-extrabold tracking-tight text-[#1a4fa8] italic shadow-md shadow-black/40">
-                      EUROTREND
-                    </span>
-                  )}
-                </span>
+                {carta.id === 'ral' && (
+                  <span class="grid h-9 w-9 shrink-0 place-items-center rounded-md bg-[#c1121c] font-display text-[13px] font-extrabold text-white">
+                    RAL
+                  </span>
+                )}
+                {carta.id === 'ncs' && (
+                  <span class="grid h-9 w-9 shrink-0 place-items-center rounded-md bg-white font-display text-[13px] font-extrabold text-[#111]">
+                    NCS<span class="-mt-2 text-[7px]">®</span>
+                  </span>
+                )}
+                {carta.id === 'eurotrend' && (
+                  <span class="grid h-9 w-14 shrink-0 place-items-center rounded-md bg-white px-1 font-display text-[9px] font-extrabold tracking-tight text-[#1a4fa8] italic">
+                    EUROTREND
+                  </span>
+                )}
                 <span>
                   <span class="block text-[13px] font-bold text-white">Carta {carta.nombre}</span>
                   <span class="block text-[11px] text-papel/60">{carta.sub}</span>
@@ -499,8 +490,6 @@ const FAN: Record<string, string[]> = {
   const info = document.getElementById('resultado-info');
   const sinResultados = document.getElementById('sin-resultados');
   let activa = 'ral';
-  const CL_ON = ['border-rojo/70', 'bg-rojo/10'];
-  const CL_OFF = ['border-white/12', 'bg-white/[0.04]'];
 
   const filtrar = () => {
     const q = buscador.value.trim().toLowerCase().replace(/\s+/g, ' ');
@@ -530,10 +519,8 @@ const FAN: Record<string, string[]> = {
     tab.addEventListener('click', () => {
       activa = tab.dataset.carta ?? 'ral';
       tabs.forEach((t) => {
-        const sel = t === tab;
-        t.setAttribute('aria-selected', String(sel));
-        CL_ON.forEach((c) => t.classList.toggle(c, sel));
-        CL_OFF.forEach((c) => t.classList.toggle(c, !sel));
+        // el estado visual de la ficha lo pinta el CSS vía [aria-selected]
+        t.setAttribute('aria-selected', String(t === tab));
       });
       paneles.forEach((p) => p.classList.toggle('hidden', p.dataset.panel !== activa));
       syncMini();

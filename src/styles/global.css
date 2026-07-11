@@ -758,28 +758,76 @@ body::after {
   }
 }
 
-/* --- Abanico de carta (pestañas de /cartas): hojas de color tras el distintivo
-   que se ABREN al activar la pestaña, como desplegar la carta física. --- */
-.carta-fan__hoja {
-  position: absolute;
-  left: 50%;
-  bottom: 6px;
-  width: 10px;
-  height: 30px;
-  border-radius: 3px;
-  transform-origin: 50% 100%;
-  transform: translateX(-50%) rotate(var(--rot));
+/* --- FICHA DE CARTA (pestañas de /cartas): la casilla es una ficha de
+   muestrario real — lengüeta con el color del sistema asomando por arriba
+   (como el índice de un archivador), taladro del abanico a la izquierda y
+   cuerpo con papel de carta. La activa "sale del taco" y enciende su lengüeta. */
+.ficha-carta {
+  position: relative;
+  border: 1px solid var(--panel-borde);
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.015));
   box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.4),
-    inset 0 0 0 1px rgba(0, 0, 0, 0.08);
-  transition: transform 0.35s var(--ease-suave);
+    var(--panel-realce),
+    0 3px 10px -6px rgba(0, 0, 0, 0.6);
+  transition:
+    transform var(--dur-hover) var(--ease-suave),
+    border-color var(--dur-hover) ease,
+    box-shadow var(--dur-hover) var(--ease-suave);
 }
-.tab-carta[aria-selected='true'] .carta-fan__hoja {
-  transform: translateX(-50%) rotate(calc(var(--rot) * 1.6));
+/* Lengüeta del sistema */
+.ficha-carta::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: 16px;
+  width: 30px;
+  height: 5px;
+  border-radius: 3px 3px 0 0;
+  background: var(--sys, var(--color-rojo));
+  opacity: 0.55;
+  transition:
+    opacity var(--dur-hover) ease,
+    height var(--dur-hover) var(--ease-suave),
+    top var(--dur-hover) var(--ease-suave);
+}
+/* Taladro del abanico (el "tornillo" de la carta física) */
+.ficha-carta::after {
+  content: '';
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  transform: translateY(-50%);
+  border-radius: 9999px;
+  background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.35), rgba(0, 0, 0, 0.85) 70%);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.12);
+}
+.ficha-carta:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+.ficha-carta[aria-selected='true'] {
+  border-color: color-mix(in srgb, var(--sys, #fff) 60%, transparent);
+  transform: translateY(-3px);
+  box-shadow:
+    var(--panel-realce),
+    0 12px 24px -12px rgba(0, 0, 0, 0.75);
+}
+.ficha-carta[aria-selected='true']::before {
+  opacity: 1;
+  top: -7px;
+  height: 7px;
 }
 @media (prefers-reduced-motion: reduce) {
-  .carta-fan__hoja {
+  .ficha-carta,
+  .ficha-carta::before {
     transition: none;
+  }
+  .ficha-carta:hover,
+  .ficha-carta[aria-selected='true'] {
+    transform: none;
   }
 }
 
