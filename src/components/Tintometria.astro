@@ -732,6 +732,8 @@ const SUPERFICIES = [
       c.style.display = on ? '' : 'none';
       if (on && colores.b) c.style.backgroundColor = colores.b.h;
     });
+    // Recorta la capa A a su mitad (evita que A y B se multipliquen y oscurezcan)
+    estancias.forEach((es) => es.classList.toggle('split-on', on));
     divisores.forEach((d) => (d.hidden = !on));
     const ladoB = document.querySelector('#sim-lados [data-lado="b"]');
     if (ladoB) {

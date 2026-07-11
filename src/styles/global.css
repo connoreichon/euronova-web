@@ -601,6 +601,11 @@ body::after {
 .sim-color--b {
   clip-path: inset(0 0 0 var(--split));
 }
+/* En modo dos colores, la capa A se recorta a SU mitad (si cubriera toda la
+   pared, la derecha multiplicaría A×B y saldría más oscura de lo elegido). */
+.sim-estancia.split-on .sim-color--a {
+  clip-path: inset(0 calc(100% - var(--split)) 0 0);
+}
 .sim-divisor {
   position: absolute;
   top: 0;

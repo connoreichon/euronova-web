@@ -515,9 +515,16 @@ const SYS: Record<string, string> = {
       .querySelectorAll<HTMLElement>('.mini-carta')
       .forEach((m) => m.classList.toggle('is-on', m.dataset.mini === activa));
   };
+  // MEMORIA de scroll por carta: al volver a una carta, sigues donde la dejaste
+  // (no vuelves arriba). Solo actúa si estás navegando las rejillas.
+  const rejillasEl = document.getElementById('rejillas');
+  const scrollCarta: Record<string, number> = {};
   tabs.forEach((tab) => {
     tab.addEventListener('click', () => {
-      activa = tab.dataset.carta ?? 'ral';
+      const nueva = tab.dataset.carta ?? 'ral';
+      if (nueva === activa) return;
+      scrollCarta[activa] = window.scrollY; // recuerda dónde dejas la carta actual
+      activa = nueva;
       tabs.forEach((t) => {
         // el estado visual de la ficha lo pinta el CSS vía [aria-selected]
         t.setAttribute('aria-selected', String(t === tab));
@@ -525,6 +532,13 @@ const SYS: Record<string, string> = {
       paneles.forEach((p) => p.classList.toggle('hidden', p.dataset.panel !== activa));
       syncMini();
       filtrar();
+      // Si estás dentro de las rejillas: restaura la posición guardada de la
+      // nueva carta (o su principio si es la primera vez). Tras el scroll-por-
+      // focus del click(), para que no lo pise.
+      if (rejillasEl && window.scrollY > rejillasEl.offsetTop - 200) {
+        const dest = scrollCarta[nueva] !== undefined ? scrollCarta[nueva] : rejillasEl.offsetTop - 150;
+        setTimeout(() => window.scrollTo({ top: dest }), 0);
+      }
     });
   });
   buscador?.addEventListener('input', filtrar);
@@ -532,7 +546,6 @@ const SYS: Record<string, string> = {
   // ------- Mini selector flotante: cambiar de carta sin volver a subir -------
   const mini = document.getElementById('mini-cartas');
   const selectorCartas = document.getElementById('selector-cartas');
-  const rejillas = document.getElementById('rejillas');
   if (mini && selectorCartas && 'IntersectionObserver' in window) {
     const ioMini = new IntersectionObserver(
       (entries) => {
@@ -548,10 +561,9 @@ const SYS: Record<string, string> = {
     ioMini.observe(selectorCartas);
     mini.querySelectorAll<HTMLElement>('.mini-carta').forEach((mb) =>
       mb.addEventListener('click', () => {
+        // El scroll (memoria por carta / principio de la rejilla) lo gestiona
+        // el handler de la pestaña.
         (document.getElementById('tab-' + mb.dataset.mini) as HTMLButtonElement | null)?.click();
-        // Al cambiar, arrancamos la nueva carta desde su principio (tras el
-        // scroll-por-focus que provoca click(), para que no lo pise).
-        if (rejillas) setTimeout(() => window.scrollTo({ top: rejillas.offsetTop - 150 }), 0);
       })
     );
 
