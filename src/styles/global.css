@@ -414,25 +414,21 @@ body::after {
 .hero-fondo {
   position: relative;
   isolation: isolate;
-  /* PIGMENTO VIVO — base GRANATE profundo (no rojo brillante plano): reduce la
-     masa saturada y da descanso. El rojo de marca vuelve concentrado como un
-     latido de luz tras el contenido. */
-  background-color: var(--color-rojo-800);
+  /* ROJO DE MARCA (#d2262b) como color dominante — el mismo de CTAs, sello y logo.
+     La profundidad se consigue con veladuras granate SOLO en los bordes y una
+     viñeta suave; el centro se mantiene en rojo de marca limpio para que el titular
+     blanco tenga contraste. Nunca deja de leerse como el rojo de la marca. */
+  background-color: var(--color-rojo);
   background-image:
-    /* Transición inferior a granate muy oscuro (enlaza con el seam). */
-    linear-gradient(180deg, transparent 78%, #380a0d 100%),
-    /* NÚCLEO de pigmento vivo: el rojo maestro concentrado (izq-centro, tras el
-       titular); el resto queda en granate refinado. */
-    radial-gradient(72% 82% at 32% 44%, var(--color-rojo) 0%, rgba(210, 38, 43, 0) 60%),
+    /* Transición inferior hacia granate oscuro (enlaza con el seam). */
+    linear-gradient(180deg, transparent 68%, var(--color-rojo-900) 90%, #380a0d 100%),
     /* Luz cálida sobre la superficie (arriba-derecha). */
-    radial-gradient(70% 55% at 80% -6%, rgba(255, 246, 236, 0.13) 0%, transparent 52%),
-    /* Veladuras burdeos profundas en las esquinas (profundidad y calma). */
-    radial-gradient(90% 78% at -8% 110%, #460b0e 0%, transparent 55%),
-    radial-gradient(62% 72% at 108% 72%, #52100f 0%, transparent 52%),
-    /* Nube de pigmento granate difusa (arriba-izquierda). */
-    radial-gradient(64% 58% at 12% 12%, var(--color-rojo-900) 0%, transparent 60%),
-    /* Viñeta cálida general (más profunda): enmarca y descansa la vista. */
-    radial-gradient(155% 120% at 50% 36%, transparent 40%, rgba(30, 5, 7, 0.66) 100%);
+    radial-gradient(72% 55% at 82% -8%, rgba(255, 246, 236, 0.15) 0%, transparent 50%),
+    /* Veladuras granate profundas en las esquinas (profundidad sin apagar el rojo). */
+    radial-gradient(92% 82% at -10% 112%, var(--color-rojo-900) 0%, transparent 54%),
+    radial-gradient(64% 72% at 110% 76%, var(--color-rojo-800) 0%, transparent 52%),
+    /* Viñeta cálida general (suave): enmarca y protege el contraste del texto. */
+    radial-gradient(150% 125% at 42% 32%, transparent 46%, rgba(45, 6, 8, 0.5) 100%);
 }
 /* Pigmento: grano finísimo de pared pintada (se nota por cómo eleva, no se ve). */
 .hero-fondo::before {
@@ -532,68 +528,37 @@ body::after {
     transform: none;
   }
 }
-/* Cartelito de la muestra RAL: pequeña ficha clara (código en mono + carta) que
-   aparece sobre la muestra pulsada. Sutil, con flechita hacia la muestra. */
-.hero-tip {
-  position: absolute;
-  bottom: calc(100% + 10px);
-  left: 0;
-  z-index: 20;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  padding: 0.5rem 0.72rem;
-  border-radius: 0.6rem;
-  background: #fffdf9;
-  color: var(--color-tinta);
-  box-shadow:
-    0 14px 28px -14px rgba(30, 4, 6, 0.75),
-    inset 0 0 0 1px rgba(23, 17, 17, 0.06);
-  white-space: nowrap;
-  opacity: 0;
-  transform: translateY(4px);
-  transition:
-    opacity 0.18s ease,
-    transform 0.18s var(--ease-suave);
-  pointer-events: none;
+/* Muestras del hero: son botones que abren la ficha grande de color → foco
+   accesible visible al navegar con teclado. */
+.hero-swatch:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
 }
-.hero-tip.is-on {
-  opacity: 1;
-  transform: translateY(0);
-}
-.hero-tip::after {
-  content: '';
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  border: 6px solid transparent;
-  border-top-color: #fffdf9;
-}
-.hero-tip__sw {
-  flex: 0 0 auto;
-  width: 16px;
-  height: 16px;
+
+/* Muestras de rejilla (/cartas): son div con role="button" para abrir la ficha con
+   teclado → foco visible. */
+.color-item:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
   border-radius: 4px;
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.14);
 }
-.hero-tip b {
-  display: block;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-weight: 700;
-  font-size: 12.5px;
-  line-height: 1.15;
+
+/* Bloqueo de scroll del fondo mientras hay una ficha/modal abierto (iOS-safe: el
+   body se fija y JS restaura la posición al cerrar). */
+body.modal-lock {
+  position: fixed;
+  left: 0;
+  right: 0;
+  width: 100%;
+  overflow: hidden;
 }
-.hero-tip__sub {
-  display: block;
-  margin-top: 1px;
-  font-size: 10.5px;
-  color: rgba(32, 23, 23, 0.6);
-}
-@media (prefers-reduced-motion: reduce) {
-  .hero-tip {
-    transition: none;
-  }
+
+/* Header SÓLIDO: mismo ROJO DE MARCA que el hero (--color-rojo #d2262b). Se activa
+   al bajar en la portada y de forma fija en páginas oscuras. Opaco a propósito para
+   tapar por completo el logo del hero que queda detrás. */
+#site-header.header-solida {
+  background-color: var(--color-rojo);
+  box-shadow: 0 12px 30px -18px rgba(60, 8, 10, 0.8);
 }
 
 /* Foto del hero: entra al cargar (sin depender del IntersectionObserver — es el
@@ -1448,71 +1413,57 @@ body::after {
   }
 }
 
-/* --- FICHA DE CARTA (pestañas de /cartas): la casilla es una ficha de
-   muestrario real — lengüeta con el color del sistema asomando por arriba
-   (como el índice de un archivador), taladro del abanico a la izquierda y
-   cuerpo con papel de carta. La activa "sale del taco" y enciende su lengüeta. */
+/* --- FICHA DE CARTA (pestañas de /cartas): tarjeta premium en vidrio esmerilado
+   sobre el vídeo oscuro. Sin adornos toscos (fuera lengüeta de archivador y
+   taladro): la activa se ilumina con una barra de acento en el color del sistema
+   (RAL/NCS/Eurotrend), borde teñido y un halo suave — limpio y de marca. */
 .ficha-carta {
   position: relative;
-  border: 1px solid var(--panel-borde);
-  border-radius: 12px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.015));
-  box-shadow:
-    var(--panel-realce),
-    0 3px 10px -6px rgba(0, 0, 0, 0.6);
+  isolation: isolate;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.045);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 6px 20px -10px rgba(0, 0, 0, 0.6);
   transition:
     transform var(--dur-hover) var(--ease-suave),
     border-color var(--dur-hover) ease,
+    background-color var(--dur-hover) ease,
     box-shadow var(--dur-hover) var(--ease-suave);
 }
-/* Lengüeta del sistema */
-.ficha-carta::before {
-  content: '';
-  position: absolute;
-  top: -5px;
-  left: 16px;
-  width: 30px;
-  height: 5px;
-  border-radius: 3px 3px 0 0;
-  background: var(--sys, var(--color-rojo));
-  opacity: 0.55;
-  transition:
-    opacity var(--dur-hover) ease,
-    height var(--dur-hover) var(--ease-suave),
-    top var(--dur-hover) var(--ease-suave);
-}
-/* Taladro del abanico (el "tornillo" de la carta física) */
+/* Barra de acento inferior con el color del sistema: crece en la carta activa. */
 .ficha-carta::after {
   content: '';
   position: absolute;
-  left: 10px;
-  top: 50%;
-  width: 7px;
-  height: 7px;
-  transform: translateY(-50%);
-  border-radius: 9999px;
-  background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.35), rgba(0, 0, 0, 0.85) 70%);
-  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.12);
+  inset: auto 0 0 0;
+  height: 3px;
+  background: var(--sys, var(--color-rojo));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-hover) var(--ease-suave);
 }
 .ficha-carta:hover {
-  border-color: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.26);
+  background: rgba(255, 255, 255, 0.065);
   transform: translateY(-2px);
 }
 .ficha-carta[aria-selected='true'] {
-  border-color: color-mix(in srgb, var(--sys, #fff) 60%, transparent);
-  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--sys, #fff) 55%, transparent);
+  background: rgba(255, 255, 255, 0.085);
+  transform: translateY(-2px);
   box-shadow:
-    var(--panel-realce),
-    0 12px 24px -12px rgba(0, 0, 0, 0.75);
+    0 16px 34px -16px rgba(0, 0, 0, 0.75),
+    0 0 0 1px color-mix(in srgb, var(--sys, #fff) 22%, transparent),
+    0 0 26px -6px color-mix(in srgb, var(--sys, #fff) 32%, transparent);
 }
-.ficha-carta[aria-selected='true']::before {
-  opacity: 1;
-  top: -7px;
-  height: 7px;
+.ficha-carta[aria-selected='true']::after {
+  transform: scaleX(1);
 }
 @media (prefers-reduced-motion: reduce) {
   .ficha-carta,
-  .ficha-carta::before {
+  .ficha-carta::after {
     transition: none;
   }
   .ficha-carta:hover,

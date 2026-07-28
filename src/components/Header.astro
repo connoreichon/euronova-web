@@ -4,9 +4,9 @@ import LogoEuronova from './LogoEuronova.astro';
 import { asset } from '../lib/asset';
 
 const enCartas = Astro.url.pathname.includes('/cartas');
-// La portada tiene hero ROJO (header transparente encima queda bien); el resto
-// de páginas abren sobre fondo oscuro → header SIEMPRE rojo sólido (el logo
-// negro no se lee sobre oscuro).
+// La portada tiene hero en ROJO DE MARCA (header transparente encima queda bien y
+// muestra el propio color del hero); el resto de páginas abren sobre fondo oscuro →
+// header SIEMPRE sólido en el rojo de marca (mismo tono del hero, sin saltos).
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const esPortada =
   Astro.url.pathname === base + '/' ||
@@ -26,7 +26,7 @@ const enlaces = [
   id="site-header"
   data-solida={esPortada ? undefined : '1'}
   class={`fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow] duration-300 ${
-    esPortada ? '' : 'bg-rojo shadow-lg shadow-rojo-900/20'
+    esPortada ? '' : 'header-solida'
   }`}
 >
   <div class="container-x flex items-center justify-between gap-3 py-3.5">
@@ -88,17 +88,14 @@ const enlaces = [
 </header>
 
 <script>
-  // Arriba: transparente sobre el hero rojo. Con scroll: barra roja sólida.
+  // Arriba: transparente sobre el hero (se ve su propio rojo). Con scroll: barra
+  // sólida en el MISMO rojo de marca del hero (--color-rojo), sin salto de color.
   const header = document.getElementById('site-header');
   const aplicar = () => {
     if (!header || header.dataset.solida) return; // en páginas oscuras ya es sólido
-    // Rojo SÓLIDO (opaco) al bajar: así la barra tapa por completo el logo del
-    // hero y no se transparenta la palabra "pinturas" por detrás (líneas blancas).
-    if (window.scrollY > 24) {
-      header.classList.add('bg-rojo', 'shadow-lg', 'shadow-rojo-900/20');
-    } else {
-      header.classList.remove('bg-rojo', 'shadow-lg', 'shadow-rojo-900/20');
-    }
+    // Granate SÓLIDO (opaco) al bajar: la barra tapa por completo el logo del hero
+    // y no se transparenta la palabra "pinturas" por detrás (líneas blancas).
+    header.classList.toggle('header-solida', window.scrollY > 24);
   };
   aplicar();
   addEventListener('scroll', aplicar, { passive: true });

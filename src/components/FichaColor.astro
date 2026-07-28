@@ -1,0 +1,316 @@
+---
+// FICHA GRANDE DE COLOR + FAVORITOS (compartido).
+// Al pulsar cualquier muestra (.color-item de las rejillas de /cartas o .hero-swatch
+// de la portada) se abre esta ficha a pantalla, con el color en grande, su código,
+// carta y un corazón para guardarlo. Los favoritos viven en localStorage
+// ('euronova:favcolores'), los mismos que usa "Imagina tu pared" (Tintometria),
+// así el cliente marca tonos en cualquier sitio y los reencuentra en la pared.
+//   bar=true → muestra además la barra flotante con el contador de guardados.
+import { asset } from '../lib/asset';
+interface Props {
+  bar?: boolean;
+}
+const { bar = false } = Astro.props;
+---
+
+{
+  bar && (
+    <div
+      id="fav-bar-wrap"
+      style="display:none"
+      class="pointer-events-none fixed inset-x-0 bottom-4 z-50 flex justify-start px-4 sm:justify-center"
+    >
+      <a
+        href={asset('/') + '#color'}
+        id="fav-bar"
+        class="fav-bar btn-pintura pointer-events-auto inline-flex items-center gap-2 rounded-full bg-rojo px-5 py-3 text-[13px] font-bold text-white shadow-lg shadow-black/50 transition-transform hover:-translate-y-0.5 sm:gap-2.5"
+      >
+        <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4" aria-hidden="true">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+        </svg>
+        <span id="fav-bar-txt">0 colores guardados</span>
+        <span class="hidden opacity-85 sm:inline">· Pruébalos en la pared →</span>
+      </a>
+    </div>
+  )
+}
+
+<!-- FICHA grande de color: se abre al pulsar cualquier muestra -->
+<div
+  id="ficha-color"
+  class="fixed inset-0 z-[80] hidden items-center justify-center p-4"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Detalle del color"
+>
+  <div id="ficha-fondo" class="absolute inset-0 bg-negro/70 backdrop-blur-sm"></div>
+  <div class="ficha-panel relative w-full max-w-md overflow-hidden rounded-3xl border border-white/15 bg-[#241b1b] shadow-2xl shadow-black/60">
+    <div id="ficha-swatch" class="relative h-60 w-full sm:h-72">
+      <button
+        type="button"
+        id="ficha-cerrar"
+        class="absolute top-3 right-3 grid h-10 w-10 cursor-pointer place-items-center rounded-full bg-black/45 text-[20px] leading-none text-white backdrop-blur-sm transition-colors hover:bg-black/65"
+        aria-label="Cerrar detalle"
+      >×</button>
+      <span
+        id="ficha-hex"
+        class="absolute bottom-3 left-3 rounded-full bg-black/45 px-2.5 py-1 font-mono text-[11px] font-semibold tracking-wide text-white backdrop-blur-sm"
+      ></span>
+    </div>
+    <div class="flex items-center justify-between gap-3 p-5">
+      <div class="min-w-0">
+        <p id="ficha-carta-tag" class="kicker-xs text-papel/55"></p>
+        <p id="ficha-cod" class="font-display mt-0.5 truncate text-xl font-bold text-white"></p>
+        <p id="ficha-nombre" class="mt-0.5 truncate text-[13px] text-papel/65"></p>
+      </div>
+      <button
+        type="button"
+        id="ficha-fav"
+        class="fav-btn grid h-12 w-12 shrink-0 cursor-pointer place-items-center rounded-full bg-white/10 text-white ring-1 ring-white/20 transition-colors hover:bg-white/20"
+        aria-pressed="false"
+        aria-label="Guardar este color en tus colores"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+        </svg>
+      </button>
+    </div>
+    <p class="border-t border-white/[0.07] px-5 py-3 text-[11.5px] text-papel/55">
+      Color en pantalla orientativo · pídelo con su código en tienda
+    </p>
+  </div>
+</div>
+
+<script>
+  // Ficha grande + favoritos, compartido por la portada (tira del hero) y /cartas
+  // (rejillas). Fuentes de color = elementos .color-item o .hero-swatch con
+  // data-hex / data-codigo / data-nombre.
+  type Color = { h: string; c: string; n: string };
+  const FAV_KEY = 'euronova:favcolores';
+  const FAV_MAX = 20;
+  const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const leerFavs = (): Color[] => {
+    try {
+      return JSON.parse(localStorage.getItem(FAV_KEY) || '[]') || [];
+    } catch {
+      return [];
+    }
+  };
+  const escribirFavs = (a: Color[]) => {
+    try {
+      localStorage.setItem(FAV_KEY, JSON.stringify(a));
+    } catch {}
+  };
+  // Aviso a las demás piezas de la MISMA página (p. ej. "Imagina tu pared") de que
+  // los favoritos han cambiado — un 'storage' event no salta dentro del mismo doc.
+  const emitirCambio = () => window.dispatchEvent(new CustomEvent('euronova:favchange'));
+
+  const toggleFav = (color: Color): boolean => {
+    let favs = leerFavs();
+    const anadido = !favs.some((f) => f.c === color.c);
+    if (anadido) {
+      favs.unshift(color);
+      if (favs.length > FAV_MAX) favs = favs.slice(0, FAV_MAX);
+    } else {
+      favs = favs.filter((f) => f.c !== color.c);
+    }
+    escribirFavs(favs);
+    emitirCambio();
+    return anadido;
+  };
+
+  // Tinta del splash con contraste: blanca si la muestra ya es rojiza.
+  const tintaSegun = (hex: string) => {
+    const r = parseInt(hex.slice(1, 3), 16) || 0;
+    const g = parseInt(hex.slice(3, 5), 16) || 0;
+    const b = parseInt(hex.slice(5, 7), 16) || 0;
+    return r > 130 && r > g * 1.4 && r > b * 1.4 ? 'blanco' : 'rojo';
+  };
+  const splashEn = (el: Element | null | undefined, hex: string) => {
+    if (REDUCE || !el) return;
+    const r = el.getBoundingClientRect();
+    (window as any).euronovaSplash?.(r.left + r.width / 2, r.top + r.height / 2, tintaSegun(hex || ''));
+  };
+
+  // ---- Barra flotante (opcional: solo si existe en la página) ----
+  const favBarWrap = document.getElementById('fav-bar-wrap');
+  const favBar = document.getElementById('fav-bar');
+  const favBarTxt = document.getElementById('fav-bar-txt');
+  let barraVisible = false;
+  const actualizarBarra = () => {
+    if (!favBarWrap) return;
+    const n = leerFavs().length;
+    const mostrar = n > 0;
+    favBarWrap.style.display = mostrar ? 'flex' : 'none';
+    if (favBarTxt) favBarTxt.textContent = `${n} ${n === 1 ? 'color guardado' : 'colores guardados'}`;
+    if (mostrar && !barraVisible && favBar && !REDUCE) {
+      favBar.classList.remove('entra');
+      void favBar.offsetWidth;
+      favBar.classList.add('entra');
+    }
+    barraVisible = mostrar;
+  };
+
+  // Pinta el estado del corazón de las muestras ya guardadas (rejillas de /cartas).
+  const marcar = () => {
+    const cods = new Set(leerFavs().map((f) => f.c));
+    document.querySelectorAll<HTMLElement>('.color-item').forEach((item) => {
+      const b = item.querySelector('.fav-btn');
+      if (b) b.setAttribute('aria-pressed', String(cods.has(item.dataset.codigo ?? '')));
+    });
+    actualizarBarra();
+  };
+
+  // ---- Corazón de una muestra en rejilla: guarda/quita SIN abrir la ficha ----
+  document.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest('.fav-btn');
+    if (!btn || btn.id === 'ficha-fav') return; // el de la ficha se gestiona aparte
+    e.preventDefault();
+    e.stopPropagation();
+    const item = btn.closest<HTMLElement>('.color-item, .hero-swatch');
+    if (!item) return;
+    const color: Color = { h: item.dataset.hex ?? '', c: item.dataset.codigo ?? '', n: item.dataset.nombre ?? '' };
+    const anadido = toggleFav(color);
+    marcar();
+    if (anadido) {
+      const ico = btn.querySelector('svg');
+      if (ico && !REDUCE) {
+        ico.classList.remove('late');
+        void (ico as HTMLElement).offsetWidth;
+        ico.classList.add('late');
+      }
+      splashEn(btn, color.h);
+    }
+  });
+
+  // ---- Ficha grande ----
+  const ficha = document.getElementById('ficha-color');
+  const fichaPanel = ficha?.querySelector<HTMLElement>('.ficha-panel');
+  const fichaSwatch = document.getElementById('ficha-swatch');
+  const fichaCod = document.getElementById('ficha-cod');
+  const fichaNombre = document.getElementById('ficha-nombre');
+  const fichaHex = document.getElementById('ficha-hex');
+  const fichaTag = document.getElementById('ficha-carta-tag');
+  const fichaFav = document.getElementById('ficha-fav');
+  let colorFicha: Color | null = null;
+  let disparador: HTMLElement | null = null;
+
+  // Bloqueo de scroll del fondo mientras la ficha esté abierta (técnica iOS-safe:
+  // fija el body conservando la posición y la restaura al cerrar).
+  let scrollGuardado = 0;
+  const bloquearScroll = (on: boolean) => {
+    const b = document.body;
+    if (on) {
+      scrollGuardado = window.scrollY;
+      b.style.top = `-${scrollGuardado}px`;
+      b.classList.add('modal-lock');
+    } else if (b.classList.contains('modal-lock')) {
+      b.classList.remove('modal-lock');
+      b.style.top = '';
+      window.scrollTo(0, scrollGuardado);
+    }
+  };
+
+  const refrescarFavFicha = () => {
+    if (fichaFav && colorFicha)
+      fichaFav.setAttribute('aria-pressed', String(leerFavs().some((f) => f.c === colorFicha!.c)));
+  };
+  const abrirFicha = (c: Color) => {
+    disparador = document.activeElement as HTMLElement | null;
+    colorFicha = c;
+    bloquearScroll(true);
+    if (fichaSwatch) fichaSwatch.style.backgroundColor = c.h;
+    if (fichaCod) fichaCod.textContent = c.c;
+    if (fichaNombre) fichaNombre.textContent = c.n || 'Pídelo con su código en tienda';
+    if (fichaHex) fichaHex.textContent = c.h.toUpperCase();
+    if (fichaTag)
+      fichaTag.textContent = c.c.startsWith('RAL')
+        ? 'Carta RAL'
+        : c.c.startsWith('NCS')
+          ? 'Carta NCS'
+          : 'Color a medida';
+    refrescarFavFicha();
+    ficha?.classList.remove('hidden');
+    ficha?.classList.add('flex');
+    if (!REDUCE && fichaPanel)
+      fichaPanel.animate(
+        [
+          { transform: 'scale(0.94) translateY(14px)', opacity: 0 },
+          { transform: 'none', opacity: 1 }
+        ],
+        { duration: 220, easing: 'cubic-bezier(.2,.9,.3,1)' }
+      );
+    (document.getElementById('ficha-cerrar') as HTMLElement | null)?.focus();
+  };
+  const cerrarFicha = () => {
+    if (!ficha || ficha.classList.contains('hidden')) return;
+    ficha.classList.add('hidden');
+    ficha.classList.remove('flex');
+    bloquearScroll(false);
+    // Devuelve el foco a la muestra que abrió la ficha (WCAG 2.4.3).
+    if (disparador && typeof disparador.focus === 'function') disparador.focus();
+    disparador = null;
+  };
+  // API pública para abrir la ficha desde cualquier script (la usa el hero).
+  (window as any).euronovaAbrirFicha = abrirFicha;
+
+  document.getElementById('ficha-cerrar')?.addEventListener('click', cerrarFicha);
+  document.getElementById('ficha-fondo')?.addEventListener('click', cerrarFicha);
+  document.addEventListener('keydown', (e) => {
+    const abierta = !!ficha && !ficha.classList.contains('hidden');
+    if (e.key === 'Escape') {
+      if (abierta) cerrarFicha();
+      return;
+    }
+    // Trampa de foco: con la ficha abierta, Tab cicla entre cerrar y guardar.
+    if (e.key === 'Tab' && abierta) {
+      const focos = [
+        document.getElementById('ficha-cerrar'),
+        document.getElementById('ficha-fav')
+      ].filter(Boolean) as HTMLElement[];
+      if (!focos.length) return;
+      const primero = focos[0];
+      const ultimo = focos[focos.length - 1];
+      if (e.shiftKey && document.activeElement === primero) {
+        e.preventDefault();
+        ultimo.focus();
+      } else if (!e.shiftKey && document.activeElement === ultimo) {
+        e.preventDefault();
+        primero.focus();
+      }
+      return;
+    }
+    // Abrir con teclado desde una muestra no-nativa (.color-item = div role=button).
+    // Las .hero-swatch son <button> y ya responden a Enter/Espacio de forma nativa.
+    if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+      const t = e.target as HTMLElement;
+      if (t.closest('.fav-btn')) return;
+      const el = t.closest<HTMLElement>('.color-item');
+      if (el && el.dataset.hex) {
+        e.preventDefault();
+        abrirFicha({ h: el.dataset.hex, c: el.dataset.codigo ?? '', n: el.dataset.nombre ?? '' });
+      }
+    }
+  });
+  fichaFav?.addEventListener('click', () => {
+    if (!colorFicha) return;
+    const anadido = toggleFav(colorFicha);
+    marcar();
+    refrescarFavFicha();
+    if (anadido) splashEn(fichaFav, colorFicha.h);
+  });
+
+  // Abrir la ficha al pulsar una muestra (rejilla o tira del hero).
+  document.addEventListener('click', (e) => {
+    const t = e.target as HTMLElement;
+    if (t.closest('.fav-btn')) return; // el corazón guarda, no abre
+    const item = t.closest<HTMLElement>('.color-item, .hero-swatch');
+    if (!item || !item.dataset.hex) return;
+    abrirFicha({ h: item.dataset.hex, c: item.dataset.codigo ?? '', n: item.dataset.nombre ?? '' });
+  });
+
+  // Mantener corazones/contador al día si cambian desde otra pieza de la página.
+  window.addEventListener('euronova:favchange', marcar);
+  marcar();
+</script>

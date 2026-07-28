@@ -550,7 +550,7 @@ const SUPERFICIES = [
   const guardarBtn = document.getElementById('sim-guardar');
   const guardarTxt = document.getElementById('sim-guardar-txt');
   const guardarIco = document.getElementById('sim-guardar-ico');
-  const MAX_FAVS = 16;
+  const MAX_FAVS = 20;
 
   let favs = [];
   try {
@@ -691,6 +691,18 @@ const SUPERFICIES = [
     if (gestoConsumido) return; // el gesto (drag/long-press) ya consumió este toque
     const ap = e.target.closest('.sim-fav-apply');
     if (ap) pintar({ h: ap.dataset.hex, c: ap.dataset.codigo, n: ap.dataset.nombre });
+  });
+
+  // Si se guarda/quita un color desde otra pieza de la MISMA página (p. ej. la
+  // ficha grande que abren las muestras del hero), recargamos "tus colores" para
+  // que el nuevo tono aparezca aquí al instante.
+  window.addEventListener('euronova:favchange', () => {
+    try {
+      favs = JSON.parse(localStorage.getItem(KEY_FAVS)) || [];
+    } catch (e) {
+      favs = [];
+    }
+    renderFavs();
   });
 
   // --- Gestos de favorito: MANTENER PULSADO = opción de quitar; mantener y
