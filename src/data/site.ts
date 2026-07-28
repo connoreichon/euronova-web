@@ -21,8 +21,10 @@ export const site = {
   //    en el dominio definitivo.
   telefono: '951 23 45 67',
   telefonoLink: '+34951234567',
-  // WhatsApp real de la tienda (solo dígitos con prefijo de país, sin "+").
-  whatsapp: '34686057191',
+  // ⚠️ WhatsApp FICTICIO (placeholder): el número real se retiró de la web pública
+  //    por privacidad. Solo dígitos con prefijo de país, sin "+". Sustituir por el
+  //    WhatsApp real de la tienda antes de publicar en el dominio definitivo.
+  whatsapp: '34612345678',
   whatsappMensaje: 'Hola, me gustaría hacer una consulta.',
   // PENDIENTE: el dominio euronova.es está caído — confirmar si este email sigue activo.
   email: 'info@euronova.es',
