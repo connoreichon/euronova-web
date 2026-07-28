@@ -248,8 +248,12 @@ const { bar = false } = Astro.props;
     ficha.classList.add('hidden');
     ficha.classList.remove('flex');
     bloquearScroll(false);
-    // Devuelve el foco a la muestra que abrió la ficha (WCAG 2.4.3).
-    if (disparador && typeof disparador.focus === 'function') disparador.focus();
+    // Devuelve el foco a la muestra que abrió la ficha (WCAG 2.4.3), pero SIN
+    // desplazar la página: si la muestra quedó fuera de vista, preventScroll evita
+    // el salto molesto al principio del hero.
+    if (disparador && typeof disparador.focus === 'function') {
+      disparador.focus({ preventScroll: true });
+    }
     disparador = null;
   };
   // API pública para abrir la ficha desde cualquier script (la usa el hero).
