@@ -247,6 +247,13 @@ export const servicios = [
 // `img: null` → placeholder de marca (hasta tener la foto).
 export const productosDestacados = [
   {
+    nombre: 'KBYO Fachadas',
+    marca: 'Rugoplast',
+    tipo: 'Revestimiento de fachadas',
+    desc: 'Pintura acrílica premium para fachadas: máxima resistencia a la intemperie, alta cubrición y transpirable. Garantía de 10 años.',
+    img: '/assets/productos/rugoplast-kbyo.webp'
+  },
+  {
     nombre: 'Nakar',
     marca: 'Bupisa',
     tipo: 'Pintura plástica interior',

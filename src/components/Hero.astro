@@ -110,11 +110,11 @@ const estrella =
     <!-- Pieza visual: ESCAPARATE de productos destacados (los botes van pasando). -->
     <div class="parallax relative mt-2 md:mt-0" data-parallax="0.05">
       <div class="hero-marco relative">
-        <div class="hero-foto hero-showcase overflow-hidden rounded-3xl ring-1 ring-white/20 shadow-[0_34px_70px_-28px_rgba(60,8,10,0.7)]">
+        <div class="hero-showcase">
           {
             productosDestacados.map((p, i) => (
               <img
-                src={`${asset(p.img)}?v=4`}
+                src={`${asset(p.img)}?v=5`}
                 alt={`${p.marca} ${p.nombre}`}
                 class={`hero-showcase__img ${i === 0 ? 'is-on' : ''}`}
                 data-marca={p.marca}
@@ -128,13 +128,22 @@ const estrella =
           }
         </div>
         <!-- Etiqueta del producto en escena (se actualiza con el pase) -->
-        <div class="absolute -bottom-5 left-5 rounded-xl bg-white/95 px-4 py-2.5 shadow-lg shadow-rojo-900/35 backdrop-blur-sm">
+        <div class="absolute -bottom-5 left-4 rounded-xl bg-white/95 px-4 py-2.5 shadow-lg shadow-rojo-900/35 backdrop-blur-sm">
           <span id="hero-showcase-marca" class="block text-[10px] font-extrabold tracking-[0.14em] text-rojo uppercase">
             {productosDestacados[0].marca}
           </span>
           <span id="hero-showcase-nombre" class="block text-[13px] leading-tight font-bold text-negro">
             {productosDestacados[0].nombre}
           </span>
+        </div>
+        <!-- Flechas sutiles para pasar al bote anterior / siguiente -->
+        <div class="absolute -bottom-5 right-4 flex gap-2">
+          <button type="button" class="hero-showcase__nav" data-dir="prev" aria-label="Producto anterior">
+            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          </button>
+          <button type="button" class="hero-showcase__nav" data-dir="next" aria-label="Producto siguiente">
+            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          </button>
         </div>
       </div>
     </div>
@@ -181,13 +190,25 @@ const estrella =
       const capM = document.getElementById('hero-showcase-marca');
       const capN = document.getElementById('hero-showcase-nombre');
       let idx = 0;
-      setInterval(() => {
+      let timer;
+      const mostrar = (n) => {
         scImgs[idx].classList.remove('is-on');
-        idx = (idx + 1) % scImgs.length;
+        idx = (n + scImgs.length) % scImgs.length;
         scImgs[idx].classList.add('is-on');
         if (capM) capM.textContent = scImgs[idx].dataset.marca || '';
         if (capN) capN.textContent = scImgs[idx].dataset.nombre || '';
-      }, 3200);
+      };
+      const auto = () => {
+        clearInterval(timer);
+        timer = setInterval(() => mostrar(idx + 1), 3200);
+      };
+      document.querySelectorAll('.hero-showcase__nav').forEach((b) =>
+        b.addEventListener('click', () => {
+          mostrar(idx + (b.dataset.dir === 'prev' ? -1 : 1));
+          auto(); // reinicia el temporizador tras pasar a mano
+        })
+      );
+      auto();
     }
   </script>
 </section>

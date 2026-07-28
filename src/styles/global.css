@@ -558,9 +558,6 @@ body.modal-lock {
 .hero-showcase {
   position: relative;
   aspect-ratio: 4 / 3;
-  background:
-    radial-gradient(120% 100% at 50% 28%, #ffffff, transparent 68%),
-    linear-gradient(165deg, #f7f3ec, #e7e0d3);
 }
 @media (min-width: 768px) {
   .hero-showcase {
@@ -573,9 +570,11 @@ body.modal-lock {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  padding: 7%;
+  padding: 3%;
   opacity: 0;
   transform: scale(0.97);
+  /* Sombra propia para asentar el bote sobre el rojo del hero (sin marco). */
+  filter: drop-shadow(0 24px 34px rgba(45, 5, 7, 0.55));
   transition:
     opacity 0.7s ease,
     transform 0.7s var(--ease-suave);
@@ -585,10 +584,36 @@ body.modal-lock {
   opacity: 1;
   transform: none;
 }
+/* Flechas sutiles para pasar de bote (sobre el rojo del hero). */
+.hero-showcase__nav {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 9999px;
+  color: #fff;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.14);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s var(--ease-suave);
+}
+.hero-showcase__nav:hover {
+  background: rgba(255, 255, 255, 0.28);
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: translateY(-1px);
+}
 @media (prefers-reduced-motion: reduce) {
   .hero-showcase__img {
     transition: opacity 0.3s ease;
     transform: none;
+  }
+  .hero-showcase__nav {
+    transition: none;
   }
 }
 
