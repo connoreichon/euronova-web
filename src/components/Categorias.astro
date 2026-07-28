@@ -23,6 +23,14 @@ const MEDIA = [
   'aspect-[16/10]',
   'aspect-[16/10]'
 ];
+
+// Botes destacados por categoría (mismos del escaparate del hero). Se superponen
+// en su casilla. Señalización deportiva no tiene categoría → solo va en el hero.
+const BOTES: Record<string, string[]> = {
+  'interior-exterior': ['bupisa-nakar', 'bupisa-p20-supercubriente'],
+  exterior: ['rugoplast-kbyo', 'drocasa-fachadas'],
+  ecologicas: ['tixol-nature']
+};
 ---
 
 <section id="productos" class="py-20 text-papel md:py-32">
@@ -55,6 +63,13 @@ const MEDIA = [
                 height="853"
                 loading="lazy"
               />
+              {BOTES[c.slug] && (
+                <div class="pieza__botes" aria-hidden="true">
+                  {BOTES[c.slug].map((n) => (
+                    <img src={`${asset('/assets/productos/' + n + '.webp')}?v=6`} class="pieza__bote" alt="" loading="lazy" />
+                  ))}
+                </div>
+              )}
             </div>
             {i === 0 ? (
               <div class="pieza__texto">
