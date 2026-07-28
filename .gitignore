@@ -19,3 +19,7 @@ Thumbs.db
 
 # jetbrains/vscode locales
 .idea/
+
+# herramientas locales (no versionar en el repo del cliente)
+.claude/
+repomix-output.xml

@@ -31,6 +31,12 @@ const {
 
     <title>{title}</title>
     <meta name="description" content={description} />
+    <!-- SEO: máximo 5 términos clave (foco de posicionamiento). -->
+    <meta
+      name="keywords"
+      content="pinturas Mijas, tienda de pinturas Las Lagunas de Mijas, color a medida tintometría, cartas RAL NCS, pintura Costa del Sol"
+    />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
     <meta name="theme-color" content="#d2262b" />
 
     <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />

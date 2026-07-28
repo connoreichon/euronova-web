@@ -532,6 +532,69 @@ body::after {
     transform: none;
   }
 }
+/* Cartelito de la muestra RAL: pequeña ficha clara (código en mono + carta) que
+   aparece sobre la muestra pulsada. Sutil, con flechita hacia la muestra. */
+.hero-tip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 0;
+  z-index: 20;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.5rem 0.72rem;
+  border-radius: 0.6rem;
+  background: #fffdf9;
+  color: var(--color-tinta);
+  box-shadow:
+    0 14px 28px -14px rgba(30, 4, 6, 0.75),
+    inset 0 0 0 1px rgba(23, 17, 17, 0.06);
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(4px);
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s var(--ease-suave);
+  pointer-events: none;
+}
+.hero-tip.is-on {
+  opacity: 1;
+  transform: translateY(0);
+}
+.hero-tip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: #fffdf9;
+}
+.hero-tip__sw {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.14);
+}
+.hero-tip b {
+  display: block;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 700;
+  font-size: 12.5px;
+  line-height: 1.15;
+}
+.hero-tip__sub {
+  display: block;
+  margin-top: 1px;
+  font-size: 10.5px;
+  color: rgba(32, 23, 23, 0.6);
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-tip {
+    transition: none;
+  }
+}
 
 /* Foto del hero: entra al cargar (sin depender del IntersectionObserver — es el
    LCP y no debe quedar en blanco si el observer tarda). */
