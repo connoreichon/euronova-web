@@ -16,8 +16,11 @@ export const site = {
   fundadoEn: 2003, // PENDIENTE: confirmar año real de apertura ("+20 años")
 
   // --- Contacto -------------------------------------------------------------
-  telefono: '951 23 64 18',
-  telefonoLink: '+34951236418',
+  // ⚠️ TELÉFONO FICTICIO (placeholder): el número real se retiró de la web pública
+  //    por privacidad. Sustituir por el número real de la tienda antes de publicar
+  //    en el dominio definitivo.
+  telefono: '951 23 45 67',
+  telefonoLink: '+34951234567',
   // WhatsApp real de la tienda (solo dígitos con prefijo de país, sin "+").
   whatsapp: '34686057191',
   whatsappMensaje: 'Hola, me gustaría hacer una consulta.',
