@@ -237,11 +237,55 @@ export const servicios = [
     num: '03',
     nombre: 'Atención al profesional',
     desc: 'Abrimos a las 7:30, con stock real y precio de profesional. Los pintores de la zona ya nos conocen.'
-  },
-  {
-    num: '04',
-    nombre: 'Reparto local',
-    // PENDIENTE: confirmar con el cliente si hace reparto y en qué zona.
-    desc: 'Si no puedes pasarte, consúltanos: servimos pedidos en la zona de Mijas y Fuengirola.'
   }
 ];
+
+// --- Productos destacados ("Mejores productos", carrusel de la portada) --------
+// Foto del bote DIGITALIZADA (recorte del protagonista, sin asa o con asa hacia
+// atrás, tamaño uniforme) + ficha corta. Cuando llegue la foto real a
+// material-cliente/, se recorta a public/assets/productos/ y se rellena `img`.
+// `img: null` → placeholder de marca (hasta tener la foto).
+export const productosDestacados = [
+  {
+    nombre: 'Nakar',
+    marca: 'Bupisa',
+    tipo: 'Pintura plástica interior',
+    desc: 'Plástica mate para interior: buen rendimiento, acabado liso y fácil de aplicar.',
+    img: null
+  },
+  {
+    nombre: 'P-20 Supercubriente',
+    marca: 'Bupisa',
+    tipo: 'Pintura plástica interior',
+    desc: 'Máxima cubrición y blancura para paredes y techos de interior.',
+    img: null
+  },
+  {
+    nombre: 'Señalización deportiva',
+    marca: 'Bupisa',
+    tipo: 'Pavimentos deportivos',
+    desc: 'Acrílica al agua para pintar y señalizar pistas: gran resistencia a la abrasión sobre cemento y hormigón.',
+    img: null
+  },
+  {
+    nombre: 'Pistas deportivas antideslizante',
+    marca: 'Rugoplast',
+    tipo: 'Pavimentos deportivos',
+    desc: 'Revestimiento antideslizante para pistas de pádel, tenis y pavimentos deportivos de exterior.',
+    img: null
+  },
+  {
+    nombre: 'Nature',
+    marca: 'Tixol',
+    tipo: 'Pintura de cal ECO',
+    desc: 'Pintura de cal 100% natural y transpirable: interiores sanos y estética mediterránea.',
+    img: null
+  },
+  {
+    nombre: 'Revestimiento Pétreo Fachadas',
+    marca: 'Drocasa',
+    tipo: 'Fachadas',
+    desc: 'Revestimiento pétreo para fachadas con gran resistencia a la intemperie. Garantía de 7 años.',
+    img: null
+  }
+] as { nombre: string; marca: string; tipo: string; desc: string; img: string | null }[];

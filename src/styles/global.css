@@ -2320,6 +2320,131 @@ body.modal-lock {
 }
 
 /* ===========================================================================
+   CARRUSEL "MEJORES PRODUCTOS" — tarjetas de producto que se deslizan (flechas +
+   auto-avance), con la foto del bote sobre panel claro y ficha corta sobre oscuro.
+   =========================================================================== */
+.destacados-track {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  padding-bottom: 0.5rem;
+  scrollbar-width: none;
+}
+.destacados-track::-webkit-scrollbar {
+  display: none;
+}
+.destacado-card {
+  flex: 0 0 auto;
+  width: 82%;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+  box-shadow:
+    0 18px 40px -22px rgba(0, 0, 0, 0.8),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+@media (min-width: 640px) {
+  .destacado-card {
+    width: 46%;
+  }
+}
+@media (min-width: 1024px) {
+  .destacado-card {
+    width: 31%;
+  }
+}
+.destacado-card__img {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: linear-gradient(180deg, #ffffff, #f1ede5);
+}
+.destacado-card__img img {
+  max-height: 100%;
+  max-width: 86%;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 20px rgba(0, 0, 0, 0.28));
+}
+.destacado-card__ph {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  color: rgba(23, 17, 17, 0.4);
+}
+.destacado-card__ph-txt {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  color: rgba(23, 17, 17, 0.5);
+}
+.destacado-card__body {
+  padding: 1rem 1.15rem 1.2rem;
+}
+.destacado-card__marca {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-rojo-400);
+}
+.destacado-card__nombre {
+  margin-top: 0.2rem;
+  font-size: 1.05rem;
+  font-weight: 800;
+  line-height: 1.15;
+  color: #fff;
+}
+.destacado-card__tipo {
+  margin-top: 0.15rem;
+  font-size: 12.5px;
+  color: rgba(245, 240, 232, 0.6);
+}
+.destacado-card__desc {
+  margin-top: 0.55rem;
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(245, 240, 232, 0.8);
+}
+.destacados-arrow {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 9999px;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s var(--ease-suave);
+}
+.destacados-arrow:hover {
+  background: var(--color-rojo);
+  border-color: var(--color-rojo);
+  transform: translateY(-1px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .destacados-track {
+    scroll-behavior: auto;
+  }
+  .destacados-arrow {
+    transition: none;
+  }
+}
+
+/* ===========================================================================
    MÓVIL — que NADA se corte y que el WhatsApp no tape controles.
    =========================================================================== */
 @media (max-width: 480px) {

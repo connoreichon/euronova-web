@@ -1,0 +1,113 @@
+---
+// "Mejores productos" — carrusel de productos destacados de la tienda. Se desliza
+// con flechas y también avanza solo (cada ~8 s, se para al pasar el ratón). Cada
+// tarjeta lleva la foto DIGITALIZADA del bote (recorte del protagonista); si aún no
+// hay foto (`img` null) se muestra un placeholder de marca.
+import { productosDestacados } from '../data/site';
+import { asset } from '../lib/asset';
+---
+
+<section id="destacados" class="paint-surface sec-alt py-16 text-papel md:py-24">
+  <div class="container-x">
+    <div class="reveal flex items-end justify-between gap-4">
+      <div class="max-w-xl">
+        <p class="kicker-brocha kicker-brocha--sm text-rojo">Mejores productos</p>
+        <h2 class="display mt-2 text-3xl text-white md:text-4xl">Lo que más se lleva de la tienda.</h2>
+        <p class="mt-3 text-[15px] leading-relaxed text-papel/70">
+          Una selección de los productos que más recomendamos en el mostrador. ¿Buscas
+          otro? Pregúntanos: si no lo tenemos, te lo conseguimos.
+        </p>
+      </div>
+      <div class="hidden shrink-0 gap-2 md:flex">
+        <button type="button" class="destacados-arrow" data-dir="prev" aria-label="Producto anterior">
+          <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        </button>
+        <button type="button" class="destacados-arrow" data-dir="next" aria-label="Producto siguiente">
+          <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        </button>
+      </div>
+    </div>
+
+    <div id="destacados-track" class="destacados-track reveal mt-8" role="list">
+      {
+        productosDestacados.map((p) => (
+          <article class="destacado-card" role="listitem">
+            <div class="destacado-card__img">
+              {p.img ? (
+                <img src={asset(p.img)} alt={`${p.marca} ${p.nombre}`} loading="lazy" />
+              ) : (
+                <span class="destacado-card__ph" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" class="h-10 w-10" fill="none" stroke="currentColor" stroke-width="1.6">
+                    <path d="M6 8h12l-1 11a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L6 8z" stroke-linejoin="round" />
+                    <path d="M8 8V6a4 4 0 0 1 8 0v2" stroke-linecap="round" />
+                  </svg>
+                  <span class="destacado-card__ph-txt">{p.marca}</span>
+                </span>
+              )}
+            </div>
+            <div class="destacado-card__body">
+              <p class="destacado-card__marca">{p.marca}</p>
+              <h3 class="destacado-card__nombre">{p.nombre}</h3>
+              <p class="destacado-card__tipo">{p.tipo}</p>
+              <p class="destacado-card__desc">{p.desc}</p>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  // Carrusel: flechas + auto-avance (se para al pasar el ratón / al tocar / si el
+  // usuario prefiere menos movimiento). Desliza al siguiente producto y vuelve al
+  // principio al llegar al final.
+  const track = document.getElementById('destacados-track');
+  if (track) {
+    const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const paso = () => {
+      const card = track.querySelector<HTMLElement>('.destacado-card');
+      if (!card) return track.clientWidth;
+      const gap = parseFloat(getComputedStyle(track).columnGap || '0') || 16;
+      return card.offsetWidth + gap;
+    };
+    const finCarril = () => track.scrollWidth - track.clientWidth - 4;
+    const mover = (dir: number) => {
+      const objetivo = track.scrollLeft + dir * paso();
+      if (dir > 0 && track.scrollLeft >= finCarril()) {
+        track.scrollTo({ left: 0, behavior: 'smooth' }); // vuelve al principio
+      } else {
+        track.scrollTo({ left: objetivo, behavior: 'smooth' });
+      }
+    };
+    document.querySelectorAll<HTMLButtonElement>('.destacados-arrow').forEach((b) =>
+      b.addEventListener('click', () => mover(b.dataset.dir === 'prev' ? -1 : 1))
+    );
+
+    // Auto-avance
+    let timer: number | undefined;
+    const arrancar = () => {
+      if (REDUCE) return;
+      detener();
+      timer = window.setInterval(() => mover(1), 8000);
+    };
+    const detener = () => {
+      if (timer) window.clearInterval(timer);
+      timer = undefined;
+    };
+    track.addEventListener('pointerenter', detener);
+    track.addEventListener('pointerleave', arrancar);
+    track.addEventListener('focusin', detener);
+    track.addEventListener('focusout', arrancar);
+    // Pausa el auto-avance cuando la sección no está a la vista (ahorra y no molesta).
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(
+        (ents) => ents.forEach((e) => (e.isIntersecting ? arrancar() : detener())),
+        { threshold: 0.2 }
+      );
+      io.observe(track);
+    } else {
+      arrancar();
+    }
+  }
+</script>
