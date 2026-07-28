@@ -245,47 +245,138 @@ export const servicios = [
 // atrás, tamaño uniforme) + ficha corta. Cuando llegue la foto real a
 // material-cliente/, se recorta a public/assets/productos/ y se rellena `img`.
 // `img: null` → placeholder de marca (hasta tener la foto).
+// `categoria` = slug de la categoría donde aparece el producto (o null = solo en el
+// hero). `ficha` = ficha técnica (datos de la etiqueta/fabricante; los valores no
+// confirmados se dejan cualitativos, sin inventar cifras).
 export const productosDestacados = [
   {
+    slug: 'kbyo-fachadas',
     nombre: 'KBYO Fachadas',
     marca: 'Rugoplast',
+    categoria: 'exterior',
     tipo: 'Revestimiento de fachadas',
     desc: 'Pintura acrílica premium para fachadas: máxima resistencia a la intemperie, alta cubrición y transpirable. Garantía de 10 años.',
-    img: '/assets/productos/rugoplast-kbyo.webp'
+    img: '/assets/productos/rugoplast-kbyo.webp',
+    ficha: {
+      uso: 'Exterior · fachadas',
+      acabado: 'Mate',
+      diluyente: 'Agua',
+      composicion: 'Emulsión acrílica con xilanos y xilosanos',
+      rendimiento: '5–7 m²/L por mano',
+      formatos: '4 L · 15 L',
+      garantia: '10 años en exteriores',
+      caracteristicas: [
+        'Máxima resistencia a la intemperie',
+        'Alta cubrición',
+        'Transpirable',
+        'Hidrófuga (efecto perlante)',
+        'Fabricación española'
+      ]
+    }
   },
   {
+    slug: 'bupisa-nakar',
     nombre: 'Nakar',
     marca: 'Bupisa',
-    tipo: 'Pintura plástica interior',
-    desc: 'Plástica mate para interior: buen rendimiento, acabado liso y fácil de aplicar.',
-    img: '/assets/productos/bupisa-nakar.webp'
+    categoria: 'interior-exterior',
+    tipo: 'Pintura plástica',
+    desc: 'Plástica mate para interior y exterior: buen rendimiento, acabado liso y fácil de aplicar.',
+    img: '/assets/productos/bupisa-nakar.webp',
+    ficha: {
+      uso: 'Interior y exterior',
+      acabado: 'Mate',
+      diluyente: 'Agua',
+      composicion: 'Copolímeros acrílicos en dispersión acuosa',
+      rendimiento: null,
+      formatos: '4 L · 15 L',
+      garantia: null,
+      caracteristicas: ['Gran cubrición', 'Acabado liso y uniforme', 'Fácil aplicación', 'Lavable']
+    }
   },
   {
+    slug: 'bupisa-p20-supercubriente',
     nombre: 'P-20 Supercubriente',
     marca: 'Bupisa',
-    tipo: 'Pintura plástica interior',
+    categoria: 'interior-exterior',
+    tipo: 'Pintura plástica',
     desc: 'Máxima cubrición y blancura para paredes y techos de interior.',
-    img: '/assets/productos/bupisa-p20-supercubriente.webp'
+    img: '/assets/productos/bupisa-p20-supercubriente.webp',
+    ficha: {
+      uso: 'Interior y exterior',
+      acabado: 'Mate',
+      diluyente: 'Agua',
+      composicion: 'Copolímeros acrílicos en dispersión acuosa',
+      rendimiento: null,
+      formatos: '4 L · 15 L',
+      garantia: null,
+      caracteristicas: ['Supercubriente', 'Máxima blancura', 'Alto poder de tapado', 'Lavable']
+    }
   },
   {
+    slug: 'bupisa-senalizacion-deportivos',
     nombre: 'Señalización deportiva',
     marca: 'Bupisa',
+    categoria: null,
     tipo: 'Pavimentos deportivos',
     desc: 'Acrílica al agua para pintar y señalizar pistas: gran resistencia a la abrasión sobre cemento y hormigón.',
-    img: '/assets/productos/bupisa-senalizacion-deportivos.webp'
+    img: '/assets/productos/bupisa-senalizacion-deportivos.webp',
+    ficha: {
+      uso: 'Exterior · pavimentos deportivos',
+      acabado: 'Mate',
+      diluyente: 'Agua',
+      composicion: 'Pintura acrílica al agua',
+      rendimiento: '4–10 m²/L',
+      formatos: '15 L',
+      garantia: null,
+      caracteristicas: [
+        'Gran resistencia a la abrasión',
+        'Buen anclaje sobre cemento y hormigón',
+        'Secado 45–90 min · repintado 24 h',
+        'Para pistas de tenis y pádel'
+      ]
+    }
   },
   {
+    slug: 'tixol-nature',
     nombre: 'Nature',
     marca: 'Tixol',
+    categoria: 'ecologicas',
     tipo: 'Pintura de cal ECO',
     desc: 'Pintura de cal 100% natural y transpirable: interiores sanos y estética mediterránea.',
-    img: '/assets/productos/tixol-nature.webp'
+    img: '/assets/productos/tixol-nature.webp',
+    ficha: {
+      uso: 'Interior y exterior',
+      acabado: 'Mate natural',
+      diluyente: 'Agua',
+      composicion: 'Cal aérea natural (100% natural, ECO)',
+      rendimiento: null,
+      formatos: '5 L · 15 L',
+      garantia: null,
+      caracteristicas: ['100% natural', 'Muy transpirable', 'Antimoho por naturaleza', 'Bajas emisiones']
+    }
   },
   {
+    slug: 'drocasa-fachadas',
     nombre: 'Revestimiento Pétreo Fachadas',
     marca: 'Drocasa',
-    tipo: 'Fachadas',
+    categoria: 'exterior',
+    tipo: 'Revestimiento pétreo',
     desc: 'Revestimiento pétreo para fachadas con gran resistencia a la intemperie. Garantía de 7 años.',
-    img: '/assets/productos/drocasa-fachadas.webp'
+    img: '/assets/productos/drocasa-fachadas.webp',
+    ficha: {
+      uso: 'Exterior · fachadas',
+      acabado: 'Mate texturado',
+      diluyente: 'Agua',
+      composicion: 'Revestimiento pétreo (resinas acrílicas + áridos)',
+      rendimiento: null,
+      formatos: '15 L',
+      garantia: '7 años',
+      caracteristicas: [
+        'Gran resistencia a la intemperie',
+        'Resistente a la alcalinidad',
+        'Cubre pequeñas imperfecciones',
+        'Textura pétrea'
+      ]
+    }
   }
-] as { nombre: string; marca: string; tipo: string; desc: string; img: string | null }[];
+];

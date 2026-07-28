@@ -1,0 +1,117 @@
+---
+// Modal de FICHA TÉCNICA de producto. Se abre al pulsar una tarjeta .prod-real
+// (que lleva la ficha en data-ficha, JSON). Muestra foto + especificaciones +
+// características + CTA de WhatsApp. Datos de la etiqueta del fabricante.
+import { site } from '../data/site';
+---
+
+<div
+  id="ficha-prod"
+  class="fixed inset-0 z-[80] hidden items-center justify-center p-4"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Ficha técnica del producto"
+>
+  <div id="fp-fondo" class="absolute inset-0 bg-negro/72 backdrop-blur-sm"></div>
+  <div class="fp-panel relative flex max-h-[92vh] w-full max-w-lg flex-col overflow-hidden rounded-3xl border border-white/12 bg-[#1b1513] shadow-2xl shadow-black/60">
+    <button
+      id="fp-cerrar"
+      type="button"
+      class="absolute top-3 right-3 z-10 grid h-10 w-10 cursor-pointer place-items-center rounded-full bg-black/45 text-[20px] leading-none text-white backdrop-blur-sm transition-colors hover:bg-black/65"
+      aria-label="Cerrar ficha"
+    >×</button>
+    <div class="grid place-items-center bg-gradient-to-b from-white to-[#ebe5da] p-6">
+      <img id="fp-img" src="" alt="" class="max-h-56 w-auto object-contain drop-shadow-xl" />
+    </div>
+    <div class="overflow-y-auto p-6">
+      <p id="fp-marca" class="text-[11px] font-extrabold tracking-[0.16em] text-rojo-400 uppercase"></p>
+      <h3 id="fp-nombre" class="font-display mt-0.5 text-2xl font-bold text-white"></h3>
+      <p id="fp-tipo" class="mt-0.5 text-[13px] text-papel/55"></p>
+      <p id="fp-desc" class="mt-3 text-[14px] leading-relaxed text-papel/75"></p>
+
+      <p class="kicker-brocha kicker-brocha--sm mt-6 text-rojo">Ficha técnica</p>
+      <dl id="fp-specs" class="mt-3 grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-white/[0.08] bg-white/[0.08] text-[12.5px]"></dl>
+      <ul id="fp-caract" class="mt-4 grid gap-1.5 text-[13px] text-papel/80"></ul>
+
+      <a
+        id="fp-wa"
+        href="#"
+        target="_blank"
+        rel="noopener"
+        class="btn-pintura mt-6 inline-flex items-center gap-2 rounded-full bg-rojo px-5 py-3 text-[13px] font-bold text-white transition-transform hover:-translate-y-0.5"
+      >
+        <svg viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.1 8.1 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Z" /></svg>
+        Preguntar por este producto
+      </a>
+      <p class="mt-3 text-[11px] text-papel/45">
+        Datos orientativos de la etiqueta del fabricante · te los confirmamos en tienda.
+      </p>
+    </div>
+  </div>
+</div>
+
+<script define:vars={{ waNum: site.whatsapp }}>
+  (() => {
+    const modal = document.getElementById('ficha-prod');
+    if (!modal) return;
+    const $ = (id) => document.getElementById(id);
+    let disparador = null;
+
+    const abrir = (d) => {
+      disparador = document.activeElement;
+      $('fp-img').src = d.img || '';
+      $('fp-img').alt = `${d.marca || ''} ${d.nombre || ''}`.trim();
+      $('fp-marca').textContent = d.marca || '';
+      $('fp-nombre').textContent = d.nombre || '';
+      $('fp-tipo').textContent = d.tipo || '';
+      $('fp-desc').textContent = d.desc || '';
+      const f = d.ficha || {};
+      const rows = [
+        ['Uso', f.uso],
+        ['Acabado', f.acabado],
+        ['Diluyente', f.diluyente],
+        ['Composición', f.composicion],
+        ['Rendimiento', f.rendimiento],
+        ['Formatos', f.formatos],
+        ['Garantía', f.garantia]
+      ].filter((r) => r[1]);
+      $('fp-specs').innerHTML = rows
+        .map(
+          ([k, v]) =>
+            `<div class="bg-negro/55 px-3 py-2"><dt class="text-papel/40">${k}</dt><dd class="mt-0.5 font-mono text-papel/85">${v}</dd></div>`
+        )
+        .join('');
+      $('fp-caract').innerHTML = (f.caracteristicas || [])
+        .map((c) => `<li class="flex gap-2"><span class="text-rojo-400">✓</span><span>${c}</span></li>`)
+        .join('');
+      $('fp-wa').href =
+        'https://wa.me/' +
+        waNum +
+        '?text=' +
+        encodeURIComponent(`Hola, me interesa ${d.marca || ''} ${d.nombre || ''}. ¿Podéis informarme?`);
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      $('fp-cerrar').focus();
+    };
+    const cerrar = () => {
+      if (modal.classList.contains('hidden')) return;
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      if (disparador && disparador.focus) disparador.focus({ preventScroll: true });
+      disparador = null;
+    };
+
+    document.querySelectorAll('.prod-real').forEach((b) =>
+      b.addEventListener('click', () => {
+        try {
+          abrir(JSON.parse(b.dataset.ficha || '{}'));
+        } catch (e) {}
+      })
+    );
+    $('fp-cerrar').addEventListener('click', cerrar);
+    $('fp-fondo').addEventListener('click', cerrar);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') cerrar();
+    });
+  })();
+</script>

@@ -4,7 +4,8 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import WhatsAppFloat from '../../components/WhatsAppFloat.astro';
 import AvisoColor from '../../components/AvisoColor.astro';
-import { site, categorias } from '../../data/site';
+import FichaProducto from '../../components/FichaProducto.astro';
+import { site, categorias, productosDestacados } from '../../data/site';
 import { asset } from '../../lib/asset';
 
 export function getStaticPaths() {
@@ -12,6 +13,8 @@ export function getStaticPaths() {
 }
 
 const { categoria } = Astro.props;
+// Productos reales de esta categoría (con foto de bote y ficha técnica).
+const productosCat = productosDestacados.filter((p) => p.categoria === categoria.slug);
 const otras = categorias;
 const waHref = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent('Hola, me interesa vuestra gama de ' + categoria.nombre + '. ¿Podéis informarme?')}`;
 
@@ -109,6 +112,45 @@ const nRef = categoria.productos.length;
       </div>
     </section>
 
+    <!-- Productos destacados de la categoría (foto de bote real + ficha técnica) -->
+    {productosCat.length > 0 && (
+      <section class="pt-14 md:pt-20">
+        <div class="container-x">
+          <p class="kicker-brocha kicker-brocha--sm text-rojo">Productos destacados</p>
+          <h2 class="display mt-2 text-2xl text-white md:text-3xl">Algunos de {categoria.nombre}</h2>
+          <p class="mt-2 text-[14px] text-papel/60">Pincha un producto para ver su ficha técnica.</p>
+          <div class="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+            {productosCat.map((p) => (
+              <button
+                type="button"
+                class="prod-real group flex cursor-pointer flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] text-left transition-transform hover:-translate-y-1"
+                data-ficha={JSON.stringify({
+                  marca: p.marca,
+                  nombre: p.nombre,
+                  tipo: p.tipo,
+                  desc: p.desc,
+                  img: asset(p.img) + '?v=6',
+                  ficha: p.ficha
+                })}
+                aria-label={`Ver ficha técnica de ${p.marca} ${p.nombre}`}
+              >
+                <div class="grid aspect-square place-items-center bg-gradient-to-b from-white to-[#ece6da] p-3">
+                  <img src={`${asset(p.img)}?v=6`} alt={`${p.marca} ${p.nombre}`} class="max-h-full w-auto object-contain" loading="lazy" />
+                </div>
+                <div class="p-3.5">
+                  <p class="text-[10px] font-extrabold tracking-wider text-rojo-400 uppercase">{p.marca}</p>
+                  <h3 class="mt-0.5 text-[14px] leading-tight font-bold text-white">{p.nombre}</h3>
+                  <span class="mt-2 inline-block text-[12px] font-semibold text-rojo transition-colors group-hover:text-white">
+                    Ver ficha técnica →
+                  </span>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
     <!-- La gama de productos -->
     <section class="py-16 text-papel md:py-24">
       <div class="container-x">
@@ -188,4 +230,5 @@ const nRef = categoria.productos.length;
   </main>
   <Footer />
   <WhatsAppFloat />
+  <FichaProducto />
 </Base>
