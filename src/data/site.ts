@@ -70,15 +70,15 @@ export const site = {
 // TODO(cliente): logos de Tixol y Jeivsa (pendientes de localizar buen archivo).
 export const marcas = [
   { nombre: 'Bupisa', logo: '/assets/marcas/bupisa.png' }, // color
-  { nombre: 'Rugoplast', logo: '/assets/marcas/rugoplast.webp', inv: true }, // TODO color: solo tengo el blanco
-  { nombre: 'Barpimo', logo: '/assets/marcas/barpimo.svg', inv: true }, // TODO color: solo tengo el blanco
+  { nombre: 'Rugoplast', logo: '/assets/marcas/rugoplast.webp', inv: true }, // sin versión a color pública (solo blanco)
+  { nombre: 'Barpimo', logo: '/assets/marcas/barpimo-c.svg' }, // color
   { nombre: 'Alber Cover', logo: '/assets/marcas/albercover.png' }, // color ("Cover" = Alber Cover)
   { nombre: 'Sifra', logo: '/assets/marcas/sifra.png', big: true }, // color (Colorificio Sifra, italiana)
-  { nombre: 'Rodapin', logo: '/assets/marcas/rodapin.png', inv: true }, // TODO color: solo tengo el blanco
-  { nombre: 'Werku', logo: '/assets/marcas/werku.png', inv: true }, // TODO color: solo tengo el blanco
+  { nombre: 'Rodapin', logo: '/assets/marcas/rodapin-c.jpg' }, // color
+  { nombre: 'Werku', logo: '/assets/marcas/werku.png', inv: true }, // sin versión a color pública (solo blanco)
   { nombre: 'Revetón', logo: '/assets/marcas/reveton.svg' }, // color
-  { nombre: 'Tixol', logo: '/assets/marcas/tixol.png', inv: true }, // TODO color: solo tengo el blanco
-  { nombre: 'Jeivsa', logo: '/assets/marcas/jeivsa.png', inv: true }, // TODO color: solo tengo el blanco
+  { nombre: 'Tixol', logo: '/assets/marcas/tixol-c.png' }, // color (gris pizarra de marca)
+  { nombre: 'Jeivsa', logo: '/assets/marcas/jeivsa.png', inv: true }, // sin versión a color pública (solo blanco)
   { nombre: 'Drocasa', logo: '/assets/marcas/drocasa.png' } // color (Pinturas Droca)
 ] as { nombre: string; logo: string | null; big?: boolean; inv?: boolean }[];
 
