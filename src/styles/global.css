@@ -2242,11 +2242,8 @@ body.modal-lock {
   display: flex;
   width: max-content;
   padding-block: 0.4rem;
+  /* Nunca se para: sigue moviéndose aunque pases el ratón o pulses. */
   animation: marquee-scroll 42s linear infinite;
-}
-.marquee:hover .marquee__track,
-.marquee:focus-within .marquee__track {
-  animation-play-state: paused;
 }
 @keyframes marquee-scroll {
   from {
@@ -2270,16 +2267,6 @@ body.modal-lock {
     0 14px 30px -16px rgba(0, 0, 0, 0.6),
     inset 0 0 0 1px rgba(23, 17, 17, 0.06),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  transition:
-    transform 0.25s var(--ease-suave),
-    box-shadow 0.25s ease;
-}
-.marca-tile:hover {
-  transform: translateY(-4px);
-  box-shadow:
-    0 22px 42px -16px rgba(0, 0, 0, 0.66),
-    0 0 26px -8px rgba(210, 38, 43, 0.34),
-    inset 0 0 0 1px rgba(23, 17, 17, 0.08);
 }
 .marca-logo {
   max-height: 44px;
