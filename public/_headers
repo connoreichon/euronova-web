@@ -18,6 +18,8 @@
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable
 
-# Imágenes, vídeo y fuentes propias: caché media.
+# Imágenes propias: caché CORTA mientras iteramos con el cliente (así los cambios de
+# imágenes con el mismo nombre —logo, fachada, fotos— se ven pronto). Subir a
+# max-age=2592000 (30 días) cuando la web esté cerrada para producción.
 /assets/*
-  Cache-Control: public, max-age=2592000
+  Cache-Control: public, max-age=3600, must-revalidate

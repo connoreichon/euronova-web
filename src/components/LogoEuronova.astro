@@ -14,7 +14,7 @@ const { variant = 'full', class: className = '' } = Astro.props;
 {
   variant === 'compact' ? (
     <img
-      src={asset('/assets/marca/word.png')}
+      src={asset('/assets/marca/word.png') + '?v=2'}
       alt="Pinturas Euronova"
       class={className}
       width="1500"
@@ -23,7 +23,7 @@ const { variant = 'full', class: className = '' } = Astro.props;
     />
   ) : (
     <img
-      src={asset('/assets/marca/lockup.png')}
+      src={asset('/assets/marca/lockup.png') + '?v=2'}
       alt="Pinturas Euronova — La vida es del color que tú quieras pintarla"
       class={className}
       width="1600"
