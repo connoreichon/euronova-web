@@ -59,6 +59,19 @@ const wa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(site.whatsa
     </div>
 
     <div class="reveal flex flex-col">
+      <!-- Por qué venir en persona: el mensaje va junto al mapa, donde el
+           visitante decide la visita (antes estaba en el cierre de la página). -->
+      <div class="mb-5 rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+        <p class="kicker-brocha kicker-brocha--sm text-rojo">Mejor en persona</p>
+        <h3 class="font-display mt-1 text-xl font-bold text-white md:text-2xl">
+          Para acertar con el color, ven a la tienda.
+        </h3>
+        <p class="mt-2 text-[14px] leading-relaxed text-papel/75">
+          Trae una muestra real y te asesoramos con la carta física y criterio
+          profesional. Elegimos juntos el producto, el acabado y el tono exactos
+          — no a ojo.
+        </p>
+      </div>
       {
         site.mapsEmbed ? (
           <iframe
