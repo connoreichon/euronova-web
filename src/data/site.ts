@@ -268,13 +268,6 @@ export const productosDestacados = [
     img: '/assets/productos/bupisa-senalizacion-deportivos.webp'
   },
   {
-    nombre: 'Pistas deportivas antideslizante',
-    marca: 'Rugoplast',
-    tipo: 'Pavimentos deportivos',
-    desc: 'Revestimiento antideslizante para pistas de pádel, tenis y pavimentos deportivos de exterior.',
-    img: '/assets/productos/rugoplast-pistas.webp'
-  },
-  {
     nombre: 'Nature',
     marca: 'Tixol',
     tipo: 'Pintura de cal ECO',

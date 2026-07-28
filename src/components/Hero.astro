@@ -4,7 +4,7 @@
 // copy de mostrador → 2 CTAs → banda de confianza. El logo vive en la
 // navegación; aquí manda el titular. La foto se trata como pieza hero (losa
 // granate desplazada + chip de "color a medida"), no como card.
-import { site, opiniones } from '../data/site';
+import { site, opiniones, productosDestacados } from '../data/site';
 import { asset } from '../lib/asset';
 
 // Tira de "carta de colores" del hero: paleta curada (cálidos → tierra → verdes
@@ -107,30 +107,33 @@ const estrella =
       </div>
     </div>
 
-    <!-- Pieza visual: fachada real con marco editorial + detalle de color -->
+    <!-- Pieza visual: ESCAPARATE de productos destacados (los botes van pasando). -->
     <div class="parallax relative mt-2 md:mt-0" data-parallax="0.05">
       <div class="hero-marco relative">
-        <div class="hero-foto overflow-hidden rounded-3xl ring-1 ring-white/20 shadow-[0_34px_70px_-28px_rgba(60,8,10,0.7)]">
-          <img
-            src={asset('/assets/img/categorias/fachadas.jpg')}
-            alt="Fachada mediterránea recién pintada en tonos claros con carpintería azul"
-            class="aspect-[4/3] w-full object-cover md:aspect-[5/4]"
-            width="1280"
-            height="853"
-            loading="eager"
-            fetchpriority="high"
-          />
+        <div class="hero-foto hero-showcase overflow-hidden rounded-3xl ring-1 ring-white/20 shadow-[0_34px_70px_-28px_rgba(60,8,10,0.7)]">
+          {
+            productosDestacados.map((p, i) => (
+              <img
+                src={`${asset(p.img)}?v=4`}
+                alt={`${p.marca} ${p.nombre}`}
+                class={`hero-showcase__img ${i === 0 ? 'is-on' : ''}`}
+                data-marca={p.marca}
+                data-nombre={p.nombre}
+                width="760"
+                height="760"
+                loading={i === 0 ? 'eager' : 'lazy'}
+                fetchpriority={i === 0 ? 'high' : undefined}
+              />
+            ))
+          }
         </div>
-        <!-- Detalle único: muestra de color mezclado en tienda -->
-        <div class="absolute -bottom-5 left-5 flex items-center gap-2.5 rounded-xl bg-white/95 py-2.5 pr-4 pl-2.5 shadow-lg shadow-rojo-900/35 backdrop-blur-sm">
-          <span class="flex gap-1" aria-hidden="true">
-            <span class="h-8 w-3.5 rounded-[3px]" style="background:#f2e9d8"></span>
-            <span class="h-8 w-3.5 rounded-[3px]" style="background:#d9a441"></span>
-            <span class="h-8 w-3.5 rounded-[3px]" style="background:#2a5cad"></span>
+        <!-- Etiqueta del producto en escena (se actualiza con el pase) -->
+        <div class="absolute -bottom-5 left-5 rounded-xl bg-white/95 px-4 py-2.5 shadow-lg shadow-rojo-900/35 backdrop-blur-sm">
+          <span id="hero-showcase-marca" class="block text-[10px] font-extrabold tracking-[0.14em] text-rojo uppercase">
+            {productosDestacados[0].marca}
           </span>
-          <span class="text-[12px] leading-tight font-bold text-negro">
-            Color a medida
-            <span class="block text-[11px] font-medium text-negro/60">mezclado en tienda</span>
+          <span id="hero-showcase-nombre" class="block text-[13px] leading-tight font-bold text-negro">
+            {productosDestacados[0].nombre}
           </span>
         </div>
       </div>
@@ -169,6 +172,24 @@ const estrella =
       Pulsa una muestra para verla en grande y guardarla en tus colores.
     </p>
   </div>
+
+  <!-- Escaparate del hero: los botes van pasando en bucle (cross-fade) y la etiqueta
+       se actualiza con el producto en escena. -->
+  <script>
+    const scImgs = Array.from(document.querySelectorAll('.hero-showcase__img'));
+    if (scImgs.length > 1) {
+      const capM = document.getElementById('hero-showcase-marca');
+      const capN = document.getElementById('hero-showcase-nombre');
+      let idx = 0;
+      setInterval(() => {
+        scImgs[idx].classList.remove('is-on');
+        idx = (idx + 1) % scImgs.length;
+        scImgs[idx].classList.add('is-on');
+        if (capM) capM.textContent = scImgs[idx].dataset.marca || '';
+        if (capN) capN.textContent = scImgs[idx].dataset.nombre || '';
+      }, 3200);
+    }
+  </script>
 </section>
 
 <!-- Transición limpia hacia la sección siguiente: el rojo se asienta en la sombra -->
