@@ -17,14 +17,20 @@ import { asset } from '../lib/asset';
       </p>
     </div>
 
-    <ul class="mt-10 grid grid-cols-2 gap-3.5 sm:grid-cols-3 md:mt-12 md:gap-4 lg:grid-cols-4">
+  </div>
+
+  <!-- Cinta de marcas en movimiento continuo (marquee): se desliza lento, se para
+       al pasar el ratón y se difumina en los bordes. Duplicamos la lista para el
+       bucle sin costura; la 2ª copia es decorativa (aria-hidden). -->
+  <div class="marquee reveal mt-10 md:mt-12" role="region" aria-label="Marcas con las que trabajamos">
+    <ul class="marquee__track">
       {
-        marcas.map((m) => (
-          <li class="marca-tile reveal">
+        [...marcas, ...marcas].map((m, i) => (
+          <li class="marca-tile" aria-hidden={i >= marcas.length ? 'true' : undefined}>
             {m.logo ? (
               <img
                 src={asset(m.logo)}
-                alt={`Logotipo de ${m.nombre}`}
+                alt={i >= marcas.length ? '' : `Logotipo de ${m.nombre}`}
                 class={`marca-logo ${m.big ? 'marca-logo--big' : ''} ${m.inv ? 'marca-logo--inv' : ''}`}
                 loading="lazy"
               />
@@ -35,9 +41,6 @@ import { asset } from '../lib/asset';
         ))
       }
     </ul>
-
-    <p class="reveal mt-10 text-[13px] text-papel/60">
-      ¿Buscas otra marca o un producto concreto? Pregúntanos: si no lo tenemos, te lo conseguimos.
-    </p>
   </div>
+
 </section>

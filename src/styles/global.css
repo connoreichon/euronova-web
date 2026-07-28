@@ -1243,19 +1243,17 @@ body.modal-lock {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  color: var(--color-tinta);
+  color: rgba(245, 240, 232, 0.9);
   border-radius: var(--radius-card);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   background:
     /* Filo de sello del mostrador (rojo de marca) a la izquierda. */
-    linear-gradient(180deg, var(--color-rojo), var(--color-rojo-700)) left top / 5px 100% no-repeat,
-    /* Realce cálido arriba-izquierda: da volumen al papel. */
-    radial-gradient(135% 120% at 1% -12%, rgba(255, 255, 255, 0.8), transparent 55%),
-    /* Base crema. */
-    linear-gradient(180deg, var(--color-crema-200), var(--color-crema));
+    linear-gradient(180deg, var(--color-rojo), var(--color-rojo-700)) left top / 4px 100% no-repeat,
+    /* Vidrio oscuro premium (fuera el crema). */
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.022));
   box-shadow:
-    0 18px 40px -20px rgba(40, 14, 12, 0.55),
-    inset 0 0 0 1px rgba(120, 66, 44, 0.13),
-    inset 0 1px 0 rgba(255, 255, 255, 0.72);
+    0 20px 44px -22px rgba(0, 0, 0, 0.85),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
 }
 /* Materia: grano finísimo de papel técnico / pintura mate (SIN líneas). */
 .nota-mostrador::before {
@@ -1296,8 +1294,8 @@ body.modal-lock {
   color: #fff;
   background: radial-gradient(circle at 32% 26%, #e5474b 0%, var(--color-rojo) 55%, var(--color-rojo-700) 100%);
   box-shadow:
-    0 8px 18px -6px rgba(168, 27, 31, 0.7),
-    0 0 0 4px rgba(255, 255, 255, 0.72),
+    0 8px 20px -4px rgba(210, 38, 43, 0.6),
+    0 0 0 3px rgba(255, 255, 255, 0.12),
     inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 .nota-mostrador__cuerpo {
@@ -1312,7 +1310,7 @@ body.modal-lock {
   font-weight: 800;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: var(--color-rojo);
+  color: var(--color-rojo-400);
 }
 /* Mini gama de color (rojo/albero/azul del rótulo) junto al título. */
 .nota-mostrador__gama {
@@ -1323,17 +1321,17 @@ body.modal-lock {
   width: 7px;
   height: 7px;
   border-radius: 2px;
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
 }
 .nota-mostrador__texto {
   margin-top: 6px;
   font-size: 13px;
   line-height: 1.62;
-  color: color-mix(in srgb, var(--color-tinta) 86%, transparent);
+  color: rgba(245, 240, 232, 0.82);
 }
 .nota-mostrador__texto strong {
   font-weight: 700;
-  color: var(--color-rojo);
+  color: var(--color-rojo-400);
 }
 
 /* Píldoras de lado (Izquierda/Derecha) en el panel: solo son "elegibles" en
@@ -1916,9 +1914,44 @@ body.modal-lock {
   margin-top: -1px;
   background: linear-gradient(180deg, #4a0c0f 0%, #2c1210 46%, #171111 100%);
 }
-/* Variante para cierres que NO convergen a granate (arranca del rojo de marca). */
+/* Footer: hairline rojo DIFUMINADO en los extremos (acento de marca sutil) en vez
+   de la barra roja dura de antes, que cortaba la transición a negro. */
+.site-footer {
+  position: relative;
+}
+.site-footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(210, 38, 43, 0.85) 18%,
+    rgba(210, 38, 43, 0.85) 82%,
+    transparent
+  );
+}
+
+/* Variante para el cierre rojo (CTAFinal → footer). Arranca replicando el fondo
+   del cierre (rojo de marca + veladura granate en la esquina inferior-izquierda)
+   para que NO haya escalón de color en la unión, y funde a negro con muchos pasos
+   (degradado sin bandas). */
 .hero-seam--rojo {
-  background: linear-gradient(180deg, var(--color-rojo) 0%, #4a0c0f 44%, #171111 100%);
+  background:
+    radial-gradient(150% 130% at -12% -10%, var(--color-rojo-900) 0%, transparent 52%),
+    linear-gradient(
+      180deg,
+      var(--color-rojo) 0%,
+      #b01c22 16%,
+      #7d1417 36%,
+      #4a0c0f 58%,
+      #2a1210 80%,
+      #171111 100%
+    );
 }
 @media (min-width: 768px) {
   .hero-seam {
@@ -2050,6 +2083,32 @@ body.modal-lock {
 }
 .proceso-paso {
   position: relative;
+  border-radius: var(--radius-card);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+  box-shadow:
+    0 18px 40px -22px rgba(0, 0, 0, 0.8),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transition:
+    transform var(--dur-hover) var(--ease-suave),
+    border-color var(--dur-hover) ease,
+    box-shadow var(--dur-hover) var(--ease-suave);
+}
+.proceso-paso:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--color-rojo) 45%, transparent);
+  box-shadow:
+    0 26px 50px -24px rgba(0, 0, 0, 0.85),
+    0 0 28px -10px rgba(210, 38, 43, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+@media (prefers-reduced-motion: reduce) {
+  .proceso-paso {
+    transition: none;
+  }
+  .proceso-paso:hover {
+    transform: none;
+  }
 }
 /* Conector fino entre pasos (solo escritorio, cruzando el gap entre columnas). */
 @media (min-width: 1024px) {
@@ -2171,25 +2230,56 @@ body.modal-lock {
    blanco se pasan a tinta oscura (--inv) para verse sobre la tarjeta. Sombra
    suave; hover con elevación mínima.
    =========================================================================== */
+/* Cinta (marquee): el carril se desliza en bucle; se difumina en los bordes
+   (mask) y se para al pasar el ratón o al enfocar con teclado. */
+.marquee {
+  position: relative;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+.marquee__track {
+  display: flex;
+  width: max-content;
+  padding-block: 0.4rem;
+  animation: marquee-scroll 42s linear infinite;
+}
+.marquee:hover .marquee__track,
+.marquee:focus-within .marquee__track {
+  animation-play-state: paused;
+}
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
 .marca-tile {
+  flex: 0 0 auto;
+  width: clamp(148px, 42vw, 186px);
+  min-height: 104px;
+  margin-right: 1rem;
   display: grid;
   place-items: center;
-  min-height: 96px;
-  padding: 1.4rem 1.25rem;
-  border-radius: 14px;
-  background: #ffffff;
+  padding: 1.3rem 1.25rem;
+  border-radius: 16px;
+  background: linear-gradient(180deg, #ffffff, #f3efe7);
   box-shadow:
-    0 12px 28px -16px rgba(0, 0, 0, 0.6),
-    inset 0 0 0 1px rgba(23, 17, 17, 0.05);
+    0 14px 30px -16px rgba(0, 0, 0, 0.6),
+    inset 0 0 0 1px rgba(23, 17, 17, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
   transition:
-    transform 0.2s var(--ease-suave),
-    box-shadow 0.2s ease;
+    transform 0.25s var(--ease-suave),
+    box-shadow 0.25s ease;
 }
 .marca-tile:hover {
-  transform: translateY(-3px);
+  transform: translateY(-4px);
   box-shadow:
-    0 18px 34px -16px rgba(0, 0, 0, 0.62),
-    inset 0 0 0 1px rgba(23, 17, 17, 0.07);
+    0 22px 42px -16px rgba(0, 0, 0, 0.66),
+    0 0 26px -8px rgba(210, 38, 43, 0.34),
+    inset 0 0 0 1px rgba(23, 17, 17, 0.08);
 }
 .marca-logo {
   max-height: 44px;
@@ -2218,8 +2308,24 @@ body.modal-lock {
   line-height: 1.1;
 }
 @media (prefers-reduced-motion: reduce) {
+  /* Sin movimiento: carril quieto, tarjetas en rejilla centrada y sin duplicados. */
+  .marquee {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .marquee__track {
+    animation: none;
+    flex-wrap: wrap;
+    width: auto;
+    justify-content: center;
+    gap: 0.9rem;
+  }
   .marca-tile {
+    margin-right: 0;
     transition: none;
+  }
+  .marca-tile[aria-hidden] {
+    display: none;
   }
   .marca-tile:hover {
     transform: none;
