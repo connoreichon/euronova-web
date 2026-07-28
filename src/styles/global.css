@@ -2361,17 +2361,17 @@ body.modal-lock {
 }
 .destacado-card__img {
   position: relative;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 1 / 1;
   display: grid;
   place-items: center;
-  padding: 1rem;
-  background: linear-gradient(180deg, #ffffff, #f1ede5);
+  padding: 0.75rem;
+  background: linear-gradient(160deg, #ffffff, #eee9df);
 }
 .destacado-card__img img {
   max-height: 100%;
-  max-width: 86%;
+  max-width: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 12px 20px rgba(0, 0, 0, 0.28));
+  filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.3));
 }
 .destacado-card__ph {
   display: flex;

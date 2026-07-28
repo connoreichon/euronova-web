@@ -251,41 +251,41 @@ export const productosDestacados = [
     marca: 'Bupisa',
     tipo: 'Pintura plástica interior',
     desc: 'Plástica mate para interior: buen rendimiento, acabado liso y fácil de aplicar.',
-    img: null
+    img: '/assets/productos/bupisa-nakar.webp'
   },
   {
     nombre: 'P-20 Supercubriente',
     marca: 'Bupisa',
     tipo: 'Pintura plástica interior',
     desc: 'Máxima cubrición y blancura para paredes y techos de interior.',
-    img: null
+    img: '/assets/productos/bupisa-p20-supercubriente.webp'
   },
   {
     nombre: 'Señalización deportiva',
     marca: 'Bupisa',
     tipo: 'Pavimentos deportivos',
     desc: 'Acrílica al agua para pintar y señalizar pistas: gran resistencia a la abrasión sobre cemento y hormigón.',
-    img: null
+    img: '/assets/productos/bupisa-senalizacion-deportivos.webp'
   },
   {
     nombre: 'Pistas deportivas antideslizante',
     marca: 'Rugoplast',
     tipo: 'Pavimentos deportivos',
     desc: 'Revestimiento antideslizante para pistas de pádel, tenis y pavimentos deportivos de exterior.',
-    img: null
+    img: '/assets/productos/rugoplast-pistas.webp'
   },
   {
     nombre: 'Nature',
     marca: 'Tixol',
     tipo: 'Pintura de cal ECO',
     desc: 'Pintura de cal 100% natural y transpirable: interiores sanos y estética mediterránea.',
-    img: null
+    img: '/assets/productos/tixol-nature.webp'
   },
   {
     nombre: 'Revestimiento Pétreo Fachadas',
     marca: 'Drocasa',
     tipo: 'Fachadas',
     desc: 'Revestimiento pétreo para fachadas con gran resistencia a la intemperie. Garantía de 7 años.',
-    img: null
+    img: '/assets/productos/drocasa-fachadas.webp'
   }
 ] as { nombre: string; marca: string; tipo: string; desc: string; img: string | null }[];
