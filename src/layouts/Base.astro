@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import { site } from '../data/site';
 import { asset } from '../lib/asset';
+import FondoGotas from '../components/FondoGotas.astro';
 
 interface Props {
   title?: string;
@@ -100,6 +101,7 @@ const {
     />
   </head>
   <body>
+    <FondoGotas />
     <a
       href="#main"
       class="sr-only rounded-full bg-white px-4 py-2 text-[13px] font-bold text-negro focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-100"
