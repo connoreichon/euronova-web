@@ -2529,7 +2529,9 @@ body.modal-lock {
   #color .banco:last-of-type {
     margin-bottom: 4.5rem;
   }
-  .banco {
+  /* Aire interior SOLO en el dock de control (no en el escenario: la muestra de
+     la pared va a sangre; con padding aquí salía un marco grueso feo en móvil). */
+  .banco:not(.sim-stage) {
     padding: 1rem !important;
   }
   /* Piezas del escenario ajustadas para que nada se corte a 360–390px. */
