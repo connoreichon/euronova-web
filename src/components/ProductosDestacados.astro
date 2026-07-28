@@ -34,7 +34,7 @@ import { asset } from '../lib/asset';
           <article class="destacado-card" role="listitem">
             <div class="destacado-card__img">
               {p.img ? (
-                <img src={asset(p.img)} alt={`${p.marca} ${p.nombre}`} loading="lazy" />
+                <img src={`${asset(p.img)}?v=2`} alt={`${p.marca} ${p.nombre}`} loading="lazy" />
               ) : (
                 <span class="destacado-card__ph" aria-hidden="true">
                   <svg viewBox="0 0 24 24" class="h-10 w-10" fill="none" stroke="currentColor" stroke-width="1.6">
