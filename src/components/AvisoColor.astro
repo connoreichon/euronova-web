@@ -16,23 +16,27 @@ const { variant = 'full', class: className = '' } = Astro.props;
       Para acertar, ven con una muestra real o consulta la carta física en tienda.
     </p>
   ) : (
-    <div class={`nota-mostrador nota-mostrador--salpicada flex items-start gap-3.5 py-4 pr-5 pl-4 ${className}`}>
-      <span
-        class="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-full bg-rojo text-white shadow-[0_5px_12px_-4px_rgba(168,27,31,0.7)] ring-[3px] ring-white/70"
-        aria-hidden="true"
-      >
-        <svg viewBox="0 0 24 24" class="h-4.5 w-4.5" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="4" y="4" width="16" height="16" rx="3" />
-          <path d="M4 14l4-4 3 3 4-5 5 6" stroke-linecap="round" stroke-linejoin="round" />
+    <div class={`nota-mostrador nota-mostrador--salpicada flex items-start gap-4 p-4 pr-5 ${className}`}>
+      <span class="nota-mostrador__sello" aria-hidden="true">
+        <svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor">
+          <path d="M12 2.7c.27 0 .52.13.68.36C14.7 5.9 18 10.5 18 13.9A6 6 0 0 1 6 14c0-3.4 3.3-8 5.32-10.94.16-.23.41-.36.68-.36Z" />
+          <circle cx="9.4" cy="14.4" r="1.9" fill="#fff" opacity="0.5" />
         </svg>
       </span>
-      <div>
-        <p class="text-[12.5px] font-extrabold tracking-[0.14em] text-rojo uppercase">Nota del mostrador</p>
-        <p class="mt-1 text-[13px] leading-relaxed text-tinta/85">
-          El color en pantalla es <span class="font-semibold">orientativo</span>: cada
-          dispositivo, brillo y luz alteran el tono. Para acertar, ven con una
-          muestra real o consulta la carta física en tienda — te asesoramos según
-          soporte, uso y acabado.
+      <div class="nota-mostrador__cuerpo">
+        <p class="nota-mostrador__titulo">
+          <span class="nota-mostrador__gama" aria-hidden="true">
+            <i style="background:#d2262b"></i>
+            <i style="background:#d9a441"></i>
+            <i style="background:#2a5cad"></i>
+          </span>
+          Nota del mostrador
+        </p>
+        <p class="nota-mostrador__texto">
+          El color en pantalla es <strong>orientativo</strong>: cada dispositivo,
+          brillo y luz alteran el tono. Para acertar, ven con una muestra real o
+          consulta la carta física en tienda — te asesoramos según soporte, uso y
+          acabado.
         </p>
       </div>
     </div>
