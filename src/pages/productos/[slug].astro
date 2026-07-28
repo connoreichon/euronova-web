@@ -134,8 +134,13 @@ const nRef = categoria.productos.length;
                 })}
                 aria-label={`Ver ficha técnica de ${p.marca} ${p.nombre}`}
               >
-                <div class="grid aspect-square place-items-center bg-gradient-to-b from-white to-[#ece6da] p-3">
-                  <img src={`${asset(p.img)}?v=6`} alt={`${p.marca} ${p.nombre}`} class="max-h-full w-auto object-contain" loading="lazy" />
+                <div class="grid aspect-square place-items-center p-3">
+                  <img
+                    src={`${asset(p.img)}?v=6`}
+                    alt={`${p.marca} ${p.nombre}`}
+                    class="max-h-full w-auto object-contain [filter:drop-shadow(0_12px_16px_rgba(0,0,0,0.55))]"
+                    loading="lazy"
+                  />
                 </div>
                 <div class="p-3.5">
                   <p class="text-[10px] font-extrabold tracking-wider text-rojo-400 uppercase">{p.marca}</p>
